@@ -58,7 +58,8 @@
   .hero .trust span::before{content:"✓";color:var(--orange);font-weight:700;margin-right:6px;}
 
   /* hero visual – stats card */
-  .hero-stat{position:relative;aspect-ratio:4/5;border-radius:3px;overflow:hidden;background:var(--ink);color:#fff;padding:40px;display:flex;flex-direction:column;}
+.hero-stat{position:relative;aspect-ratio:4/5;border-radius:3px;overflow:hidden;background:var(--ink);color:#fff;padding:40px;display:flex;flex-direction:column;}
+@media (max-width:600px){.hero-stat{aspect-ratio:auto;min-height:420px;}}
   .hero-stat::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0 12px, rgba(0,0,0,0) 12px 24px);pointer-events:none;}
   .hero-stat .top-row{display:flex;justify-content:space-between;align-items:flex-start;}
   .hero-stat .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.6);}

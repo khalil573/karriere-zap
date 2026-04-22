@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kurzbewerbung · ZAP Vertrieb</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#E24E1F;
+    --orange-2:#C23E10;
+    --ink:#0E0E0E;
+    --paper:#FFFFFF;
+    --paper-2:#F7F4EF;
+    --muted:#6b6b6b;
+    --line:#e5e2dd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ink);background:var(--paper-2);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  a{color:var(--ink);}
+  .wrap{max-width:720px;margin:0 auto;padding:0 24px;}
+
+  /* Top bar */
+  nav{background:var(--paper);border-bottom:1px solid var(--line);padding:18px 0;position:sticky;top:0;z-index:10;}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;max-width:1180px;}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-0.02em;font-size:20px;text-decoration:none;color:var(--ink);}
+  .brand .bd{width:28px;height:28px;background:var(--orange);border-radius:2px;}
+  .brand .sub{font-weight:500;color:var(--muted);font-size:13px;letter-spacing:0;}
+  nav .back{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;}
+  nav .back:hover{color:var(--ink);}
+
+  /* Page header */
+  .page-head{padding:56px 0 36px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:10px;font-weight:500;}
+  .eyebrow .dot{width:8px;height:8px;background:var(--orange);border-radius:50%;display:inline-block;}
+  h1{font-size:clamp(36px,5vw,56px);line-height:1.02;letter-spacing:-0.03em;font-weight:900;margin:14px 0 16px;text-wrap:pretty;}
+  h1 em{font-style:normal;background:var(--orange);color:#fff;padding:0 10px;display:inline-block;}
+  .lead{font-size:17px;color:#333;line-height:1.6;max-width:580px;margin:0;}
+
+  /* Card */
+  .card{background:var(--paper);border:1px solid var(--ink);border-radius:4px;padding:36px;margin:0 0 40px;}
+  @media (max-width:520px){ .card{padding:26px 22px;} }
+
+  .error-msg{display:none;background:#fff4f0;border:1px solid var(--orange);color:var(--orange-2);padding:14px 16px;border-radius:3px;font-size:14.5px;margin-bottom:20px;}
+  .error-msg.on{display:block;}
+
+  form{display:flex;flex-direction:column;gap:20px;}
+  .field{display:flex;flex-direction:column;gap:7px;}
+  .field label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+  .field label .req{color:var(--orange);margin-left:3px;}
+  .field label .opt{text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400;font-family:inherit;margin-left:6px;font-size:12px;}
+  input[type="text"],input[type="email"],input[type="tel"],select,textarea{
+    width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:3px;
+    font-family:inherit;font-size:15.5px;color:var(--ink);background:#fff;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(226,78,31,0.12);}
+  textarea{min-height:110px;resize:vertical;line-height:1.55;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:520px){ .grid-2{grid-template-columns:1fr;} }
+  .hp{position:absolute;left:-9999px;opacity:0;pointer-events:none;}
+
+  /* File upload */
+  .file-drop{position:relative;border:1.5px dashed var(--line);border-radius:3px;padding:22px 18px;background:#fafaf8;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;}
+  .file-drop:hover,.file-drop.drag{border-color:var(--orange);background:#fff6f1;}
+  .file-drop input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+  .file-drop .fd-icon{width:36px;height:36px;margin:0 auto 10px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;}
+  .file-drop .fd-title{font-weight:600;font-size:15px;color:var(--ink);margin-bottom:3px;}
+  .file-drop .fd-sub{font-size:12.5px;color:var(--muted);}
+  .file-drop.has-file{border-style:solid;border-color:var(--ink);background:#fff;text-align:left;display:flex;align-items:center;gap:14px;padding:16px 18px;}
+  .file-drop.has-file .fd-icon{margin:0;background:var(--orange);}
+  .file-drop.has-file .fd-info{flex:1;min-width:0;}
+  .file-drop.has-file .fd-name{font-weight:600;font-size:15px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .file-drop.has-file .fd-size{font-size:12.5px;color:var(--muted);}
+  .file-drop.has-file .fd-remove{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:3px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:inherit;}
+  .file-drop.has-file .fd-remove:hover{color:var(--orange);border-color:var(--orange);}
+  .file-drop.has-file .fd-placeholder{display:none;}
+  .file-drop:not(.has-file) .fd-filled{display:none;}
+  .file-error{color:var(--orange-2);font-size:12.5px;margin-top:6px;display:none;}
+  .file-error.on{display:block;}
+
+  .submit-row{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:4px;padding-top:6px;}
+  .note{font-size:12.5px;color:var(--muted);line-height:1.55;margin:0;max-width:340px;}
+  .note a{color:var(--ink);}
+  button[type="submit"]{
+    background:var(--orange);color:#fff;border:none;padding:16px 28px;
+    font-size:16px;font-weight:600;border-radius:3px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:10px;font-family:inherit;
+    transition:background .15s,transform .15s;
+  }
+  button[type="submit"]:hover:not(:disabled){background:var(--orange-2);transform:translateY(-1px);}
+  button[type="submit"]:disabled{opacity:0.6;cursor:not-allowed;}
+  button[type="submit"] .arr{display:inline-block;transform:rotate(-45deg);font-size:18px;line-height:1;}
+
+  /* Success */
+  .success-wrap{display:none;}
+  body.success .card,body.success .trust,body.success .page-head{display:none;}
+  body.success .success-wrap{display:block;}
+  .success-card{background:var(--paper);border:1px solid var(--ink);border-radius:4px;overflow:hidden;margin:40px 0;}
+  .success-top{background:var(--orange);color:#fff;padding:44px 36px 40px;text-align:center;}
+  .success-top .checkmark{width:72px;height:72px;border-radius:50%;background:#fff;color:var(--orange);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:38px;font-weight:800;}
+  .success-top .eyebrow{justify-content:center;color:rgba(255,255,255,0.9);margin-bottom:10px;}
+  .success-top .eyebrow .dot{background:#fff;}
+  .success-top h2{margin:0 0 10px;font-size:clamp(28px,3.6vw,38px);font-weight:900;letter-spacing:-0.025em;line-height:1.1;}
+  .success-top p{margin:0 auto;max-width:440px;color:rgba(255,255,255,0.95);line-height:1.6;font-size:15.5px;}
+  .success-body{padding:32px 36px 36px;}
+  .success-body h3{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 18px;}
+  .success-steps{display:flex;flex-direction:column;gap:16px;}
+  .success-step{display:flex;gap:16px;align-items:flex-start;padding-bottom:16px;border-bottom:1px solid var(--line);}
+  .success-step:last-child{border-bottom:none;padding-bottom:0;}
+  .success-step .num{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--paper-2);color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;}
+  .success-step .st-title{font-weight:600;font-size:15px;margin-bottom:2px;}
+  .success-step .st-desc{font-size:14px;color:var(--muted);line-height:1.5;}
+  .success-contact{margin-top:26px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+  .success-contact .sc-l{font-size:13.5px;color:var(--muted);}
+  .success-contact .sc-l strong{color:var(--ink);font-weight:600;}
+  .success-contact .sc-l a{color:var(--ink);}
+  .back-link{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:12px 22px;border-radius:3px;display:inline-block;}
+  .back-link:hover{border-color:var(--ink);color:var(--ink);}
+  @media (max-width:520px){
+    .success-top{padding:36px 24px 32px;}
+    .success-body{padding:26px 24px 28px;}
+  }
+
+  /* Trust row */
+  .trust{display:flex;flex-wrap:wrap;gap:18px 28px;color:var(--muted);font-size:13px;margin-bottom:28px;}
+  .trust span{display:flex;align-items:center;gap:8px;}
+  .trust span::before{content:"";width:6px;height:6px;background:var(--orange);border-radius:50%;}
+
+  footer{padding:30px 0 50px;text-align:center;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="bd"></span>ZAP <span class="sub">· Karriere</span>
+    </a>
+    <a class="back" href="index.html">← Zurück</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="success-wrap">
+    <div class="success-card">
+      <div class="success-top">
+        <div class="checkmark">✓</div>
+        <div class="eyebrow"><span class="dot"></span>Bewerbung eingegangen</div>
+        <h2>Danke — wir melden uns.</h2>
+        <p>Deine Bewerbung ist bei uns angekommen. Wir schauen sie uns in Ruhe an und rufen dich innerhalb der nächsten 48 Stunden persönlich an.</p>
+      </div>
+      <div class="success-body">
+        <h3>Wie es jetzt weitergeht</h3>
+        <div class="success-steps">
+          <div class="success-step">
+            <div class="num">01</div>
+            <div><div class="st-title">Kurzer Anruf (ca. 15 Min)</div><div class="st-desc">Wir lernen uns kennen, du erzählst von dir — und wir beantworten alle deine Fragen zum Job.</div></div>
+          </div>
+          <div class="success-step">
+            <div class="num">02</div>
+            <div><div class="st-title">Schnupper-Vormittag bei uns</div><div class="st-desc">Komm ins Büro, lern das Team kennen, schau dir den Alltag an. Kein Test, kein Assessment.</div></div>
+          </div>
+          <div class="success-step">
+            <div class="num">03</div>
+            <div><div class="st-title">Entscheidung — von beiden Seiten</div><div class="st-desc">Passt es für dich? Passt es für uns? Dann besprechen wir die Details und du startest.</div></div>
+          </div>
+        </div>
+        <div class="success-contact">
+<div class="sc-l">Fragen? Schreib uns:  <strong> <a href="mailto:verwaltung@zap-pruefstelle.de">    verwaltung@zap-pruefstelle.de </a>  </strong>
+</div>          <a class="back-link" href="index.html">← Zur Startseite</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-head">
+    <div class="eyebrow"><span class="dot"></span>Kurzbewerbung · 2 Minuten</div>
+    <h1>Sag uns kurz,<br/><em>wer du bist.</em></h1>
+    <p class="lead">Kein Lebenslauf, kein Anschreiben. Wir melden uns innerhalb von 48 Stunden bei dir.</p>
+  </div>
+
+  <div class="trust">
+    <span>Nur 6 Fragen</span>
+    <span>Keine Mappe nötig</span>
+    <span>Antwort in 48 Std</span>
+  </div>
+
+  <div class="card">
+
+    <form id="apply-form" action="https://formspree.io/f/xqewlovo" method="POST" enctype="multipart/form-data" novalidate>
+      <div class="error-msg" id="apply-error">Da ist was schiefgelaufen. Bitte versuch's nochmal oder schreib uns direkt an <a href="mailto:verwaltung@zap-pruefstelle.de">verwaltung@zap-pruefstelle.de</a>.</div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="f-name">Name <span class="req">*</span></label>
+          <input type="text" id="f-name" name="name" required autocomplete="name" placeholder="Max Mustermann"/>
+        </div>
+        <div class="field">
+          <label for="f-tel">Telefon <span class="req">*</span></label>
+          <input type="tel" id="f-tel" name="telefon" required autocomplete="tel" placeholder="0171 1234567"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-email">E-Mail <span class="req">*</span></label>
+        <input type="email" id="f-email" name="email" required autocomplete="email" placeholder="max@beispiel.de"/>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="f-beruf">Was machst du aktuell?</label>
+          <input type="text" id="f-beruf" name="aktueller_beruf" placeholder="z.B. Elektriker, Monteur, …"/>
+        </div>
+        <div class="field">
+          <label for="f-start">Wann könntest du starten?</label>
+          <select id="f-start" name="startzeitpunkt">
+            <option value="">Bitte wählen</option>
+            <option value="Sofort">Sofort</option>
+            <option value="1 Monat">In 1 Monat</option>
+            <option value="2-3 Monate">In 2–3 Monaten</option>
+            <option value="Später">Später / noch unklar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-msg">Warum du?<span class="opt">optional · 1–2 Sätze reichen</span></label>
+        <textarea id="f-msg" name="nachricht" placeholder="Erzähl uns kurz, warum du zu uns willst. Kein Roman nötig."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="f-cv">Lebenslauf<span class="opt">optional · PDF, DOC, DOCX oder Foto · max. 8 MB</span></label>
+        <label class="file-drop" id="file-drop" for="f-cv">
+          <input type="file" id="f-cv" name="lebenslauf" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*"/>
+          <div class="fd-placeholder">
+            <div class="fd-icon">↑</div>
+            <div class="fd-title">Datei auswählen oder hierher ziehen</div>
+            <div class="fd-sub">Kein Lebenslauf? Kein Problem — überspring's einfach.</div>
+          </div>
+          <div class="fd-filled">
+            <div class="fd-icon">✓</div>
+            <div class="fd-info">
+              <div class="fd-name" id="fd-name"></div>
+              <div class="fd-size" id="fd-size"></div>
+            </div>
+            <button type="button" class="fd-remove" id="fd-remove">Entfernen</button>
+          </div>
+        </label>
+        <div class="file-error" id="file-error"></div>
+      </div>
+
+      <!-- Honeypot anti-spam -->
+      <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off"/>
+      <input type="hidden" name="_subject" value="Neue Kurzbewerbung Vertrieb (ZAP Landingpage)"/>
+
+      <div class="submit-row">
+        <p class="note">Mit dem Absenden stimmst du unserer <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank">Datenschutzerklärung</a> zu.</p>
+        <button type="submit" id="apply-submit">Absenden <span class="arr">→</span></button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<footer>© 2026 ZAP GmbH · Osnabrück</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const form = document.getElementById('apply-form');
+  const submit = document.getElementById('apply-submit');
+  const err = document.getElementById('apply-error');
+
+  /* File upload UI */
+  const fileInput = document.getElementById('f-cv');
+  const fileDrop = document.getElementById('file-drop');
+  const fileName = document.getElementById('fd-name');
+  const fileSize = document.getElementById('fd-size');
+  const fileRemove = document.getElementById('fd-remove');
+  const fileError = document.getElementById('file-error');
+  const MAX_SIZE = 8 * 1024 * 1024;
+
+  function fmtSize(b){ return b < 1024*1024 ? (b/1024).toFixed(0)+' KB' : (b/(1024*1024)).toFixed(1)+' MB'; }
+
+  function handleFile(f){
+    fileError.classList.remove('on');
+    if(!f){ fileDrop.classList.remove('has-file'); return; }
+    if(f.size > MAX_SIZE){
+      fileError.textContent = 'Datei zu groß (max. 8 MB). Bitte komprimiere sie oder sende sie per E-Mail.';
+      fileError.classList.add('on');
+      fileInput.value = '';
+      fileDrop.classList.remove('has-file');
+      return;
+    }
+    fileName.textContent = f.name;
+    fileSize.textContent = fmtSize(f.size);
+    fileDrop.classList.add('has-file');
+  }
+
+  fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+  fileRemove.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); fileInput.value=''; handleFile(null); });
+
+  ['dragenter','dragover'].forEach(ev => fileDrop.addEventListener(ev, e => { e.preventDefault(); fileDrop.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev => fileDrop.addEventListener(ev, e => { e.preventDefault(); fileDrop.classList.remove('drag'); }));
+  fileDrop.addEventListener('drop', e => {
+    const f = e.dataTransfer.files[0];
+    if(f){ fileInput.files = e.dataTransfer.files; handleFile(f); }
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    err.classList.remove('on');
+    submit.disabled = true;
+    submit.innerHTML = 'Wird gesendet…';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        document.body.classList.add('success');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        err.classList.add('on');
+      }
+    } catch(e2) {
+      err.classList.add('on');
+    } finally {
+      submit.disabled = false;
+      submit.innerHTML = 'Absenden <span class="arr">→</span>';
+    }
+  });
+</script>
+
+</body>
+</html>

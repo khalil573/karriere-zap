@@ -339,6 +339,7 @@ src="https://www.facebook.com/tr?id=851410567212402&ev=PageView&noscript=1"
         headers: { 'Accept': 'application/json' }
       });
       if (res.ok) {
+        fbq('track', 'Lead');
         document.body.classList.add('success');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {

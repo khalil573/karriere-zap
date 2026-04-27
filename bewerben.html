@@ -247,7 +247,31 @@ if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
           </select>
         </div>
       </div>
-
+      
+<div class="grid-2">
+        <div class="field">
+          <label for="f-vorerfahrung">Vorerfahrung im Vertrieb</label>
+          <select id="f-vorerfahrung" name="vorerfahrung">
+            <option value="">Bitte wählen</option>
+            <option value="Keine">Keine</option>
+            <option value="Unter 1 Jahr">Unter 1 Jahr</option>
+            <option value="1-3 Jahre">1–3 Jahre</option>
+            <option value="3-5 Jahre">3–5 Jahre</option>
+            <option value="Mehr als 5 Jahre">Mehr als 5 Jahre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-erreichbar">Wann am besten erreichbar?</label>
+          <select id="f-erreichbar" name="erreichbarkeit">
+            <option value="">Bitte wählen</option>
+            <option value="Vormittags (08-12 Uhr)">Vormittags (08–12 Uhr)</option>
+            <option value="Mittags (12-14 Uhr)">Mittags (12–14 Uhr)</option>
+            <option value="Nachmittags (14-17 Uhr)">Nachmittags (14–17 Uhr)</option>
+            <option value="Abends (nach 17 Uhr)">Abends (nach 17 Uhr)</option>
+            <option value="Egal">Egal, ruft einfach an</option>
+          </select>
+        </div>
+      </div>
       <div class="field">
         <label for="f-msg">Warum du?<span class="opt">optional · 1–2 Sätze reichen</span></label>
         <textarea id="f-msg" name="nachricht" placeholder="Erzähl uns kurz, warum du zu uns willst. Kein Roman nötig."></textarea>

@@ -342,9 +342,10 @@ if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
         headers: { 'Accept': 'application/json' }
       });
       if (res.ok) {
-        fbq('track', 'Lead');
+        if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
+          fbq('track', 'Lead');
+        }
         document.body.classList.add('success');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         err.classList.add('on');
       }

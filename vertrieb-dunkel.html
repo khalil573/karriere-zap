@@ -602,6 +602,9 @@ if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
       headers: { 'Accept': 'application/json' }
     });
     if (response.ok) {
+      if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
+        fbq('track', 'Lead');
+      }
       form.style.display = 'none';
       document.getElementById('success').style.display = 'block';
       window.scrollTo({ top: document.getElementById('bewerbung').offsetTop, behavior: 'smooth' });

@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="de"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Elektriker (m/w/d) bei ZAP — Tesla, 4-Tage-Woche, kein Baustellen-Stress.</title>
-<meta name="description" content="Wir suchen ausgebildete Elektriker für DGUV V3 Prüfungen. Tesla Model 3 als Firmenwagen, 4-Tage-Woche, 3.100–4.500 € brutto. Bewerbung in 60 Sekunden.">
+<meta name="description" content="Wir suchen ausgebildete Elektriker für DGUV V3 Prüfungen. Tesla Model 3 als Firmenwagen, 4-Tage-Woche, 3.100–4.500 € brutto. Bewerbung in 60 Sekunden." />
 
-<!-- Meta Pixel Code (Consent-gesteuert) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel (Consent-gesteuert) -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -18,39 +23,13 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('consent', 'revoke');
 fbq('init', '851410567212402');
 
-// Pixel feuert nur, wenn Consent gegeben wurde
 if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
   fbq('consent', 'grant');
   fbq('track', 'PageView');
 }
 </script>
-<!-- End Meta Pixel Code -->
-
-<!-- External resources for standalone bundling -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=851410567212402&ev=PageView&noscript=1" alt="" /></noscript>
+<!-- End Meta Pixel -->
 
 <style>
 :root {
@@ -178,6 +157,7 @@ section.tight { padding: 36px 22px; }
 }
 .btn-primary { background: var(--orange); color: white; box-shadow: 0 8px 24px rgba(226,78,31,0.30), inset 0 -2px 0 rgba(0,0,0,0.12); }
 .btn-primary:hover { background: var(--orange-700); transform: translateY(-2px); box-shadow: 0 14px 30px rgba(226,78,31,0.40), inset 0 -2px 0 rgba(0,0,0,0.12); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 .btn-ghost { background: transparent; color: var(--paper); border: 1.5px solid rgba(255,255,255,0.30); }
 .btn-ghost:hover { background: rgba(255,255,255,0.08); }
 .btn-block { width: 100%; }
@@ -231,27 +211,6 @@ section.tight { padding: 36px 22px; }
   background-image:
     repeating-linear-gradient(45deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 16px),
     repeating-linear-gradient(-45deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 16px);
-}
-.hero-photo .ph-label {
-  position: relative;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: rgba(255,255,255,0.45);
-  letter-spacing: 0.08em;
-  background: rgba(15,20,25,0.6);
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px dashed rgba(255,255,255,0.15);
-}
-.hero-tesla-mark {
-  position: absolute;
-  right: 16px; top: 16px;
-  font-family: 'Bricolage Grotesque', sans-serif;
-  font-weight: 800;
-  font-size: 64px;
-  color: rgba(255,255,255,0.08);
-  letter-spacing: -0.04em;
-  line-height: 1;
 }
 
 .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
@@ -654,7 +613,6 @@ section.tight { padding: 36px 22px; }
     repeating-linear-gradient(0deg, transparent 0 22px, rgba(15,20,25,0.04) 22px 23px),
     repeating-linear-gradient(90deg, transparent 0 22px, rgba(15,20,25,0.04) 22px 23px);
 }
-/* Germany states SVG map */
 .de-map {
   position: absolute;
   inset: 0;
@@ -663,7 +621,6 @@ section.tight { padding: 36px 22px; }
   display: block;
   pointer-events: none;
 }
-.de-map svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 2px 6px rgba(15,20,25,0.08)); }
 .de-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -700,79 +657,6 @@ section.tight { padding: 36px 22px; }
   border-radius: 4px;
   white-space: nowrap;
   box-shadow: 0 2px 6px rgba(15,20,25,0.18);
-}
-.de-base {
-  fill: #CFCAB9;
-  stroke: #B6B0A0;
-  stroke-width: 0.6;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-.de-active {
-  fill: var(--orange);
-  stroke: #FFFFFF;
-  stroke-width: 0.8;
-  stroke-linejoin: round;
-}
-.de-borders path {
-  fill: none;
-  stroke: rgba(255,255,255,0.55);
-  stroke-width: 0.35;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.de-city {
-  fill: #0F1419;
-  stroke: #FFFFFF;
-  stroke-width: 0.4;
-}
-.de-city-label text {
-  fill: #6E6857;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 2.6px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-anchor: start;
-}
-.hq-pin-outer {
-  fill: var(--orange);
-  stroke: #FFFFFF;
-  stroke-width: 1.4;
-}
-.hq-pin-inner {
-  fill: #FFFFFF;
-}
-.hq-pin-pulse {
-  fill: var(--orange);
-  opacity: 0.25;
-  animation: hq-pulse 2.2s ease-out infinite;
-  transform-origin: center;
-  transform-box: fill-box;
-}
-@keyframes hq-pulse {
-  0%   { transform: scale(1);    opacity: 0.35; }
-  100% { transform: scale(3.2);  opacity: 0; }
-}
-.map-pin {
-  position: absolute;
-  pointer-events: none;
-}
-.map-pin-label {
-  position: absolute;
-  transform: translate(14px, -50%);
-  background: var(--ink); color: var(--paper);
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
-  white-space: nowrap;
-  pointer-events: none;
-}
-.map-pin-label::before {
-  content: ''; position: absolute; left: -4px; top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  width: 8px; height: 8px; background: var(--ink);
 }
 .map-legend {
   position: absolute; bottom: 14px; left: 14px;
@@ -832,16 +716,6 @@ section.tight { padding: 36px 22px; }
   position: absolute; inset: 0;
   background-image:
     repeating-linear-gradient(45deg, rgba(15,20,25,0.025) 0 1px, transparent 1px 12px);
-}
-.team-photo .ph {
-  position: absolute; bottom: 6px; left: 6px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--ink-mute);
-  background: var(--paper);
-  padding: 3px 6px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
 }
 .team-name { font-family: 'Bricolage Grotesque'; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
 .team-role { font-size: 12px; color: var(--ink-mute); margin-top: 2px; }
@@ -910,7 +784,7 @@ section.tight { padding: 36px 22px; }
   overflow: hidden;
   transition: max-height 240ms ease;
 }
-.faq-item.open .faq-a { max-height: 300px; }
+.faq-item.open .faq-a { max-height: 400px; }
 .faq-a-inner { padding: 0 18px 18px 18px; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
 
 /* ====== Form ====== */
@@ -955,9 +829,7 @@ section.tight { padding: 36px 22px; }
   line-height: 1.45;
   letter-spacing: -0.01em;
 }
-.ravn-meta {
-  display: flex; flex-direction: column; gap: 2px;
-}
+.ravn-meta { display: flex; flex-direction: column; gap: 2px; }
 .ravn-name {
   font-weight: 700;
   color: var(--paper);
@@ -971,7 +843,6 @@ section.tight { padding: 36px 22px; }
   letter-spacing: 0.04em;
 }
 
-/* Variant switcher */
 .ravn-switch {
   display: inline-flex;
   margin-top: 22px;
@@ -1002,7 +873,6 @@ section.tight { padding: 36px 22px; }
 .ravn-switch + .ravn-card,
 .ravn-switch + .ravn-portrait { margin-top: 14px; }
 
-/* Variant B — Portrait */
 .ravn-portrait {
   margin-top: 14px;
   max-width: 380px;
@@ -1093,6 +963,40 @@ section.tight { padding: 36px 22px; }
   background: var(--paper);
   box-shadow: 0 0 0 4px rgba(226,78,31,0.10);
 }
+.file-input-wrap {
+  position: relative;
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--r-sm);
+  border: 1.5px dashed var(--border-strong);
+  background: var(--paper-2);
+  font-size: 14px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+.file-input-wrap:hover { border-color: var(--orange); background: var(--orange-50); }
+.file-input-wrap input[type="file"] {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.file-input-wrap .file-ic {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  color: var(--orange);
+  flex-shrink: 0;
+}
+.file-input-wrap .file-text { flex: 1; min-width: 0; }
+.file-input-wrap .file-text b { color: var(--ink); font-weight: 700; display: block; }
+.file-input-wrap .file-text small { color: var(--ink-mute); font-size: 12px; }
+.file-input-wrap.has-file { border-style: solid; border-color: var(--success); background: #ECFAF1; }
+.file-input-wrap.has-file .file-ic { color: var(--success); }
+
 .radios { display: flex; flex-wrap: wrap; gap: 6px; }
 .radio {
   display: inline-flex; align-items: center; gap: 6px;
@@ -1118,6 +1022,15 @@ section.tight { padding: 36px 22px; }
   border-radius: 50%; background: var(--orange-50);
   display: flex; align-items: center; justify-content: center;
   color: var(--orange); font-size: 32px;
+}
+.form-error {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  background: #FEE7E2;
+  border: 1px solid #F4B5A7;
+  color: var(--danger);
+  font-size: 13px;
 }
 
 /* ====== Footer ====== */
@@ -1147,7 +1060,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
 }
 .sticky-cta-inner { max-width: 528px; width: 100%; }
 
-/* On desktop, make sticky CTA only inside page card */
 @media (min-width: 600px) {
   .sticky-cta {
     position: fixed;
@@ -1163,11 +1075,83 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
 .spacer-sm { height: 14px; }
 .spacer-md { height: 22px; }
 
+/* ====== Cookie Banner ====== */
+.cookie-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 9999;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 20px 22px calc(20px + env(safe-area-inset-bottom));
+  border-top: 3px solid var(--orange);
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.35);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.cookie-banner[hidden] { display: none; }
+.cookie-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.cookie-banner-text { flex: 1; min-width: 260px; }
+.cookie-banner-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #FF7A4A;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.cookie-banner-text p {
+  margin: 0;
+  color: rgba(255,255,255,0.88);
+  font-size: 14px;
+}
+.cookie-banner-text a {
+  color: #FF7A4A;
+  text-decoration: underline;
+}
+.cookie-banner-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.cookie-btn {
+  padding: 12px 22px;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 140ms ease, transform 140ms ease;
+}
+.cookie-btn-decline {
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid rgba(255,255,255,0.35);
+}
+.cookie-btn-decline:hover { background: rgba(255,255,255,0.08); }
+.cookie-btn-accept {
+  background: var(--orange);
+  color: var(--paper);
+}
+.cookie-btn-accept:hover { background: var(--orange-700); transform: translateY(-1px); }
+
+body.has-cookie-banner .sticky-cta { bottom: 116px; }
+@media (min-width: 880px) {
+  .cookie-banner { padding-left: 56px; padding-right: 56px; }
+}
+
+/* Hidden ravn variant toggle */
+.ravn-card.is-hidden,
+.ravn-portrait.is-hidden { display: none; }
+
 /* ================================================================
-   DESKTOP  —  ≥ 960 px
-   Mobile bleibt 1:1, ab 960 px komplettes Desktop-Layout
+   DESKTOP — ≥ 880 px
    ================================================================ */
-.wrap { /* no-op auf Mobile, wird auf Desktop zum Container */ }
+.wrap {}
 
 @media (min-width: 880px) {
   body { padding: 0; background: var(--paper); }
@@ -1188,7 +1172,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
     width: 100%;
   }
 
-  /* ----- Nav ----- */
   .nav { padding: 14px 0; }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; }
   .nav-links { display: flex; align-items: center; gap: 28px; }
@@ -1201,17 +1184,14 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .logo .sub { font-size: 12px; margin-left: 6px; }
   .nav-cta { padding: 11px 20px; font-size: 14px; }
 
-  /* ----- Section base ----- */
   section { padding: 110px 0; }
   section.tight { padding: 56px 0; }
 
-  /* ----- Typography ----- */
   .h1 { font-size: clamp(56px, 6.4vw, 88px); line-height: 1.02; }
   .h2 { font-size: clamp(38px, 4vw, 56px); line-height: 1.05; margin-bottom: 22px; }
   .h3 { font-size: 22px; }
   .lede { font-size: 19px; line-height: 1.5; max-width: 560px; }
 
-  /* ----- Hero ----- */
   .hero { padding: 96px 0 110px; }
   .hero h1 br { display: none; }
   .hero .hero-inner.wrap {
@@ -1234,19 +1214,16 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
     flex: 1;
     width: 100%;
   }
-  .hero-tesla-mark { font-size: 140px; right: 32px; top: 28px; }
   .hero-cta-stack { flex-direction: column; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
   .hero-cta-stack .btn-block { width: auto; padding: 18px 28px; font-size: 16px; white-space: nowrap; }
   .hero-meta { margin-top: 0; text-align: left; }
   .hero .chip-row { margin-top: 0; margin-bottom: 8px; }
 
-  /* ----- Trust ----- */
   .trust { padding: 36px 0; }
   .trust-label { font-size: 12px; text-align: center; margin-bottom: 18px; }
   .trust-logos { grid-template-columns: repeat(6, 1fr); gap: 14px; }
   .trust-logo { height: 56px; font-size: 15px; }
 
-  /* ----- Benefits ----- */
   .benefits .wrap > .h2 { max-width: 820px; }
   .benefit-list {
     display: grid;
@@ -1259,7 +1236,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .benefit h3 { font-size: 20px; }
   .benefit p { font-size: 15px; }
 
-  /* ----- Quotes ----- */
   .quote-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1270,7 +1246,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .quote-card .qmeta { margin-top: auto; padding-top: 18px; }
   .quote-card .qtext { font-size: 20px; line-height: 1.4; }
 
-  /* ----- MidHook ----- */
   .midhook { padding: 110px 0; text-align: center; }
   .midhook .wrap { max-width: 860px; }
   .midhook h2 {
@@ -1284,7 +1259,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .midhook::after { right: 8%; top: 10%; width: 320px; height: 320px; }
   .midhook .qmeta-wrap { display: flex; justify-content: center; }
 
-  /* ----- Day ----- */
   .day .wrap { max-width: 780px; }
   .timeline { margin-top: 40px; padding-left: 36px; }
   .timeline::before { left: 11px; }
@@ -1292,13 +1266,11 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .t-time { font-size: 13px; }
   .t-text { font-size: 18px; }
 
-  /* ----- Compare ----- */
   .compare .wrap { max-width: 920px; }
   .compare-table { margin-top: 36px; }
   .compare-row > div { padding: 22px 26px; font-size: 16px; }
   .compare-head .a, .compare-head .b { font-size: 16px; }
 
-  /* ----- Fit ----- */
   .fit-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1309,7 +1281,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .fit-card .title { font-size: 26px; }
   .fit-card li { font-size: 16px; }
 
-  /* ----- Calc ----- */
   .calc-card { padding: 44px; margin-top: 40px; }
   .calc-card .calc-card-grid {
     display: grid;
@@ -1323,7 +1294,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .calc-total .v { font-size: 34px; }
   .calc-note { margin-top: 20px; }
 
-  /* ----- Map ----- */
   .map-sect .map-grid {
     display: grid;
     grid-template-columns: 1fr 1.15fr;
@@ -1332,7 +1302,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   }
   .map { margin-top: 0; aspect-ratio: 4 / 5; }
 
-  /* ----- Team ----- */
   .team-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
@@ -1342,7 +1311,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .team-name { font-size: 18px; }
   .team-role { font-size: 13px; }
 
-  /* ----- Process ----- */
   .steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1361,13 +1329,11 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .step:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
   .step .step-num { margin-bottom: 6px; }
 
-  /* ----- FAQ ----- */
   .faq .wrap { max-width: 820px; }
   .faq-q { padding: 22px 24px; font-size: 17px; }
   .faq-a-inner { padding: 0 24px 22px 24px; font-size: 16px; }
   .faq-item.open .faq-a { max-height: 400px; }
 
-  /* ----- Apply ----- */
   .apply { padding: 110px 0; }
   .apply .apply-inner.wrap {
     display: grid;
@@ -1378,7 +1344,6 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   .apply .apply-text { position: sticky; top: 90px; }
   .apply .form-card { margin-top: 0; padding: 40px; }
 
-  /* ----- Footer ----- */
   footer { padding: 60px 0 64px; }
   footer .f-grid {
     grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -1386,776 +1351,655 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   }
   footer h4 { font-size: 14px; margin-bottom: 10px; }
 
-  /* ----- Sticky CTA versteckt auf Desktop ----- */
   .sticky-cta { display: none; }
 }
 
-/* Extra wide */
 @media (min-width: 1400px) {
   .wrap { max-width: 1240px; }
 }
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div class="page">
 
-<script type="text/babel" data-presets="react">
-
-// === Cloudinary-Bilder ===
-// .heic-Dateien werden durch Anhängen von .jpg von Cloudinary automatisch in JPG konvertiert
-window.__resources = {
-  // Tesla / Hero
-  heroPhoto:    'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779177896/WhatsApp_Image_2026-05-19_at_10.00.12_eaobfl.jpg',
-
-  // Ravn (Personalreferent) – beide Varianten zeigen dasselbe Foto
-  ravnA:        'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779182899/WhatsApp_Image_2026-05-19_at_11.27.56_gcrtqr.jpg',
-  ravnB:        'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779182899/WhatsApp_Image_2026-05-19_at_11.27.56_gcrtqr.jpg',
-
-  // Andreas Zerbe (Zitat + Team)
-  qAndreas:     'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1776770480/andreas-z_qnnz9g.jpg',
-  teamAndreas:  'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1776770480/andreas-z_qnnz9g.jpg',
-
-  // Igor Der (Mid-Hook + Team) – heic → jpg via Cloudinary-Transformation
-  igorMidhook:  'https://res.cloudinary.com/dzvvvmpsn/image/upload/f_jpg/v1779176568/IMG_4852_1_a4u4vy',
-  teamIgor:     'https://res.cloudinary.com/dzvvvmpsn/image/upload/f_jpg/v1779176568/IMG_4852_1_a4u4vy',
-
-  // Justus Pottebaum (Zitat + Team) – heic → jpg via Cloudinary-Transformation
-  qJustus:      'https://res.cloudinary.com/dzvvvmpsn/image/upload/f_jpg/v1779176492/IMG_4842_b5wpwa',
-  teamJustus:   'https://res.cloudinary.com/dzvvvmpsn/image/upload/f_jpg/v1779176492/IMG_4842_b5wpwa',
-
-  // Dietrich Zerbe (Zitat + Team) – heic → jpg via Cloudinary-Transformation
-  qDietrich:    'https://res.cloudinary.com/dzvvvmpsn/image/upload/f_jpg/v1779176594/IMG_4847_1_lsguua',
-  teamDietrich: 'https://res.cloudinary.com/dzvvvmpsn/image/upload/f_jpg/v1779176594/IMG_4847_1_lsguua',
-
-  // Deutschland-Karte (Suchgebiet)
-  deKarte:      'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779182447/68a0584d90d7fa0a7f0b6779_de_karte_v1_gdxegy.jpg'
-};
-
-
-const { useState, useMemo } = React;
-
-/* ============= Icons (inline SVG) ============= */
-const ArrowR = (p) =>
-<svg className={p.className || 'arr'} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14M13 5l7 7-7 7" />
-  </svg>;
-
-
-/* ============= NAV ============= */
-function Nav() {
-  return (
-    <nav className="nav">
-      <div className="wrap">
-        <a href="#top" className="logo">
-          <span className="mark">ZAP</span><span className="dot">.</span>
-          <span className="sub">Prüfstelle · Karriere</span>
-        </a>
-        <div className="nav-links" style={{ display: 'none' }}>
-          <a href="#benefits">Benefits</a>
-          <a href="#calc">Gehalt</a>
-          <a href="#process">Bewerbung</a>
-          <a href="#faq">FAQ</a>
-        </div>
-        <a href="#apply" className="nav-cta">Bewerben<ArrowR /></a>
+  <!-- ============= NAV ============= -->
+  <nav class="nav">
+    <div class="wrap">
+      <a href="#top" class="logo">
+        <span class="mark">ZAP</span><span class="dot">.</span>
+        <span class="sub">Prüfstelle · Karriere</span>
+      </a>
+      <div class="nav-links" style="display: none;">
+        <a href="#benefits">Benefits</a>
+        <a href="#calc">Gehalt</a>
+        <a href="#process">Bewerbung</a>
+        <a href="#faq">FAQ</a>
       </div>
-    </nav>);
-
-}
-
-/* ============= HERO ============= */
-function Hero() {
-  return (
-    <section className="hero" id="top">
-      <div className="hero-inner wrap">
-        <div className="hero-text-top">
-          <div className="eyebrow">Job · Elektriker m/w/d · unbefristet</div>
-          <h1 className="display h1">
-            Kein Bock mehr auf <br />
-            <em>Baustelle, Dreck <br />&amp; Überstunden?</em>
-          </h1>
-          <p className="lede">
-            Dann fahr bei uns einen <b>Tesla Model 3</b>, arbeite eine <b>4-Tage-Woche</b> und prüf tagsüber Steckdosen in Büros. Statt 7 Uhr morgens auf dem Rohbau.
-          </p>
-        </div>
-
-        <div className="hero-visual">
-          <div className="hero-photo">
-            <img src={window.__resources.heroPhoto} alt="Tesla Model 3 mit ZAP-Branding vor Bürogebäude" />
-          </div>
-        </div>
-
-        <div className="hero-text-bottom">
-          <div className="chip-row">
-            <span className="chip solid"><span className="dot"></span>Tesla Model 3</span>
-            <span className="chip"><span className="dot"></span>4-Tage-Woche</span>
-            <span className="chip"><span className="dot"></span>3.100–4.500 €</span>
-            <span className="chip"><span className="dot"></span>30 Tage Urlaub</span>
-          </div>
-
-          <div className="hero-cta-stack">
-            <a href="#apply" className="btn btn-primary btn-block">Ravn soll mich anrufen<ArrowR /></a>
-            <div className="hero-meta">60 SEK · KEIN LEBENSLAUF · KEIN ANSCHREIBEN</div>
-          </div>
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= TRUST STRIP ============= */
-function Trust() {
-  return (
-    <section className="trust tight">
-      <div className="wrap">
-        <div className="trust-label">Wir prüfen für 80+ Unternehmen — du wirst Teil davon</div>
-        <div className="trust-logos">
-          <div className="trust-logo">S&amp;P</div>
-          <div className="trust-logo">DBS</div>
-          <div className="trust-logo">Hyand</div>
-          <div className="trust-logo">Westcon</div>
-          <div className="trust-logo">Intenso</div>
-          <div className="trust-logo">+ 75</div>
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= BENEFITS ============= */
-function Benefits() {
-  const items = [
-  { n: '01', t: 'Tesla Model 3 als Firmenwagen', s: 'Auch privat nutzbar. Laden bei uns auf der Firma — kostenlos.' },
-  { n: '02', t: '4-Tage-Woche', s: 'Montag bis Donnerstag. Jeden Freitag frei — ohne Wenn und Aber.' },
-  { n: '03', t: '3.100 – 4.500 € brutto', s: 'Je nach Berufserfahrung. Transparent im ersten Gespräch — keine Pokerrunden.' },
-  { n: '04', t: 'Keine Baustelle', s: 'Du prüfst Steckdosen, PCs und Geräte in Büros. Sauber, leise, planbar.' },
-  { n: '05', t: 'Montage Mo–Do', s: 'Deutschlandweit unterwegs. Hotel und Spesen zahlen wir voll — du schläfst nicht im Auto.' },
-  { n: '06', t: '30 Tage Urlaub', s: 'Plus Brückentage. Wir wollen, dass du erholt bleibst — nicht ausgebrannt.' }];
-
-  return (
-    <section className="benefits" id="benefits">
-      <div className="wrap">
-        <div className="eyebrow">Das Paket</div>
-        <h2 className="display h2">Sechs Gründe, <em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>warum unsere Elektriker nicht mehr wechseln.</em></h2>
-        <div className="benefit-list">
-          {items.map((b, i) =>
-          <div className="benefit" key={i}>
-              <div className="benefit-num">{b.n}</div>
-              <div>
-                <h3>{b.t}</h3>
-                <p>{b.s}</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= KOLLEGEN QUOTES ============= */
-function Quotes() {
-  const qs = [
-  { q: 'Der Kundenkontakt. Du sitzt nicht den ganzen Tag im Werkstattkeller — du redest mit echten Menschen.', name: 'Andreas Z.', role: 'Leiter elektrische Sicherheitskoordination', mark: 'AZ', src: window.__resources.qAndreas },
-  { q: 'Ich teil mir die Pausen selber ein. Keine Stempeluhr, kein Vorarbeiter, der mich kontrolliert.', name: 'Justus P.', role: 'Prüftechniker · seit 2 Jahren bei ZAP', mark: 'JP', src: window.__resources.qJustus },
-  { q: 'Beim Kunden organisiere ich alles selbst. Wenn ich gut bin, bin ich früher fertig. Punkt.', name: 'Dietrich Z.', role: 'Prüftechniker', mark: 'DZ', src: window.__resources.qDietrich }];
-
-  return (
-    <section className="quotes">
-      <div className="wrap">
-        <div className="eyebrow">Wir haben unsere Kollegen gefragt</div>
-        <h2 className="display h2">„Was macht dir am Job <em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>Spaß?</em>"</h2>
-        <p className="lede">Hier ihre Antworten — ungefiltert. Drei Kollegen, drei Gründe.</p>
-        <div className="quote-grid">
-          {qs.map((q, i) =>
-          <div className="quote-card" key={i}>
-              <span className="qmark">"</span>
-              <div className="qtext">{q.q}</div>
-              <div className="qmeta">
-                <div className="avatar">{q.src ? <img src={q.src} alt={q.name} loading="lazy" /> : q.mark}</div>
-                <div>
-                  <div className="qname">{q.name}</div>
-                  <div className="qrole">{q.role}</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= IGOR MID-HOOK ============= */
-function MidHook() {
-  return (
-    <section className="midhook">
-      <div className="wrap">
-        <div className="preface">Wir haben Igor gefragt:</div>
-        <div style={{ marginTop: 8, fontSize: 18, color: 'rgba(255,255,255,0.7)' }}>„Aber der Job ist doch anstrengend?"</div>
-        <span className="qmark display" style={{ fontSize: 64, lineHeight: 0.5, display: 'block', marginTop: 18 }}>"</span>
-        <h2>Ist nicht <em>einer der anstrengensten Jobs</em>, ehrlich gesagt.</h2>
-        <div className="qmeta-wrap">
-          <div className="qmeta" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div className="avatar"><img src={window.__resources.igorMidhook} alt="Igor Der" loading="lazy" /></div>
-            <div>
-              <div className="qname">Igor Der</div>
-              <div className="qrole">Prüftechniker · 3 Jahre bei ZAP</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= TYPICAL DAY ============= */
-function Day() {
-  const rows = [
-  { t: '07:30', e: 'Frühstück im Hotel. Kein Stau, kein Wecker um 5.' },
-  { t: '08:30', e: 'Beim Kunden ankommen. Kaffee. Gerätelisten checken.' },
-  { t: '09:00', e: 'DGUV V3 prüfen. Keine schwere Werkzeugkiste — nur Prüfkoffer.' },
-  { t: '12:30', e: 'Pause — wann du willst. Keine Stempeluhr.' },
-  { t: '15:30', e: 'Letzter Geräteraum. Protokoll fertig. Feierabend.' },
-  { t: 'FREITAG', e: 'Frei. Immer. Jede Woche.', fri: true }];
-
-  return (
-    <section className="day">
-      <div className="wrap">
-        <div className="eyebrow">Ein typischer Tag</div>
-        <h2 className="display h2">So sieht <em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>dein Dienstag</em> aus.</h2>
-        <div className="timeline">
-          {rows.map((r, i) =>
-          <div className={`t-row ${r.fri ? 'fri' : ''}`} key={i}>
-              <div className="t-time">{r.t}</div>
-              <div className="t-text">{r.e}</div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= COMPARE ============= */
-function Compare() {
-  const rows = [
-  ['Arbeitstage', '5 Tage, oft Sa', '4 Tage. Fr immer frei.'],
-  ['Arbeitsort', 'Baustelle, Dreck', 'Büro, sauber'],
-  ['Werkzeug', 'Du schleppst', 'Prüfkoffer, fertig'],
-  ['Firmenwagen', 'Sprinter, alt', 'Tesla Model 3'],
-  ['Pausen', 'wenn der Chef sagt', 'wann du willst'],
-  ['Gehalt', 'IG-Metall Mitte', '3.100–4.500 €']];
-
-  return (
-    <section className="compare">
-      <div className="wrap">
-        <div className="eyebrow">Ehrlicher Vergleich</div>
-        <h2 className="display h2">Klassischer Elektriker-Job <em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>vs. ZAP.</em></h2>
-        <div className="compare-table">
-          <div className="compare-row compare-head">
-            <div className="label">Kriterium</div>
-            <div className="a">Andere</div>
-            <div className="b">ZAP</div>
-          </div>
-          {rows.map((r, i) =>
-          <div className="compare-row" key={i}>
-              <div className="label">{r[0]}</div>
-              <div className="a">{r[1]}</div>
-              <div className="b">{r[2]}</div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= FIT FILTER ============= */
-function Fit() {
-  const yes = [
-  'Du kannst selbstständig arbeiten und willst Verantwortung übernehmen.',
-  'Du machst gute Arbeit, auch wenn niemand zuschaut.',
-  'Du redest gerne direkt mit Kunden — auf Augenhöhe.',
-  'Du bleibst loyal, wenn du dich wohlfühlst.',
-  'Du willst dich weiterbilden — wir bezahlen das.'];
-
-  const no = [
-  'Du hast keinen Bock auf Kundenkontakt.',
-  'Du brauchst jemanden, der dir alles Schritt für Schritt sagt.',
-  'Du willst dich nicht weiterentwickeln.',
-  'Du suchst einen 0815-Job zum Absitzen.'];
-
-  return (
-    <section className="fit">
-      <div className="wrap">
-        <div className="eyebrow">Ehrlich bleiben</div>
-        <h2 className="display h2">Passt der Job <em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>zu dir?</em></h2>
-        <p className="lede">Wir filtern hier oben, damit niemand seine Zeit verschwendet — du nicht, wir nicht.</p>
-        <div className="fit-cards">
-          <div className="fit-card yes">
-            <div className="tag">✓ Du passt zu uns, wenn …</div>
-            <div className="title">Das hier dich beschreibt.</div>
-            <ul>{yes.map((x, i) => <li key={i}>{x}</li>)}</ul>
-          </div>
-          <div className="fit-card no">
-            <div className="tag">✗ Lass es lieber, wenn …</div>
-            <div className="title">Du dich hier wiederfindest.</div>
-            <ul>{no.map((x, i) => <li key={i}>{x}</li>)}</ul>
-          </div>
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= SALARY CALCULATOR ============= */
-function Calc() {
-  const [years, setYears] = useState(5);
-  const base = useMemo(() => {
-    const min = 3100,max = 4500;
-    const v = Math.round(min + years / 15 * (max - min));
-    return Math.round(v / 50) * 50;
-  }, [years]);
-  const tesla = 480;
-  const total = base + tesla;
-  const fmt = (n) => n.toLocaleString('de-DE');
-  return (
-    <section className="calc" id="calc">
-      <div className="wrap">
-        <div className="eyebrow">Gehaltsrechner</div>
-        <h2 className="display h2">Was du <em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>wirklich</em> in der Tasche hast.</h2>
-        <p className="lede">Zieh den Regler auf deine Berufsjahre. Wir zeigen dir den Brutto-Lohn plus den geldwerten Vorteil deines Tesla.</p>
-        <div className="calc-card">
-          <div className="calc-card-grid">
-            <div>
-              <div className="calc-q">Deine Berufsjahre als Elektriker: <b>{years} Jahre</b></div>
-              <input
-                className="slider"
-                type="range" min="0" max="15" step="1"
-                value={years}
-                onChange={(e) => setYears(parseInt(e.target.value))} />
-              
-              <div className="slider-meta"><span>0 J.</span><span>5 J.</span><span>10 J.</span><span>15+ J.</span></div>
-              <div className="calc-note">* Beispielrechnung. Exakte Zahl im Erstgespräch — keine Pokerrunden.</div>
-            </div>
-
-            <div className="calc-grid">
-              <div className="calc-tile">
-                <div className="k">Brutto / Monat</div>
-                <div className="v">{fmt(base)} €</div>
-              </div>
-              <div className="calc-tile">
-                <div className="k">+ Tesla geldwerter Vorteil</div>
-                <div className="v">~ {fmt(tesla)} €</div>
-              </div>
-              <div className="calc-tile calc-total">
-                <div className="k">Dein Gesamtpaket</div>
-                <div className="v">~ {fmt(total)} € / Monat</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= MAP ============= */
-function MapSect() {
-  // (Map asset replaced with image — keep section semantic content below)
-  return (
-    <section className="map-sect">
-      <div className="wrap">
-        <div className="map-grid">
-          <div>
-            <div className="eyebrow">Wo du unterwegs bist</div>
-            <h2 className="display h2">Westdeutschland.<br/><em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>Hotel + Spesen zahlen wir.</em></h2>
-            <p className="lede">Du startest in Osnabrück (oder von zu Hause, wenn du näher dran wohnst) und fährst Mo–Do zum Kunden.</p>
-            <div className="region-chips">
-              <span className="region-chip">NRW</span>
-              <span className="region-chip">Niedersachsen</span>
-              <span className="region-chip">Hessen</span>
-              <span className="region-chip">Rheinland-Pfalz</span>
-            </div>
-          </div>
-          <div className="map">
-            <div className="map-bg"></div>
-            <div className="de-map">
-              <img className="de-img" src={window.__resources.deKarte} alt="Deutschland-Karte: Einsatzgebiet im Westen und Norden" />
-              <div className="hq-pin-wrap" style={{ left: '36%', top: '38%' }}>
-                <span className="hq-pin-dot"></span>
-                <span className="hq-pin-label">HQ OSNABRÜCK</span>
-              </div>
-            </div>
-            <div className="map-legend"><b>●</b> Einsatzgebiet · NRW · NDS · HE · RP</div>
-          </div>
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= TEAM ============= */
-function Team() {
-  const t = [
-  { name: 'Andreas Zerbe', role: 'Leiter Sicherheitskoord.', mark: 'AZ', src: window.__resources.teamAndreas },
-  { name: 'Igor Der', role: 'Prüftechniker', mark: 'ID', src: window.__resources.teamIgor },
-  { name: 'Justus Pottebaum', role: 'Prüftechniker', mark: 'JP', src: window.__resources.teamJustus },
-  { name: 'Dietrich Zerbe', role: 'Prüftechniker', mark: 'DZ', src: window.__resources.teamDietrich }];
-
-  return (
-    <section className="team">
-      <div className="wrap">
-        <div className="eyebrow">Dein neues Team</div>
-        <h2 className="display h2">Die Kollegen.</h2>
-        <p className="lede">Klein, eingespielt, kein Konzern. Du arbeitest direkt mit Andreas — keine 4 Hierarchie-Ebenen dazwischen.</p>
-        <div className="team-grid">
-          {t.map((m, i) =>
-          <div className="team-card" key={i}>
-              <div className={`team-photo ${m.src ? 'has-photo' : ''}`}>
-                {m.src ?
-                <img src={m.src} alt={m.name} loading="lazy" /> :
-                <span className="ph">PHOTO · {m.mark}</span>}
-              </div>
-              <div className="team-name">{m.name}</div>
-              <div className="team-role">{m.role}</div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= PROCESS ============= */
-function Process() {
-  const steps = [
-  { n: '1', t: 'Formular ausfüllen', s: '4 Felder, 90 Sekunden. Kein Lebenslauf, kein Anschreiben.', time: 'HEUTE · 60 SEK' },
-  { n: '2', t: 'Andreas ruft dich an', s: 'Innerhalb von 48 Stunden. 15 Minuten Telefonat — beidseitig prüfen.', time: 'IN 48 STD' },
-  { n: '3', t: 'Bezahlter Probetag in Osnabrück', s: 'Du machst einen halben Tag mit. Passt es — Vertrag. Passt es nicht — kein Stress.', time: 'IN 2 WOCHEN' }];
-
-  return (
-    <section className="process" id="process">
-      <div className="wrap">
-        <div className="eyebrow">So geht's weiter</div>
-        <h2 className="display h2">Bewerbung in <em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>3 Schritten.</em></h2>
-        <div className="steps">
-          {steps.map((s, i) =>
-          <div className="step" key={i}>
-              <div className="step-num">{s.n}</div>
-              <div>
-                <h3>{s.t}</h3>
-                <p>{s.s}</p>
-                <div className="time">{s.time}</div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= FAQ ============= */
-function FAQ() {
-  const items = [
-  { q: 'Bin ich ständig auf Montage?', a: 'Mo–Do ja, Freitag immer zu Hause. Hotel + Spesen zahlen wir voll, du schläfst nicht im Auto. Pro Woche meistens nur ein Standort.' },
-  { q: 'Was ist DGUV V3 eigentlich?', a: 'Pflichtprüfung elektrischer Geräte in Firmen — PCs, Mehrfachstecker, Kaffeemaschinen, Maschinen. Du arbeitest mit Prüfkoffer, dokumentierst per Tablet. Nach 2 Wochen Einarbeitung läuft das.' },
-  { q: 'Brauche ich Meister?', a: 'Nein. Gesellenbrief Elektriker / Elektroniker für Energie- und Gebäudetechnik (oder vergleichbar) reicht. EFKffT-Schulung machen wir intern. (Meister sind natürlich dennoch willkommen.)' },
-  { q: 'Wie ist die Probezeit?', a: 'Monate Probezeit. Beide Seiten können sagen: passt nicht. Keine Hinhaltetaktik.' },
-  { q: 'Wann kann ich anfangen?', a: 'Sobald du kannst. Wir warten gerne 3 Monate auf den richtigen Kollegen — aber wir holen dich auch in 2 Wochen rein, wenn es passt.' }];
-
-  const [open, setOpen] = useState(0);
-  return (
-    <section className="faq" id="faq">
-      <div className="wrap">
-        <div className="eyebrow">Häufige Fragen</div>
-        <h2 className="display h2">Du fragst, <em style={{ fontStyle: 'normal', color: 'var(--orange)' }}>wir antworten.</em></h2>
-        <div className="faq-list">
-          {items.map((it, i) =>
-          <div className={`faq-item ${open === i ? 'open' : ''}`} key={i}>
-              <button className="faq-q" onClick={() => setOpen(open === i ? -1 : i)}>
-                <span>{it.q}</span>
-                <span className="ic">+</span>
-              </button>
-              <div className="faq-a"><div className="faq-a-inner">{it.a}</div></div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>);
-
-}
-
-/* ============= APPLY FORM (Formspree) ============= */
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xredbjjr";
-
-function Apply() {
-  const [ravnVariant, setRavnVariant] = useState('A');
-  const [state, setState] = useState({
-    name: '', phone: '', gesellenbrief: '', montage: '', fuehrerschein: '',
-    callwhen: '', sent: false, loading: false, error: ''
-  });
-  const set = (k, v) => setState((s) => ({ ...s, [k]: v }));
-
-  const valid = state.name && state.phone && state.gesellenbrief === 'ja' && state.fuehrerschein === 'ja' && state.montage;
-
-  async function onSubmit(e) {
-    e.preventDefault();
-    if (!valid) return;
-    set('loading', true);
-    try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: state.name,
-          telefon: state.phone,
-          gesellenbrief: state.gesellenbrief,
-          montage: state.montage,
-          fuehrerschein: state.fuehrerschein,
-          rueckruf: state.callwhen,
-          _subject: `Neue Bewerbung Elektriker (ZAP): ${state.name}`
-        })
-      });
-      if (!res.ok) throw new Error('Senden fehlgeschlagen. Bitte versuch es nochmal oder ruf uns an.');
-      if (typeof fbq === 'function') { fbq('track', 'Lead'); }
-      setState((s) => ({ ...s, sent: true, loading: false }));
-    } catch (err) {
-      setState((s) => ({ ...s, error: err.message || 'Senden fehlgeschlagen.', loading: false }));
-    }
-  }
-
-  if (state.sent) {
-    return (
-      <section className="apply" id="apply">
-        <div className="apply-inner wrap" style={{ display: 'block' }}>
-          <div className="form-card form-success" style={{ maxWidth: 560, margin: '0 auto' }}>
-            <div className="ic">✓</div>
-            <h3 className="display" style={{ fontSize: 24, margin: '0 0 8px 0' }}>Bewerbung raus.</h3>
-            <p style={{ color: 'var(--ink-soft)', margin: 0 }}>Ravn meldet sich bei dir innerhalb von 48 Stunden. Telefon klingelt.</p>
-          </div>
-        </div>
-      </section>);
-
-  }
-
-  return (
-    <section className="apply" id="apply">
-      <div className="apply-inner wrap">
-        <div className="apply-text">
-          <div className="eyebrow">Bewerbung · 60 Sekunden</div>
-          <h2 className="display h2">Klingt nach dir?<br /><em>Ravn ruft an.</em></h2>
-          <p className="lede">Kein Lebenslauf, kein Anschreiben. Vier Felder, drei Knockout-Fragen — fertig.</p>
-          <div className="ravn-switch" role="tablist" aria-label="Ravn Vorstellung Design wählen">
-            <button type="button" className={`ravn-switch-btn ${ravnVariant === 'A' ? 'on' : ''}`} onClick={() => setRavnVariant('A')}>A · Kompakt</button>
-            <button type="button" className={`ravn-switch-btn ${ravnVariant === 'B' ? 'on' : ''}`} onClick={() => setRavnVariant('B')}>B · Portrait</button>
-          </div>
-          {ravnVariant === 'A' ? (
-            <div className="ravn-card">
-              <img className="ravn-photo" src={window.__resources.ravnA} alt="Ravn P., Personalreferent" />
-              <div className="ravn-body">
-                <div className="ravn-quote">„Ich rufe dich persönlich zurück. 15 Minuten, ehrliche Antworten — du entscheidest danach, ob's passt."</div>
-                <div className="ravn-meta">
-                  <div className="ravn-name">Ravn P.</div>
-                  <div className="ravn-role">Personalreferent · seit 2025 bei ZAP</div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="ravn-portrait">
-              <div className="ravn-portrait-img">
-                <img src={window.__resources.ravnB} alt="Ravn P., Personalreferent" />
-                <div className="ravn-portrait-badge">
-                  <span className="ravn-portrait-dot"></span>
-                  Antwortet in &lt; 48 Std.
-                </div>
-              </div>
-              <div className="ravn-portrait-cap">
-                <div className="ravn-portrait-name">Ravn P.</div>
-                <div className="ravn-portrait-role">„Ich rufe dich persönlich zurück. 15 Minuten, ehrliche Antworten — du entscheidest danach, ob's passt."
-
-PERSONALREFERENT · SEIT 2025</div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <form className="form-card" onSubmit={onSubmit} action={FORMSPREE_ENDPOINT} method="POST">
-          <div className="field">
-            <label>Dein Vorname</label>
-            <input type="text" name="name" placeholder="z.B. Max" value={state.name} onChange={(e) => set('name', e.target.value)} required />
-          </div>
-          <div className="field">
-            <label>Handynummer (für den Rückruf)</label>
-            <input type="tel" name="phone" placeholder="z.B. 0151 …" value={state.phone} onChange={(e) => set('phone', e.target.value)} required />
-          </div>
-          <div className="field">
-            <label>Hast du einen Gesellenbrief als Elektriker / Elektroniker?</label>
-            <div className="radios">
-              <label className={`radio ${state.gesellenbrief === 'ja' ? 'on' : ''}`}>
-                <input type="radio" name="gesellenbrief" value="ja" onChange={() => set('gesellenbrief', 'ja')} /> Ja
-              </label>
-              <label className={`radio ${state.gesellenbrief === 'nein' ? 'on' : ''}`}>
-                <input type="radio" name="gesellenbrief" value="nein" onChange={() => set('gesellenbrief', 'nein')} /> Nein
-              </label>
-            </div>
-          </div>
-          <div className="field">
-            <label>Bist du bereit, Mo–Do auf Montage zu sein?</label>
-            <div className="radios">
-              <label className={`radio ${state.montage === 'ja' ? 'on' : ''}`}>
-                <input type="radio" name="montage" value="ja" onChange={() => set('montage', 'ja')} /> Ja
-              </label>
-              <label className={`radio ${state.montage === 'regional' ? 'on' : ''}`}>
-                <input type="radio" name="montage" value="regional" onChange={() => set('montage', 'regional')} /> Nur regional
-              </label>
-              <label className={`radio ${state.montage === 'nein' ? 'on' : ''}`}>
-                <input type="radio" name="montage" value="nein" onChange={() => set('montage', 'nein')} /> Nein
-              </label>
-            </div>
-          </div>
-          <div className="field">
-            <label>Führerschein Klasse B?</label>
-            <div className="radios">
-              <label className={`radio ${state.fuehrerschein === 'ja' ? 'on' : ''}`}>
-                <input type="radio" name="fuehrerschein" value="ja" onChange={() => set('fuehrerschein', 'ja')} /> Ja
-              </label>
-              <label className={`radio ${state.fuehrerschein === 'nein' ? 'on' : ''}`}>
-                <input type="radio" name="fuehrerschein" value="nein" onChange={() => set('fuehrerschein', 'nein')} /> Nein
-              </label>
-            </div>
-          </div>
-          <div className="field">
-            <label>Wann sollen wir anrufen? <span style={{ color: 'var(--ink-mute)', fontWeight: 400 }}>(optional)</span></label>
-            <input type="text" name="callwhen" placeholder="z.B. Werktags ab 18 Uhr" value={state.callwhen} onChange={(e) => set('callwhen', e.target.value)} />
-          </div>
-
-          <button className="btn btn-primary btn-block" type="submit" disabled={state.loading}>
-            {state.loading ? 'Wird gesendet …' : 'Ravn soll mich anrufen'}<ArrowR />
-          </button>
-
-          <div className="privacy">
-            🔒 Geht direkt an unseren Personaler Ravn. Kein Bot, kein Newsletter. Mit Absenden stimmst du der <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a> zu.
-          </div>
-        </form>
-      </div>
-    </section>);
-
-}
-
-/* ============= FOOTER ============= */
-function Footer() {
-  return (
-    <footer>
-      <div className="wrap">
-        <div className="f-grid">
-          <div>
-            <h4>ZAP Prüfstelle</h4>
-            <div>Winkelhausenstraße 13<br />49090 Osnabrück</div>
-          </div>
-          <div>
-            <h4>Kontakt</h4>
-            <a href="tel:+495419321307">+49 541 9321 3072</a>
-            <a href="mailto:verwaltung@zap-pruefstelle.de">verwaltung@zap-pruefstelle.de</a>
-          </div>
-          <div>
-            <h4>Unternehmen</h4>
-            <a href="https://www.zap-pruefstelle.de/" target="_blank" rel="noopener">Hauptseite</a>
-            <a href="https://www.zap-pruefstelle.de/#Referenzen" target="_blank" rel="noopener">Referenzen</a>
-            <a href="https://www.zap-pruefstelle.de/#Leistungen" target="_blank" rel="noopener">Leistungen</a>
-          </div>
-          <div>
-            <h4>Rechtliches</h4>
-            <a href="https://www.zap-pruefstelle.de/impressum" target="_blank" rel="noopener">Impressum</a>
-            <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Datenschutz</a>
-            <a href="https://www.zap-pruefstelle.de/agb" target="_blank" rel="noopener">AGB</a>
-          </div>
-        </div>
-        <div className="legal">© {new Date().getFullYear()}  ZAP GmbH · Karriereseite</div>
-      </div>
-    </footer>);
-
-}
-
-/* ============= STICKY CTA ============= */
-function StickyCTA() {
-  return (
-    <div className="sticky-cta">
-      <div className="sticky-cta-inner">
-        <a href="#apply" className="btn btn-primary btn-block">In 60 Sek. bewerben<ArrowR /></a>
-      </div>
-    </div>);
-
-}
-
-/* ============= APP ============= */
-function App() {
-  return (
-    <div className="page">
-      <Nav />
-      <Hero />
-      <Trust />
-      <Benefits />
-      <Quotes />
-      <MidHook />
-      <Day />
-      <Compare />
-      <Fit />
-      <Calc />
-      <MapSect />
-      <Team />
-      <Process />
-      <FAQ />
-      <Apply />
-      <Footer />
-      <StickyCTA />
-    </div>);
-
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-
-</script>
-
-
-<!-- Cookie Banner -->
-<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#0E0E0E;color:#fff;padding:24px 32px;box-shadow:0 -10px 40px rgba(0,0,0,0.4);z-index:9999;font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;border-top:3px solid #E24E1F;">
-  <div style="max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
-    <div style="flex:1;min-width:280px;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#E24E1F;margin-bottom:6px;font-weight:600;">🍪 Cookies</div>
-      <p style="margin:0;color:rgba(255,255,255,0.9);">Wir nutzen Cookies (Meta Pixel), um zu verstehen, wie unsere Karriereseite genutzt wird. Bitte triff eine Auswahl, bevor du dich bewirbst. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" style="color:#E24E1F;text-decoration:underline;">Mehr erfahren</a></p>
+      <a href="#apply" class="nav-cta">
+        Bewerben
+        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
     </div>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;">
-      <button id="cookie-decline" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.4);padding:14px 24px;border-radius:3px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;">Ablehnen</button>
-      <button id="cookie-accept" style="background:#E24E1F;color:#fff;border:none;padding:14px 28px;border-radius:3px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">Akzeptieren</button>
+  </nav>
+
+  <!-- ============= HERO ============= -->
+  <section class="hero" id="top">
+    <div class="hero-inner wrap">
+      <div class="hero-text-top">
+        <div class="eyebrow">Job · Elektriker m/w/d · unbefristet</div>
+        <h1 class="display h1">
+          Kein Bock mehr auf <br />
+          <em>Baustelle, Dreck <br />&amp; Überstunden?</em>
+        </h1>
+        <p class="lede">
+          Dann fahr bei uns einen <b>Tesla Model 3</b>, arbeite eine <b>4-Tage-Woche</b> und prüf tagsüber Steckdosen in Büros. Statt 7 Uhr morgens auf dem Rohbau.
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-photo">
+          <img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_fill,g_auto,w_1400,h_1100,f_auto,q_auto/v1779177896/WhatsApp_Image_2026-05-19_at_10.00.12_eaobfl.jpg" alt="Tesla Model 3 mit ZAP-Branding vor Bürogebäude" />
+        </div>
+      </div>
+
+      <div class="hero-text-bottom">
+        <div class="chip-row">
+          <span class="chip solid"><span class="dot"></span>Tesla Model 3</span>
+          <span class="chip"><span class="dot"></span>4-Tage-Woche</span>
+          <span class="chip"><span class="dot"></span>3.100–4.500 €</span>
+          <span class="chip"><span class="dot"></span>30 Tage Urlaub</span>
+        </div>
+        <div class="hero-cta-stack">
+          <a href="#apply" class="btn btn-primary btn-block">
+            Ravn soll mich anrufen
+            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <div class="hero-meta">60 SEK · KEIN LEBENSLAUF · KEIN ANSCHREIBEN</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= TRUST ============= -->
+  <section class="trust tight">
+    <div class="wrap">
+      <div class="trust-label">Wir prüfen für 80+ Unternehmen — du wirst Teil davon</div>
+      <div class="trust-logos">
+        <div class="trust-logo">S&amp;P</div>
+        <div class="trust-logo">DBS</div>
+        <div class="trust-logo">Hyand</div>
+        <div class="trust-logo">Westcon</div>
+        <div class="trust-logo">Intenso</div>
+        <div class="trust-logo">+ 75</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= BENEFITS ============= -->
+  <section class="benefits" id="benefits">
+    <div class="wrap">
+      <div class="eyebrow">Das Paket</div>
+      <h2 class="display h2">Sechs Gründe, <em style="font-style: normal; color: var(--orange);">warum unsere Elektriker nicht mehr wechseln.</em></h2>
+      <div class="benefit-list">
+        <div class="benefit"><div class="benefit-num">01</div><div><h3>Tesla Model 3 als Firmenwagen</h3><p>Auch privat nutzbar. Laden bei uns auf der Firma — kostenlos.</p></div></div>
+        <div class="benefit"><div class="benefit-num">02</div><div><h3>4-Tage-Woche</h3><p>Montag bis Donnerstag. Jeden Freitag frei — ohne Wenn und Aber.</p></div></div>
+        <div class="benefit"><div class="benefit-num">03</div><div><h3>3.100 – 4.500 € brutto</h3><p>Je nach Berufserfahrung. Transparent im ersten Gespräch — keine Pokerrunden.</p></div></div>
+        <div class="benefit"><div class="benefit-num">04</div><div><h3>Keine Baustelle</h3><p>Du prüfst Steckdosen, PCs und Geräte in Büros. Sauber, leise, planbar.</p></div></div>
+        <div class="benefit"><div class="benefit-num">05</div><div><h3>Montage Mo–Do</h3><p>Deutschlandweit unterwegs. Hotel und Spesen zahlen wir voll — du schläfst nicht im Auto.</p></div></div>
+        <div class="benefit"><div class="benefit-num">06</div><div><h3>30 Tage Urlaub</h3><p>Wir wollen, dass du erholt bleibst — nicht ausgebrannt.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= QUOTES ============= -->
+  <section class="quotes">
+    <div class="wrap">
+      <div class="eyebrow">Wir haben unsere Kollegen gefragt</div>
+      <h2 class="display h2">„Was macht dir am Job <em style="font-style: normal; color: var(--orange);">Spaß?</em>"</h2>
+      <p class="lede">Hier ihre Antworten — ungefiltert. Drei Kollegen, drei Gründe.</p>
+      <div class="quote-grid">
+        <div class="quote-card">
+          <span class="qmark">"</span>
+          <div class="qtext">Der Kundenkontakt. Du sitzt nicht den ganzen Tag im Werkstattkeller — du redest mit echten Menschen.</div>
+          <div class="qmeta">
+            <div class="avatar"><img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_thumb,g_face,z_0.55,w_240,h_240,f_auto,q_auto/v1776770480/andreas-z_qnnz9g.jpg" alt="Andreas Z." loading="lazy" /></div>
+            <div><div class="qname">Andreas Z.</div><div class="qrole">Leiter elektrische Sicherheitskoordination</div></div>
+          </div>
+        </div>
+        <div class="quote-card">
+          <span class="qmark">"</span>
+          <div class="qtext">Ich teil mir die Pausen selber ein. Keine Stempeluhr, kein Vorarbeiter, der mich kontrolliert.</div>
+          <div class="qmeta">
+            <div class="avatar"><img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_thumb,g_face,z_0.55,w_240,h_240,f_auto,q_auto/v1779176492/IMG_4842_b5wpwa.heic" alt="Justus P." loading="lazy" /></div>
+            <div><div class="qname">Justus P.</div><div class="qrole">Prüftechniker · seit 2 Jahren bei ZAP</div></div>
+          </div>
+        </div>
+        <div class="quote-card">
+          <span class="qmark">"</span>
+          <div class="qtext">Beim Kunden organisiere ich alles selbst. Wenn ich gut bin, bin ich früher fertig. Punkt.</div>
+          <div class="qmeta">
+            <div class="avatar"><img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_thumb,g_face,z_0.55,w_240,h_240,f_auto,q_auto/v1779176594/IMG_4847_1_lsguua.heic" alt="Dietrich Z." loading="lazy" /></div>
+            <div><div class="qname">Dietrich Z.</div><div class="qrole">Prüftechniker</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= MIDHOOK (IGOR) ============= -->
+  <section class="midhook">
+    <div class="wrap">
+      <div class="preface">Wir haben Igor gefragt:</div>
+      <div style="margin-top: 8px; font-size: 18px; color: rgba(255,255,255,0.7);">„Aber der Job ist doch anstrengend?"</div>
+      <span class="qmark display" style="font-size: 64px; line-height: 0.5; display: block; margin-top: 18px;">"</span>
+      <h2>Ist nicht <em>einer der anstrengensten Jobs</em>, ehrlich gesagt.</h2>
+      <div class="qmeta-wrap">
+        <div class="qmeta" style="display: flex; align-items: center; gap: 10px;">
+          <div class="avatar"><img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_thumb,g_face,z_0.55,w_240,h_240,f_auto,q_auto/v1779176568/IMG_4852_1_a4u4vy.heic" alt="Igor Der" loading="lazy" /></div>
+          <div>
+            <div class="qname">Igor Der</div>
+            <div class="qrole">Prüftechniker · 3 Jahre bei ZAP</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= DAY ============= -->
+  <section class="day">
+    <div class="wrap">
+      <div class="eyebrow">Ein typischer Tag</div>
+      <h2 class="display h2">So sieht <em style="font-style: normal; color: var(--orange);">dein Dienstag</em> aus.</h2>
+      <div class="timeline">
+        <div class="t-row"><div class="t-time">07:30</div><div class="t-text">Frühstück im Hotel. Kein Stau, kein Wecker um 5.</div></div>
+        <div class="t-row"><div class="t-time">08:30</div><div class="t-text">Beim Kunden ankommen. Kaffee. Gerätelisten checken.</div></div>
+        <div class="t-row"><div class="t-time">09:00</div><div class="t-text">DGUV V3 prüfen. Keine schwere Werkzeugkiste — nur Prüfkoffer.</div></div>
+        <div class="t-row"><div class="t-time">12:30</div><div class="t-text">Pause — wann du willst. Keine Stempeluhr.</div></div>
+        <div class="t-row"><div class="t-time">15:30</div><div class="t-text">Letzter Geräteraum. Protokoll fertig. Feierabend.</div></div>
+        <div class="t-row fri"><div class="t-time">FREITAG</div><div class="t-text">Frei. Immer. Jede Woche.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= COMPARE ============= -->
+  <section class="compare">
+    <div class="wrap">
+      <div class="eyebrow">Ehrlicher Vergleich</div>
+      <h2 class="display h2">Klassischer Elektriker-Job <em style="font-style: normal; color: var(--orange);">vs. ZAP.</em></h2>
+      <div class="compare-table">
+        <div class="compare-row compare-head"><div class="label">Kriterium</div><div class="a">Andere</div><div class="b">ZAP</div></div>
+        <div class="compare-row"><div class="label">Arbeitstage</div><div class="a">5 Tage, oft Sa</div><div class="b">4 Tage. Fr immer frei.</div></div>
+        <div class="compare-row"><div class="label">Arbeitsort</div><div class="a">Baustelle, Dreck</div><div class="b">Büro, sauber</div></div>
+        <div class="compare-row"><div class="label">Werkzeug</div><div class="a">Du schleppst</div><div class="b">Prüfkoffer, fertig</div></div>
+        <div class="compare-row"><div class="label">Firmenwagen</div><div class="a">Sprinter, alt</div><div class="b">Tesla Model 3</div></div>
+        <div class="compare-row"><div class="label">Pausen</div><div class="a">wenn der Chef sagt</div><div class="b">wann du willst</div></div>
+        <div class="compare-row"><div class="label">Gehalt</div><div class="a">IG-Metall Mitte</div><div class="b">3.100–4.500 €</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= FIT ============= -->
+  <section class="fit">
+    <div class="wrap">
+      <div class="eyebrow">Ehrlich bleiben</div>
+      <h2 class="display h2">Passt der Job <em style="font-style: normal; color: var(--orange);">zu dir?</em></h2>
+      <p class="lede">Wir filtern hier oben, damit niemand seine Zeit verschwendet — du nicht, wir nicht.</p>
+      <div class="fit-cards">
+        <div class="fit-card yes">
+          <div class="tag">✓ Du passt zu uns, wenn …</div>
+          <div class="title">Das hier dich beschreibt.</div>
+          <ul>
+            <li>Du kannst selbstständig arbeiten und willst Verantwortung übernehmen.</li>
+            <li>Du machst gute Arbeit, auch wenn niemand zuschaut.</li>
+            <li>Du redest gerne direkt mit Kunden — auf Augenhöhe.</li>
+            <li>Du bleibst loyal, wenn du dich wohlfühlst.</li>
+            <li>Du willst dich weiterbilden — wir bezahlen das.</li>
+          </ul>
+        </div>
+        <div class="fit-card no">
+          <div class="tag">✗ Lass es lieber, wenn …</div>
+          <div class="title">Du dich hier wiederfindest.</div>
+          <ul>
+            <li>Du hast keinen Bock auf Kundenkontakt.</li>
+            <li>Du brauchst jemanden, der dir alles Schritt für Schritt sagt.</li>
+            <li>Du willst dich nicht weiterentwickeln.</li>
+            <li>Du suchst einen 0815-Job zum Absitzen.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= CALC ============= -->
+  <section class="calc" id="calc">
+    <div class="wrap">
+      <div class="eyebrow">Gehaltsrechner</div>
+      <h2 class="display h2">Was du <em style="font-style: normal; color: var(--orange);">wirklich</em> in der Tasche hast.</h2>
+      <p class="lede">Zieh den Regler auf deine Berufsjahre. Wir zeigen dir den Brutto-Lohn plus den geldwerten Vorteil deines Tesla.</p>
+      <div class="calc-card">
+        <div class="calc-card-grid">
+          <div>
+            <div class="calc-q">Deine Berufsjahre als Elektriker: <b><span id="calc-years">5</span> Jahre</b></div>
+            <input id="calc-slider" class="slider" type="range" min="0" max="15" step="1" value="5" />
+            <div class="slider-meta"><span>0 J.</span><span>5 J.</span><span>10 J.</span><span>15+ J.</span></div>
+            <div class="calc-note">* Beispielrechnung. Exakte Zahl im Erstgespräch — keine Pokerrunden.</div>
+          </div>
+          <div class="calc-grid">
+            <div class="calc-tile"><div class="k">Brutto / Monat</div><div class="v"><span id="calc-base">3.567</span> €</div></div>
+            <div class="calc-tile"><div class="k">+ Tesla geldwerter Vorteil</div><div class="v">~ 480 €</div></div>
+            <div class="calc-tile calc-total"><div class="k">Dein Gesamtpaket</div><div class="v">~ <span id="calc-total">4.047</span> € / Monat</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= MAP ============= -->
+  <section class="map-sect">
+    <div class="wrap">
+      <div class="map-grid">
+        <div>
+          <div class="eyebrow">Wo du unterwegs bist</div>
+          <h2 class="display h2">Westdeutschland.<br /><em style="font-style: normal; color: var(--orange);">Hotel + Spesen zahlen wir.</em></h2>
+          <p class="lede">Du startest in Osnabrück (oder von zu Hause, wenn du näher dran wohnst) und fährst Mo–Do zum Kunden.</p>
+          <div class="region-chips">
+            <span class="region-chip">NRW</span>
+            <span class="region-chip">Niedersachsen</span>
+            <span class="region-chip">Hessen</span>
+            <span class="region-chip">Rheinland-Pfalz</span>
+          </div>
+        </div>
+        <div class="map">
+          <div class="map-bg"></div>
+          <div class="de-map">
+            <img class="de-img" src="https://res.cloudinary.com/dzvvvmpsn/image/upload/f_auto,q_auto/v1779182447/68a0584d90d7fa0a7f0b6779_de_karte_v1_gdxegy.jpg" alt="Deutschland-Karte: Einsatzgebiet im Westen und Norden" />
+            <div class="hq-pin-wrap" style="left: 36%; top: 38%;">
+              <span class="hq-pin-dot"></span>
+              <span class="hq-pin-label">HQ OSNABRÜCK</span>
+            </div>
+          </div>
+          <div class="map-legend"><b>●</b> Einsatzgebiet · NRW · NDS · HE · RP</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= TEAM ============= -->
+  <section class="team">
+    <div class="wrap">
+      <div class="eyebrow">Dein neues Team</div>
+      <h2 class="display h2">Die Kollegen.</h2>
+      <p class="lede">Klein, eingespielt, kein Konzern. Du arbeitest direkt mit Andreas — keine 4 Hierarchie-Ebenen dazwischen.</p>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-photo has-photo"><img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_thumb,g_face,z_0.55,w_700,h_700,f_auto,q_auto/v1776770480/andreas-z_qnnz9g.jpg" alt="Andreas Zerbe" loading="lazy" /></div>
+          <div class="team-name">Andreas Zerbe</div>
+          <div class="team-role">Leiter Sicherheitskoord.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo has-photo"><img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_thumb,g_face,z_0.55,w_700,h_700,f_auto,q_auto/v1779176568/IMG_4852_1_a4u4vy.heic" alt="Igor Der" loading="lazy" /></div>
+          <div class="team-name">Igor Der</div>
+          <div class="team-role">Prüftechniker</div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo has-photo"><img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_thumb,g_face,z_0.55,w_700,h_700,f_auto,q_auto/v1779176492/IMG_4842_b5wpwa.heic" alt="Justus Pottebaum" loading="lazy" /></div>
+          <div class="team-name">Justus Pottebaum</div>
+          <div class="team-role">Prüftechniker</div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo has-photo"><img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_thumb,g_face,z_0.55,w_700,h_700,f_auto,q_auto/v1779176594/IMG_4847_1_lsguua.heic" alt="Dietrich Zerbe" loading="lazy" /></div>
+          <div class="team-name">Dietrich Zerbe</div>
+          <div class="team-role">Prüftechniker</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= PROCESS ============= -->
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="eyebrow">So geht's weiter</div>
+      <h2 class="display h2">Bewerbung in <em style="font-style: normal; color: var(--orange);">3 Schritten.</em></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div><h3>Formular ausfüllen</h3><p>4 Felder, 90 Sekunden. Kein Lebenslauf, kein Anschreiben.</p><div class="time">HEUTE · 60 SEK</div></div></div>
+        <div class="step"><div class="step-num">2</div><div><h3>Andreas ruft dich an</h3><p>Innerhalb von 48 Stunden. 15 Minuten Telefonat — beidseitig prüfen.</p><div class="time">IN 48 STD</div></div></div>
+        <div class="step"><div class="step-num">3</div><div><h3>Bezahlter Probetag in Osnabrück</h3><p>Du machst einen halben Tag mit. Passt es — Vertrag. Passt es nicht — kein Stress.</p><div class="time">IN 2 WOCHEN</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= FAQ ============= -->
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="eyebrow">Häufige Fragen</div>
+      <h2 class="display h2">Du fragst, <em style="font-style: normal; color: var(--orange);">wir antworten.</em></h2>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-q" type="button"><span>Bin ich ständig auf Montage?</span><span class="ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Mo–Do ja, Freitag immer zu Hause. Hotel + Spesen zahlen wir voll, du schläfst nicht im Auto. Pro Woche meistens nur ein Standort.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button"><span>Was ist DGUV V3 eigentlich?</span><span class="ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Pflichtprüfung elektrischer Geräte in Firmen — PCs, Mehrfachstecker, Kaffeemaschinen, Maschinen. Du arbeitest mit Prüfkoffer, dokumentierst per Tablet. Nach 2 Wochen Einarbeitung läuft das.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button"><span>Brauche ich Meister?</span><span class="ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Nein. Gesellenbrief Elektriker / Elektroniker für Energie- und Gebäudetechnik (oder vergleichbar) reicht. EFKffT-Schulung machen wir intern. (Meister sind natürlich dennoch willkommen.)</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button"><span>Wie ist die Probezeit?</span><span class="ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">6 Monate Probezeit. Beide Seiten können sagen: passt nicht. Keine Hinhaltetaktik.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button"><span>Wann kann ich anfangen?</span><span class="ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Sobald du kannst. Wir warten gerne 3 Monate auf den richtigen Kollegen — aber wir holen dich auch in 2 Wochen rein, wenn es passt.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= APPLY ============= -->
+  <section class="apply" id="apply">
+    <div class="apply-inner wrap">
+      <div class="apply-text">
+        <div class="eyebrow">Bewerbung · 60 Sekunden</div>
+        <h2 class="display h2">Klingt nach dir?<br /><em>Ravn ruft an.</em></h2>
+        <p class="lede">Kein Lebenslauf, kein Anschreiben. Vier Felder, drei Knockout-Fragen — fertig.</p>
+        <div class="ravn-portrait">
+          <div class="ravn-portrait-img">
+            <img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_fill,g_auto:subject,ar_4:5,w_900,f_auto,q_auto/v1779182899/WhatsApp_Image_2026-05-19_at_11.27.56_gcrtqr.jpg" alt="Ravn P., Personalreferent" />
+            <div class="ravn-portrait-badge">
+              <span class="ravn-portrait-dot"></span>
+              Antwortet in &lt; 48 Std.
+            </div>
+          </div>
+          <div class="ravn-portrait-cap">
+            <div class="ravn-portrait-name">Ravn P.</div>
+            <div class="ravn-portrait-role">„Ich rufe dich persönlich zurück. 15 Minuten, ehrliche Antworten — du entscheidest danach, ob's passt." · Personalreferent seit 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <form id="apply-form" class="form-card" action="https://formspree.io/f/xredbjjr" method="POST">
+        <div class="field">
+          <label for="f-name">Dein Vorname</label>
+          <input id="f-name" type="text" name="name" placeholder="z.B. Max" required />
+        </div>
+        <div class="field">
+          <label for="f-phone">Handynummer (für den Rückruf)</label>
+          <input id="f-phone" type="tel" name="phone" placeholder="z.B. 0151 …" required />
+        </div>
+        <div class="field">
+          <label>Hast du einen Gesellenbrief als Elektriker / Elektroniker?</label>
+          <div class="radios" data-radio-group="gesellenbrief">
+            <label class="radio"><input type="radio" name="gesellenbrief" value="ja" required /> Ja</label>
+            <label class="radio"><input type="radio" name="gesellenbrief" value="nein" /> Nein</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Bist du bereit, Mo–Do auf Montage zu sein?</label>
+          <div class="radios" data-radio-group="montage">
+            <label class="radio"><input type="radio" name="montage" value="ja" required /> Ja</label>
+            <label class="radio"><input type="radio" name="montage" value="regional" /> Nur regional</label>
+            <label class="radio"><input type="radio" name="montage" value="nein" /> Nein</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Führerschein Klasse B?</label>
+          <div class="radios" data-radio-group="fuehrerschein">
+            <label class="radio"><input type="radio" name="fuehrerschein" value="ja" required /> Ja</label>
+            <label class="radio"><input type="radio" name="fuehrerschein" value="nein" /> Nein</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-callwhen">Wann sollen wir anrufen? <span style="color: var(--ink-mute); font-weight: 400;">(optional)</span></label>
+          <input id="f-callwhen" type="text" name="callwhen" placeholder="z.B. Werktags ab 18 Uhr" />
+        </div>
+        <div class="field">
+          <label>Lebenslauf mitschicken? <span style="color: var(--ink-mute); font-weight: 400;">(optional — wir brauchen ihn nicht zwingend)</span></label>
+          <label class="file-input-wrap" id="cv-wrap">
+            <span class="file-ic">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            </span>
+            <span class="file-text" id="cv-text">
+              <b>Datei wählen</b>
+              <small>PDF, DOC, DOCX · max 5 MB</small>
+            </span>
+            <input id="f-cv" type="file" name="cv" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+          </label>
+        </div>
+        <input type="hidden" name="_subject" value="Neue Bewerbung Elektriker" />
+        <button id="apply-submit" class="btn btn-primary btn-block" type="submit">
+          <span class="btn-label">Ravn soll mich anrufen</span>
+          <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+        <div id="form-error" class="form-error" hidden></div>
+        <div class="privacy">
+          🔒 Geht direkt an unseren Personaler Ravn. Kein Bot, kein Newsletter. Mit Absenden stimmst du der <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a> zu.
+        </div>
+      </form>
+
+      <div id="apply-success" class="form-card form-success" hidden style="max-width: 560px; margin: 24px auto 0;">
+        <div class="ic">✓</div>
+        <h3 class="display" style="font-size: 24px; margin: 0 0 8px 0;">Bewerbung raus.</h3>
+        <p style="color: var(--ink-soft); margin: 0;">Ravn meldet sich bei dir innerhalb von 48 Stunden. Telefon klingelt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= FOOTER ============= -->
+  <footer>
+    <div class="wrap">
+      <div class="f-grid">
+        <div>
+          <h4>ZAP Prüfstelle</h4>
+          <div>Winkelhausenstraße 13<br />49090 Osnabrück</div>
+        </div>
+        <div>
+          <h4>Kontakt</h4>
+          <a href="tel:+495419321307">+49 541 9321 3072</a>
+          <a href="mailto:verwaltung@zap-pruefstelle.de">verwaltung@zap-pruefstelle.de</a>
+        </div>
+        <div>
+          <h4>Unternehmen</h4>
+          <a href="https://www.zap-pruefstelle.de/" target="_blank" rel="noopener">Hauptseite</a>
+          <a href="https://www.zap-pruefstelle.de/#Referenzen" target="_blank" rel="noopener">Referenzen</a>
+          <a href="https://www.zap-pruefstelle.de/#Leistungen" target="_blank" rel="noopener">Leistungen</a>
+        </div>
+        <div>
+          <h4>Rechtliches</h4>
+          <a href="https://www.zap-pruefstelle.de/impressum" target="_blank" rel="noopener">Impressum</a>
+          <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Datenschutz</a>
+          <a href="https://www.zap-pruefstelle.de/agb" target="_blank" rel="noopener">AGB</a>
+        </div>
+      </div>
+      <div class="legal">© <span id="year"></span>  ZAP GmbH · Karriereseite</div>
+    </div>
+  </footer>
+
+  <!-- ============= STICKY CTA ============= -->
+  <div class="sticky-cta">
+    <div class="sticky-cta-inner">
+      <a href="#apply" class="btn btn-primary btn-block">
+        In 60 Sek. bewerben
+        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============= COOKIE BANNER ============= -->
+<div id="cookie-banner" class="cookie-banner" hidden>
+  <div class="cookie-banner-inner">
+    <div class="cookie-banner-text">
+      <div class="cookie-banner-eyebrow">🍪 Cookies</div>
+      <p>Wir nutzen Cookies (Meta Pixel), um zu verstehen, wie unsere Karriereseite genutzt wird. Bitte triff eine Auswahl, bevor du dich bewirbst. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Mehr erfahren</a></p>
+    </div>
+    <div class="cookie-banner-actions">
+      <button id="cookie-decline" type="button" class="cookie-btn cookie-btn-decline">Ablehnen</button>
+      <button id="cookie-accept" type="button" class="cookie-btn cookie-btn-accept">Akzeptieren</button>
     </div>
   </div>
 </div>
 
 <script>
 (function() {
-  var banner = document.getElementById('cookie-banner');
-  var consent = localStorage.getItem('zap_cookie_consent');
+  'use strict';
 
-  if (!consent) {
-    banner.style.display = 'block';
+  // ---------- Footer year ----------
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---------- FAQ accordion ----------
+  document.querySelectorAll('.faq-item').forEach(function(item) {
+    var btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', function() {
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(o) { o.classList.remove('open'); });
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ---------- Salary calculator ----------
+  var slider = document.getElementById('calc-slider');
+  var yearsEl = document.getElementById('calc-years');
+  var baseEl = document.getElementById('calc-base');
+  var totalEl = document.getElementById('calc-total');
+  var fmt = function(n) { return n.toLocaleString('de-DE'); };
+  function updateCalc() {
+    var years = parseInt(slider.value, 10);
+    var min = 3100, max = 4500;
+    var base = Math.round(Math.round(min + (years / 15) * (max - min)) / 50) * 50;
+    var tesla = 480;
+    yearsEl.textContent = years;
+    baseEl.textContent = fmt(base);
+    totalEl.textContent = fmt(base + tesla);
+  }
+  slider.addEventListener('input', updateCalc);
+  updateCalc();
+
+  // ---------- Radio button styling ----------
+  document.querySelectorAll('.radios').forEach(function(group) {
+    group.addEventListener('change', function() {
+      group.querySelectorAll('.radio').forEach(function(label) {
+        var input = label.querySelector('input');
+        if (input.checked) label.classList.add('on');
+        else label.classList.remove('on');
+      });
+    });
+  });
+
+  // ---------- CV file input ----------
+  var cvInput = document.getElementById('f-cv');
+  var cvWrap = document.getElementById('cv-wrap');
+  var cvText = document.getElementById('cv-text');
+  var MAX_CV_SIZE = 5 * 1024 * 1024;
+  function resetCv() {
+    cvInput.value = '';
+    cvWrap.classList.remove('has-file');
+    cvText.innerHTML = '<b>Datei wählen</b><small>PDF, DOC, DOCX · max 5 MB</small>';
+  }
+  cvInput.addEventListener('change', function() {
+    if (!cvInput.files.length) return resetCv();
+    var f = cvInput.files[0];
+    if (f.size > MAX_CV_SIZE) {
+      alert('Datei ist zu groß (' + (f.size / 1024 / 1024).toFixed(1) + ' MB). Maximum 5 MB.');
+      return resetCv();
+    }
+    cvWrap.classList.add('has-file');
+    cvText.innerHTML = '<b>' + f.name + '</b><small>' + (f.size / 1024).toFixed(0) + ' KB · klicken zum Ändern</small>';
+  });
+
+  // ---------- Apply form submit ----------
+  var form = document.getElementById('apply-form');
+  var submitBtn = document.getElementById('apply-submit');
+  var btnLabel = submitBtn.querySelector('.btn-label');
+  var errorEl = document.getElementById('form-error');
+  var successEl = document.getElementById('apply-success');
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.hidden = false;
+  }
+  function clearError() {
+    errorEl.hidden = true;
+    errorEl.textContent = '';
   }
 
-  document.getElementById('cookie-accept').onclick = function() {
-    localStorage.setItem('zap_cookie_consent', 'accepted');
-    banner.style.display = 'none';
-    if (typeof fbq !== 'undefined') {
-      fbq('consent', 'grant');
-      fbq('track', 'PageView');
-    }
-  };
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    clearError();
 
-  document.getElementById('cookie-decline').onclick = function() {
-    localStorage.setItem('zap_cookie_consent', 'declined');
-    banner.style.display = 'none';
-  };
+    var data = new FormData(form);
+    var gesellenbrief = data.get('gesellenbrief');
+    var fuehrerschein = data.get('fuehrerschein');
+    var montage = data.get('montage');
+
+    if (gesellenbrief !== 'ja') {
+      return showError('Für diese Stelle ist ein Gesellenbrief Voraussetzung.');
+    }
+    if (fuehrerschein !== 'ja') {
+      return showError('Ein Führerschein Klasse B ist für die Stelle nötig.');
+    }
+    if (!montage) {
+      return showError('Bitte beantworte die Montage-Frage.');
+    }
+    if (cvInput.files.length && cvInput.files[0].size > MAX_CV_SIZE) {
+      return showError('Lebenslauf ist größer als 5 MB. Bitte kleinere Datei wählen oder Feld leer lassen.');
+    }
+
+    submitBtn.disabled = true;
+    btnLabel.textContent = 'Wird gesendet …';
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: data
+    }).then(function(res) {
+      if (!res.ok) throw new Error('Senden fehlgeschlagen (' + res.status + ').');
+      return res.json();
+    }).then(function() {
+      if (typeof fbq !== 'undefined' && localStorage.getItem('zap_cookie_consent') === 'accepted') {
+        fbq('track', 'Lead');
+      }
+      form.hidden = true;
+      successEl.hidden = false;
+      successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }).catch(function(err) {
+      submitBtn.disabled = false;
+      btnLabel.textContent = 'Ravn soll mich anrufen';
+      showError(err.message || 'Etwas ist schiefgelaufen. Bitte ruf uns direkt an: 0541 9321 3072.');
+    });
+  });
+
+  // ---------- Cookie Banner ----------
+  var banner = document.getElementById('cookie-banner');
+  if (banner) {
+    function hideBanner() {
+      banner.hidden = true;
+      document.body.classList.remove('has-cookie-banner');
+    }
+    function showBanner() {
+      banner.hidden = false;
+      document.body.classList.add('has-cookie-banner');
+    }
+    if (!localStorage.getItem('zap_cookie_consent')) {
+      showBanner();
+    }
+    document.getElementById('cookie-accept').addEventListener('click', function() {
+      localStorage.setItem('zap_cookie_consent', 'accepted');
+      hideBanner();
+      if (typeof fbq !== 'undefined') {
+        fbq('consent', 'grant');
+        fbq('track', 'PageView');
+      }
+    });
+    document.getElementById('cookie-decline').addEventListener('click', function() {
+      localStorage.setItem('zap_cookie_consent', 'declined');
+      hideBanner();
+    });
+  }
 })();
 </script>
-
-</body></html>
+</body>
+</html>

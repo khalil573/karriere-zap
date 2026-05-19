@@ -1720,14 +1720,18 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
         </div>
       </div>
 
-      <form id="apply-form" class="form-card" action="https://formspree.io/f/xredbjjr" method="POST">
+      <form id="apply-form" class="form-card" action="https://formspree.io/f/xqewlovo" method="POST">
         <div class="field">
           <label for="f-name">Dein Vorname</label>
           <input id="f-name" type="text" name="name" placeholder="z.B. Max" required />
         </div>
         <div class="field">
           <label for="f-phone">Handynummer (für den Rückruf)</label>
-          <input id="f-phone" type="tel" name="phone" placeholder="z.B. 0151 …" required />
+          <input id="f-phone" type="tel" name="telefon" placeholder="z.B. 0151 …" required />
+        </div>
+        <div class="field">
+          <label for="f-email">E-Mail <span style="color: var(--ink-mute); font-weight: 400;">(optional)</span></label>
+          <input id="f-email" type="email" name="email" placeholder="z.B. max@beispiel.de" />
         </div>
         <div class="field">
           <label>Hast du einen Gesellenbrief als Elektriker / Elektroniker?</label>
@@ -1763,12 +1767,13 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
             </span>
             <span class="file-text" id="cv-text">
               <b>Datei wählen</b>
-              <small>PDF, DOC, DOCX · max 5 MB</small>
+              <small>PDF, DOC, DOCX, JPG, PNG · max 8 MB</small>
             </span>
-            <input id="f-cv" type="file" name="cv" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+            <input id="f-cv" type="file" name="lebenslauf" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png" />
           </label>
         </div>
-        <input type="hidden" name="_subject" value="Neue Bewerbung Elektriker" />
+        <input type="hidden" name="_subject" value="Neue Bewerbung Elektriker (m/w/d) — Tesla / 4-Tage-Woche" />
+        <input type="hidden" name="aktueller_beruf" value="Elektriker-Bewerbung via karriere.zap-pruefstelle.de/elektriker.html" />
         <button id="apply-submit" class="btn btn-primary btn-block" type="submit">
           <span class="btn-label">Ravn soll mich anrufen</span>
           <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1893,17 +1898,17 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
   var cvInput = document.getElementById('f-cv');
   var cvWrap = document.getElementById('cv-wrap');
   var cvText = document.getElementById('cv-text');
-  var MAX_CV_SIZE = 5 * 1024 * 1024;
+  var MAX_CV_SIZE = 8 * 1024 * 1024;
   function resetCv() {
     cvInput.value = '';
     cvWrap.classList.remove('has-file');
-    cvText.innerHTML = '<b>Datei wählen</b><small>PDF, DOC, DOCX · max 5 MB</small>';
+    cvText.innerHTML = '<b>Datei wählen</b><small>PDF, DOC, DOCX, JPG, PNG · max 8 MB</small>';
   }
   cvInput.addEventListener('change', function() {
     if (!cvInput.files.length) return resetCv();
     var f = cvInput.files[0];
     if (f.size > MAX_CV_SIZE) {
-      alert('Datei ist zu groß (' + (f.size / 1024 / 1024).toFixed(1) + ' MB). Maximum 5 MB.');
+      alert('Datei ist zu groß (' + (f.size / 1024 / 1024).toFixed(1) + ' MB). Maximum 8 MB.');
       return resetCv();
     }
     cvWrap.classList.add('has-file');
@@ -1945,8 +1950,19 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
       return showError('Bitte beantworte die Montage-Frage.');
     }
     if (cvInput.files.length && cvInput.files[0].size > MAX_CV_SIZE) {
-      return showError('Lebenslauf ist größer als 5 MB. Bitte kleinere Datei wählen oder Feld leer lassen.');
+      return showError('Lebenslauf ist größer als 8 MB. Bitte kleinere Datei wählen oder Feld leer lassen.');
     }
+
+    var nachricht = [
+      '🔌 BEWERBUNG ELEKTRIKER (m/w/d) — Tesla / 4-Tage-Woche',
+      '',
+      'Gesellenbrief: ' + gesellenbrief,
+      'Montage Mo–Do bereit: ' + montage,
+      'Führerschein Klasse B: ' + fuehrerschein
+    ];
+    var callwhen = data.get('callwhen');
+    if (callwhen) nachricht.push('Rückrufzeit: ' + callwhen);
+    data.set('nachricht', nachricht.join('\n'));
 
     submitBtn.disabled = true;
     btnLabel.textContent = 'Wird gesendet …';

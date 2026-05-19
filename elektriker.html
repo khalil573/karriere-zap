@@ -1951,6 +1951,36 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
 
 <script type="text/babel" data-presets="react">
 
+// === Cloudinary-Bilder ===
+// .heic-Dateien werden durch Anhängen von .jpg von Cloudinary automatisch in JPG konvertiert
+window.__resources = {
+  // Tesla / Hero
+  heroPhoto:    'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779177896/WhatsApp_Image_2026-05-19_at_10.00.12_eaobfl.jpg',
+
+  // Ravn (Personalreferent) – beide Varianten zeigen dasselbe Foto
+  ravnA:        'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779182899/WhatsApp_Image_2026-05-19_at_11.27.56_gcrtqr.jpg',
+  ravnB:        'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779182899/WhatsApp_Image_2026-05-19_at_11.27.56_gcrtqr.jpg',
+
+  // Andreas Zerbe (Zitat + Team)
+  qAndreas:     'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1776770480/andreas-z_qnnz9g.jpg',
+  teamAndreas:  'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1776770480/andreas-z_qnnz9g.jpg',
+
+  // Igor Der (Mid-Hook + Team) – heic auf jpg umgeschrieben
+  igorMidhook:  'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779176568/IMG_4852_1_a4u4vy.jpg',
+  teamIgor:     'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779176568/IMG_4852_1_a4u4vy.jpg',
+
+  // Justus Pottebaum (Zitat + Team) – heic auf jpg umgeschrieben
+  qJustus:      'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779176492/IMG_4842_b5wpwa.jpg',
+  teamJustus:   'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779176492/IMG_4842_b5wpwa.jpg',
+
+  // Dietrich Zerbe (Zitat + Team) – heic auf jpg umgeschrieben
+  qDietrich:    'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779176594/IMG_4847_1_lsguua.jpg',
+  teamDietrich: 'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779176594/IMG_4847_1_lsguua.jpg',
+
+  // Deutschland-Karte (Suchgebiet)
+  deKarte:      'https://res.cloudinary.com/dzvvvmpsn/image/upload/v1779182447/68a0584d90d7fa0a7f0b6779_de_karte_v1_gdxegy.jpg'
+};
+
 
 const { useState, useMemo } = React;
 

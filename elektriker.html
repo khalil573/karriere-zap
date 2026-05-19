@@ -948,7 +948,7 @@ section.tight { padding: 36px 22px; }
 }
 .field { margin-bottom: 14px; }
 .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
-.field input, .field textarea {
+.field input, .field textarea, .field select {
   width: 100%;
   padding: 12px 14px;
   border-radius: var(--r-sm);
@@ -956,12 +956,24 @@ section.tight { padding: 36px 22px; }
   background: var(--paper-2);
   font-size: 15px;
   transition: border-color 140ms ease, background 140ms ease;
+  font-family: inherit;
+  color: var(--ink);
 }
-.field input:focus, .field textarea:focus {
+.field input:focus, .field textarea:focus, .field select:focus {
   outline: none;
   border-color: var(--orange);
   background: var(--paper);
   box-shadow: 0 0 0 4px rgba(226,78,31,0.10);
+}
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1.5L6 6.5L11 1.5' stroke='%234A5560' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+  cursor: pointer;
 }
 .file-input-wrap {
   position: relative;
@@ -1722,16 +1734,16 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
 
       <form id="apply-form" class="form-card" action="https://formspree.io/f/xqewlovo" method="POST">
         <div class="field">
-          <label for="f-name">Dein Vorname</label>
-          <input id="f-name" type="text" name="name" placeholder="z.B. Max" required />
+          <label for="f-name">Dein Name</label>
+          <input id="f-name" type="text" name="name" placeholder="z.B. Max Mustermann" required />
         </div>
         <div class="field">
           <label for="f-phone">Handynummer (für den Rückruf)</label>
           <input id="f-phone" type="tel" name="telefon" placeholder="z.B. 0151 …" required />
         </div>
         <div class="field">
-          <label for="f-email">E-Mail <span style="color: var(--ink-mute); font-weight: 400;">(optional)</span></label>
-          <input id="f-email" type="email" name="email" placeholder="z.B. max@beispiel.de" />
+          <label for="f-email">E-Mail</label>
+          <input id="f-email" type="email" name="email" placeholder="z.B. max@beispiel.de" required />
         </div>
         <div class="field">
           <label>Hast du einen Gesellenbrief als Elektriker / Elektroniker?</label>
@@ -1756,8 +1768,15 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
           </div>
         </div>
         <div class="field">
-          <label for="f-callwhen">Wann sollen wir anrufen? <span style="color: var(--ink-mute); font-weight: 400;">(optional)</span></label>
-          <input id="f-callwhen" type="text" name="callwhen" placeholder="z.B. Werktags ab 18 Uhr" />
+          <label for="f-callwhen">Wann am besten erreichbar?</label>
+          <select id="f-callwhen" name="callwhen" required>
+            <option value="" disabled selected>Bitte wählen</option>
+            <option value="Vormittags (08–12 Uhr)">Vormittags (08–12 Uhr)</option>
+            <option value="Mittags (12–14 Uhr)">Mittags (12–14 Uhr)</option>
+            <option value="Nachmittags (14–17 Uhr)">Nachmittags (14–17 Uhr)</option>
+            <option value="Abends (nach 17 Uhr)">Abends (nach 17 Uhr)</option>
+            <option value="Egal, ruft einfach an">Egal, ruft einfach an</option>
+          </select>
         </div>
         <div class="field">
           <label>Lebenslauf mitschicken? <span style="color: var(--ink-mute); font-weight: 400;">(optional — wir brauchen ihn nicht zwingend)</span></label>
@@ -1961,8 +1980,11 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
       'Führerschein Klasse B: ' + fuehrerschein
     ];
     var callwhen = data.get('callwhen');
-    if (callwhen) nachricht.push('Rückrufzeit: ' + callwhen);
+    if (callwhen) nachricht.push('Erreichbarkeit: ' + callwhen);
     data.set('nachricht', nachricht.join('\n'));
+
+    // Prefix für Trello-Titel: differenziert Elektriker- von Vertriebs-Bewerbungen
+    data.set('name', '🔌 Elektriker — ' + (data.get('name') || ''));
 
     submitBtn.disabled = true;
     btnLabel.textContent = 'Wird gesendet …';

@@ -677,10 +677,13 @@ if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
   }
   .field textarea { resize: vertical; min-height: 70px; }
   .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 480px) {
+    .row-2 { grid-template-columns: 1fr; }
+  }
   .consent {
     display: flex;
     gap: 10px;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--ink-soft);
     line-height: 1.45;
     margin: 4px 0 18px;
@@ -1415,15 +1418,25 @@ if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
     });
   }
 
-  // ── Sticky mobile CTA (erscheint nach Scroll, weg am Seitenende) ───
+  // ── Sticky mobile CTA (erscheint nach Scroll, hidet wenn Form sichtbar) ───
   var sticky = document.getElementById("sticky-cta");
+  var bewerbenSection = document.getElementById("bewerben");
   if (sticky) {
+    var formInView = false;
     var onScroll = function () {
       var y = window.scrollY || window.pageYOffset;
       var atBottom = window.innerHeight + y >= document.body.offsetHeight - 200;
-      if (y < 500 || atBottom) sticky.classList.add("hidden");
+      // hide if: too early, near bottom, OR form ist in viewport (sonst überlappt Sticky den Submit)
+      if (y < 500 || atBottom || formInView) sticky.classList.add("hidden");
       else sticky.classList.remove("hidden");
     };
+    if (bewerbenSection && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        formInView = entries[0].isIntersecting;
+        onScroll();
+      }, { rootMargin: "0px 0px -25% 0px" }); // triggert wenn Form zu 75% reingescrollt
+      io.observe(bewerbenSection);
+    }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
   }

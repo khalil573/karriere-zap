@@ -1409,9 +1409,7 @@ ZAPConsent.trackPixelPageViewIfAllowed();
           if (res.ok) {
             form.style.display = "none";
             doneEl.style.display = "block";
-            if (window.fbq && ZAPConsent.hasMarketing()) {
-              window.fbq("track", "Lead");
-            }
+            ZAPConsent.trackLead(form);
             if (typeof window.plausible === "function") {
               window.plausible("Bewerbung Submit");
             }

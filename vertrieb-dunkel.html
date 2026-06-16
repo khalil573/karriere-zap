@@ -617,9 +617,7 @@ ZAPConsent.trackPixelPageViewIfAllowed();
       headers: { 'Accept': 'application/json' }
     });
     if (response.ok) {
-      if (typeof fbq !== 'undefined' && ZAPConsent.hasMarketing()) {
-        fbq('track', 'Lead');
-      }
+      ZAPConsent.trackLead(form);
       if (typeof window.plausible === 'function') {
         window.plausible('Bewerbung Submit');
       }

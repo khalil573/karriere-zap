@@ -35,7 +35,8 @@
  *   .declineAll()                       → marketing=false, analytics=false
  *   .applyPixelConsent()                → fbq('consent','grant'|'revoke') gemaess Status
  *   .trackPixelPageViewIfAllowed()      → fbq('track','PageView') wenn marketing=true
- *   .attachToForm(formEl)               → fuegt hidden-fields consent_marketing + event_source_url ans Form
+ *   .attachToForm(formEl)               → hidden-fields consent_marketing + event_source_url + event_id (+ fbc/fbp nur mit Consent)
+ *   .trackLead(formEl)                  → feuert fbq('track','Lead',{},{eventID}) mit derselben event_id wie das Form (Browser↔CAPI-Dedup)
  *   .bannerInit({bannerEl, acceptBtn, declineBtn, onShown, onHidden, onChange})
  *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided()
  *
@@ -138,6 +139,58 @@
     return set({ marketing: false, analytics: false });
   }
 
+  // --- Meta-CAPI-Attribution-Helfer (fbc / fbp / event_id fuer Browser↔Server-Dedup) ---
+  function readCookie(name) {
+    try {
+      var m = global.document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return m ? decodeURIComponent(m.pop()) : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function genEventId() {
+    // RFC4122-v4-aehnlich; reiner Dedup-Schluessel, kein Krypto-Zweck
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0;
+      return (c === 'x' ? r : ((r & 0x3) | 0x8)).toString(16);
+    });
+  }
+
+  // Meta-Klick-ID: bevorzugt das vom Pixel gesetzte _fbc-Cookie,
+  // sonst aus dem fbclid-URL-Parameter rekonstruiert (fb.1.<ts>.<fbclid>).
+  function getFbc() {
+    var c = readCookie('_fbc');
+    if (c) return c;
+    try {
+      var fbclid = new global.URLSearchParams(global.location.search).get('fbclid');
+      if (fbclid) return 'fb.1.' + Date.now() + '.' + fbclid;
+    } catch (e) {}
+    return '';
+  }
+
+  // event_source_url fuer CAPI. OHNE Marketing-Consent werden Klick-/Kampagnen-
+  // Identifikatoren (fbclid, gclid, utm_*, ...) client-seitig entfernt, damit bei
+  // Ablehnung KEIN personenbezogener Identifier an Formspree/Make/Meta gelangt.
+  function eventSourceUrl() {
+    if (!global.location) return '';
+    var href = global.location.href;
+    if (hasMarketing()) return href;
+    try {
+      var u = new global.URL(href);
+      var drop = ['fbclid', 'gclid', 'gbraid', 'wbraid', 'msclkid', 'ttclid'];
+      Array.from(u.searchParams.keys()).forEach(function (k) {
+        if (drop.indexOf(k) !== -1 || k.toLowerCase().indexOf('utm_') === 0) {
+          u.searchParams.delete(k);
+        }
+      });
+      return u.toString();
+    } catch (e) {
+      // Fallback: Query komplett abschneiden — lieber zu viel entfernen als leaken
+      return href.split('?')[0];
+    }
+  }
+
   function applyPixelConsent() {
     if (typeof global.fbq !== 'function') return;
     if (hasMarketing()) {
@@ -184,7 +237,46 @@
     }
 
     setHidden('consent_marketing', hasMarketing() ? 'true' : 'false');
-    setHidden('event_source_url', global.location ? global.location.href : '');
+    setHidden('event_source_url', eventSourceUrl());
+
+    // Stabile event_id pro Submit: vorhandene wiederverwenden (idempotent),
+    // damit Browser-Pixel und Make→CAPI exakt denselben Wert deduplizieren.
+    var eidField = form.querySelector('input[type="hidden"][name="event_id"]');
+    if (!eidField || !eidField.value) {
+      setHidden('event_id', genEventId());
+    }
+
+    // Klick-/Browser-IDs sind personenbezogen → nur mit Marketing-Consent
+    // uebertragen. Ohne Consent bleiben sie leer und Make sendet den
+    // PII-freien Minimal-Payload (consent_marketing=false).
+    if (hasMarketing()) {
+      setHidden('fbc', getFbc());
+      setHidden('fbp', readCookie('_fbp'));
+    } else {
+      setHidden('fbc', '');
+      setHidden('fbp', '');
+    }
+  }
+
+  /**
+   * Feuert das Lead-Event sauber: stellt sicher, dass die CAPI-Hidden-Fields
+   * (inkl. event_id) am Form haengen, und gibt dieselbe event_id als {eventID}
+   * an den Browser-Pixel weiter → Meta dedupliziert Browser- und Server-Event.
+   * Pixel feuert nur mit Marketing-Consent (DSGVO); das Plausible-Goal bleibt
+   * separat in der LP (cookieless, ohne Consent).
+   */
+  function trackLead(form) {
+    attachToForm(form);
+    if (typeof global.fbq !== 'function' || !hasMarketing()) return;
+    var eidField = form
+      ? form.querySelector('input[type="hidden"][name="event_id"]')
+      : null;
+    var eid = eidField ? eidField.value : '';
+    if (eid) {
+      global.fbq('track', 'Lead', {}, { eventID: eid });
+    } else {
+      global.fbq('track', 'Lead');
+    }
   }
 
   function bannerInit(opts) {
@@ -242,6 +334,7 @@
     applyPixelConsent: applyPixelConsent,
     trackPixelPageViewIfAllowed: trackPixelPageViewIfAllowed,
     attachToForm: attachToForm,
+    trackLead: trackLead,
     bannerInit: bannerInit
   };
 })(window);

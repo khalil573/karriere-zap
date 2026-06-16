@@ -2011,9 +2011,7 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
       if (!res.ok) throw new Error('Senden fehlgeschlagen (' + res.status + ').');
       return res.json();
     }).then(function() {
-      if (typeof fbq !== 'undefined' && ZAPConsent.hasMarketing()) {
-        fbq('track', 'Lead');
-      }
+      ZAPConsent.trackLead(form);
       if (typeof window.plausible === 'function') {
         window.plausible('Bewerbung Submit');
       }

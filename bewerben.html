@@ -7,7 +7,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<!-- Meta Pixel Code (Consent-gesteuert) -->
+
+<!-- Plausible Analytics (cookieless, EU-hosted, DSGVO-konform, kein Consent nötig) -->
+<script async src="https://plausible.io/js/pa-7oSK2XPYPV2eTKJGR7Wq3.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<!-- End Plausible -->
+
+<!-- ZAP Consent Manager (Pflicht VOR Meta Pixel laden) -->
+<script src="/assets/zap-consent.js"></script>
+
+<!-- Meta Pixel Code (Consent-gesteuert via ZAPConsent) -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -20,11 +32,9 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('consent', 'revoke');
 fbq('init', '851410567212402');
 
-// Pixel feuert nur, wenn Consent gegeben wurde
-if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
-  fbq('consent', 'grant');
-  fbq('track', 'PageView');
-}
+// Pixel feuert nur, wenn Marketing-Consent erteilt wurde (Status via ZAPConsent v2-Schema).
+ZAPConsent.applyPixelConsent();
+ZAPConsent.trackPixelPageViewIfAllowed();
 </script>
 <!-- End Meta Pixel Code -->
 <style>
@@ -357,6 +367,11 @@ if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
   form.addEventListener('submit', async e => {
     e.preventDefault();
     err.classList.remove('on');
+
+    // Consent-Status + event_source_url als hidden-Fields anhaengen
+    // (steuert in Make-Scenario, ob CAPI mit oder ohne PII gefeuert wird).
+    ZAPConsent.attachToForm(form);
+
     submit.disabled = true;
     submit.innerHTML = 'Wird gesendet…';
     try {
@@ -366,8 +381,9 @@ if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
         headers: { 'Accept': 'application/json' }
       });
       if (res.ok) {
-        if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
-          fbq('track', 'Lead');
+        ZAPConsent.trackLead(form);
+        if (typeof window.plausible === 'function') {
+          window.plausible('Bewerbung Submit');
         }
         document.body.classList.add('success');
       } else {
@@ -384,39 +400,21 @@ if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
 <!-- Cookie Banner -->
 <div id="cookie-banner" style="display:none;position:fixed;bottom:20px;left:20px;right:20px;max-width:480px;margin:0 auto;background:#0E0E0E;color:#fff;padding:24px;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:9999;font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;">
   <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#E24E1F;margin-bottom:10px;">Cookies</div>
-  <p style="margin:0 0 16px;color:rgba(255,255,255,0.85);">Wir nutzen Cookies, um zu verstehen, wie unsere Karriereseite genutzt wird (Meta Pixel). Du entscheidest.</p>
+  <p style="margin:0 0 16px;color:rgba(255,255,255,0.85);">Wir nutzen Marketing-Cookies (Meta Pixel &amp; Conversions API), um die Wirksamkeit unserer Stellenanzeigen zu messen. Du entscheidest.</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap;">
-    <button id="cookie-accept" style="background:#E24E1F;color:#fff;border:none;padding:11px 20px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Akzeptieren</button>
-    <button id="cookie-decline" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3);padding:11px 20px;border-radius:3px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">Ablehnen</button>
+    <button id="cookie-decline" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.5);padding:11px 20px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Ablehnen</button>
+    <button id="cookie-accept" style="background:#E24E1F;color:#fff;border:1px solid #E24E1F;padding:11px 20px;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Akzeptieren</button>
   </div>
   <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" style="display:inline-block;margin-top:14px;font-size:12px;color:rgba(255,255,255,0.5);text-decoration:underline;">Datenschutzerklärung</a>
 </div>
 
 <script>
-(function() {
-  var banner = document.getElementById('cookie-banner');
-  var consent = localStorage.getItem('zap_cookie_consent');
-  
-  // Banner nur zeigen, wenn noch keine Entscheidung getroffen wurde
-  if (!consent) {
-    banner.style.display = 'block';
-  }
-  
-  document.getElementById('cookie-accept').onclick = function() {
-    localStorage.setItem('zap_cookie_consent', 'accepted');
-    banner.style.display = 'none';
-    // Pixel jetzt freigeben und PageView tracken
-    if (typeof fbq !== 'undefined') {
-      fbq('consent', 'grant');
-      fbq('track', 'PageView');
-    }
-  };
-  
-  document.getElementById('cookie-decline').onclick = function() {
-    localStorage.setItem('zap_cookie_consent', 'declined');
-    banner.style.display = 'none';
-  };
-})();
+// Cookie-Banner Wiring via ZAPConsent v2 (shared /assets/zap-consent.js).
+ZAPConsent.bannerInit({
+  bannerEl:   document.getElementById('cookie-banner'),
+  acceptBtn:  document.getElementById('cookie-accept'),
+  declineBtn: document.getElementById('cookie-decline')
+});
 </script>
 </body>
 </html>

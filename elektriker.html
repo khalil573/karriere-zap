@@ -18,7 +18,10 @@
 </script>
 <!-- End Plausible -->
 
-<!-- Meta Pixel (Consent-gesteuert) -->
+<!-- ZAP Consent Manager (Pflicht VOR Meta Pixel laden) -->
+<script src="/assets/zap-consent.js"></script>
+
+<!-- Meta Pixel (Consent-gesteuert via ZAPConsent) -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -31,10 +34,9 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('consent', 'revoke');
 fbq('init', '851410567212402');
 
-if (localStorage.getItem('zap_cookie_consent') === 'accepted') {
-  fbq('consent', 'grant');
-  fbq('track', 'PageView');
-}
+// Pixel feuert nur, wenn Marketing-Consent erteilt wurde (Status via ZAPConsent v2-Schema).
+ZAPConsent.applyPixelConsent();
+ZAPConsent.trackPixelPageViewIfAllowed();
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=851410567212402&ev=PageView&noscript=1" alt="" /></noscript>
 <!-- End Meta Pixel -->
@@ -1866,7 +1868,7 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
   <div class="cookie-banner-inner">
     <div class="cookie-banner-text">
       <div class="cookie-banner-eyebrow">🍪 Cookies</div>
-      <p>Wir nutzen Cookies (Meta Pixel), um zu verstehen, wie unsere Karriereseite genutzt wird. Bitte triff eine Auswahl, bevor du dich bewirbst. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Mehr erfahren</a></p>
+      <p>Wir nutzen Marketing-Cookies (Meta Pixel &amp; Conversions API), um die Wirksamkeit unserer Stellenanzeigen zu messen. Bitte triff eine Auswahl, bevor du dich bewirbst. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Mehr erfahren</a></p>
     </div>
     <div class="cookie-banner-actions">
       <button id="cookie-decline" type="button" class="cookie-btn cookie-btn-decline">Ablehnen</button>
@@ -1962,6 +1964,10 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
     e.preventDefault();
     clearError();
 
+    // Consent-Status + event_source_url als hidden-Fields anhaengen
+    // (steuert in Make-Scenario, ob CAPI mit oder ohne PII gefeuert wird).
+    ZAPConsent.attachToForm(form);
+
     var data = new FormData(form);
     var gesellenbrief = data.get('gesellenbrief');
     var fuehrerschein = data.get('fuehrerschein');
@@ -2005,8 +2011,9 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
       if (!res.ok) throw new Error('Senden fehlgeschlagen (' + res.status + ').');
       return res.json();
     }).then(function() {
-      if (typeof fbq !== 'undefined' && localStorage.getItem('zap_cookie_consent') === 'accepted') {
-        fbq('track', 'Lead');
+      ZAPConsent.trackLead(form);
+      if (typeof window.plausible === 'function') {
+        window.plausible('Bewerbung Submit');
       }
       form.hidden = true;
       successEl.hidden = false;
@@ -2018,33 +2025,13 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
     });
   });
 
-  // ---------- Cookie Banner ----------
-  var banner = document.getElementById('cookie-banner');
-  if (banner) {
-    function hideBanner() {
-      banner.hidden = true;
-      document.body.classList.remove('has-cookie-banner');
-    }
-    function showBanner() {
-      banner.hidden = false;
-      document.body.classList.add('has-cookie-banner');
-    }
-    if (!localStorage.getItem('zap_cookie_consent')) {
-      showBanner();
-    }
-    document.getElementById('cookie-accept').addEventListener('click', function() {
-      localStorage.setItem('zap_cookie_consent', 'accepted');
-      hideBanner();
-      if (typeof fbq !== 'undefined') {
-        fbq('consent', 'grant');
-        fbq('track', 'PageView');
-      }
-    });
-    document.getElementById('cookie-decline').addEventListener('click', function() {
-      localStorage.setItem('zap_cookie_consent', 'declined');
-      hideBanner();
-    });
-  }
+  // ---------- Cookie Banner (Consent-Gate fuer Meta Pixel + CAPI) ----
+  // Verwaltet ueber ZAPConsent v2 (shared component /assets/zap-consent.js).
+  ZAPConsent.bannerInit({
+    bannerEl:   document.getElementById('cookie-banner'),
+    acceptBtn:  document.getElementById('cookie-accept'),
+    declineBtn: document.getElementById('cookie-decline')
+  });
 })();
 </script>
 </body>

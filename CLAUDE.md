@@ -24,6 +24,7 @@ karriere-zap/
 ├── Vertrieb-Vorerfahrung.html  # Vertrieb-LP mit Vorerfahrungs-Filter (Kampagne: "Neue Kampagne für Leads")
 ├── elektriker.html             # Elektriker-LP (Kampagne: "Elektriker_V1")
 ├── Door2Door_vertrieb.html     # D2D-Vertrieb-LP (Kampagne: "ZAP D2D · Vertrieb")
+├── closer.html                 # Closer-LP (B2B, Fixum + Provision)
 └── bewerben.html               # Funnel-Endziel — generisches Bewerbungsformular
 ```
 
@@ -44,14 +45,13 @@ karriere-zap/
 - **Consent-Gated** via `ZAPConsent` (siehe unten): feuert nur, wenn User Marketing-Consent erteilt hat
 - Events: `PageView` (bei Accept) + `Lead` (bei erfolgreicher Form-Submission)
 
-### 3. Meta Conversions API (CAPI) — Hybrid-Setup
+### 3. Meta Conversions API (CAPI) — live seit 2026-06-16
 
-- Server-seitige Übertragung an Meta via Make.com Scenario `9130395`
-- **Zwei Branches:**
-  - Bei `consent_marketing=true` (User hat Cookie-Banner akzeptiert): Full Payload mit SHA256-gehashten Email/Tel/Name (em/ph/fn/ln) + IP + User-Agent → bessere Match-Rate für Meta-Algorithmus
-  - Bei `consent_marketing=false` (User hat abgelehnt oder keine Entscheidung): Minimal Payload nur mit `event_name`, `event_time`, UTM-gestrippte `event_source_url` → DSGVO-defensiv (Art. 6 (1) f, berechtigtes Interesse Reichweitenmessung)
-- **Pixel-Access-Token:** liegt in Make-Connection, **nie im Repo**
-- **Deduplizierung:** Meta deduppliziert Pixel-Events + CAPI-Events via `event_id` (wenn gesetzt)
+- Server-seitige Übertragung an Meta via Make.com Scenario **`6206652`** (khalil@-Org `7879189`, eu1). Altes Scenario `9130395` (hoebel@, eu2) wird stillgelegt.
+- **Consent-only:** Die CAPI-Route (HTTP-Modul, 3. Router-Branch) feuert **nur bei `consent_marketing=true`**. Payload: `event_name=Lead`, `event_time`, `action_source=website`, `event_source_url`, `event_id` + `user_data` mit SHA256-gehashtem `em`/`ph` sowie `fbc`/`fbp`. Ohne Consent wird **kein** CAPI-Event gesendet (DSGVO — kein Marketing-Tracking ohne Einwilligung; bewusst sauberer als der frühere „Minimal-Payload"-Plan).
+- **Fehler-isoliert:** Ein HTTP-Fehler der CAPI-Route bricht die Trello-Kartenerstellung **nicht**.
+- **Pixel-Access-Token:** Events-Manager-Direktintegration, liegt in der Make-Konfiguration, **nie im Repo**.
+- **Deduplizierung:** `attachToForm()` erzeugt pro Submit eine `event_id`; `trackLead()` gibt **dieselbe** id an den Browser-Pixel → Meta dedupliziert Browser- + CAPI-Lead zu **einem** Event.
 
 ## ZAPConsent v2 (Shared Cookie-Consent-Manager)
 
@@ -85,7 +85,8 @@ karriere-zap/
 | `ZAPConsent.hasDecided()` | boolean — hat User schon entschieden? |
 | `ZAPConsent.applyPixelConsent()` | ruft `fbq('consent','grant'\|'revoke')` |
 | `ZAPConsent.trackPixelPageViewIfAllowed()` | `fbq('track','PageView')` wenn marketing=true |
-| `ZAPConsent.attachToForm(formEl)` | hängt hidden-fields `consent_marketing` + `event_source_url` ans Form |
+| `ZAPConsent.attachToForm(formEl)` | hängt hidden-fields ans Form: `consent_marketing`, `event_source_url` (ohne Consent von fbclid/gclid/utm bereinigt), `event_id` (immer) sowie `fbc`/`fbp` (nur mit Consent) |
+| `ZAPConsent.trackLead(formEl)` | feuert `fbq('track','Lead',{},{eventID})` mit derselben `event_id` wie das Form → Browser↔CAPI-Dedup; nur mit Marketing-Consent |
 | `ZAPConsent.bannerInit({bannerEl, acceptBtn, declineBtn})` | wires up Cookie-Banner-Buttons |
 | `ZAPConsent.acceptAll()` / `.declineAll()` | direkter Set ohne Banner |
 
@@ -102,20 +103,21 @@ LP-Form Submit
    ↓ POST application/x-www-form-urlencoded (oder multipart bei Lebenslauf)
 Formspree (Form-ID xqewlovo)
    ↓ Webhook
-Make.com Scenario 9130395 "Claude (Bewerber Pipeline) Integration Webhooks"
+Make.com Scenario 6206652 "Claude (Bewerber Pipeline) Integration Webhooks" (khalil@-Org, eu1)
    ↓ Router
-   ├─ Trello-Karte (immer)
-   └─ HTTP POST an Meta CAPI
-      ├─ wenn consent_marketing=true → Full Payload (SHA256-gehashte PII)
-      └─ wenn consent_marketing=false → Minimal Payload (PII-frei)
+   ├─ Trello-Karte (immer — mit/ohne Lebenslauf)
+   └─ HTTP POST an Meta CAPI — NUR wenn consent_marketing=true
+      (em/ph gehasht + fbc/fbp/event_id/event_source_url; ohne Consent → kein CAPI)
 ```
 
 **Wichtige Hidden-Fields die jedes Form mitsendet** (automatisch von `ZAPConsent.attachToForm()`):
 
 | Feld | Wert | Verwendung |
 |---|---|---|
-| `consent_marketing` | "true" / "false" | Make-Router-Filter für CAPI-Branch |
-| `event_source_url` | window.location.href | CAPI `event_source_url` |
+| `consent_marketing` | "true" / "false" | Make-Filter: CAPI feuert nur bei "true" |
+| `event_source_url` | URL (ohne Consent click-id-bereinigt) | CAPI `event_source_url` |
+| `event_id` | UUID pro Submit | Dedup Browser-Pixel ↔ CAPI |
+| `fbc` / `fbp` | Meta Klick-/Browser-ID (nur mit Consent) | CAPI Match-Quality |
 
 Form-spezifische Hidden-Fields (in jedem `<form>` einzeln gesetzt):
 - `_subject` — Trello-Karten-Titel-Prefix
@@ -137,8 +139,8 @@ Form-spezifische Hidden-Fields (in jedem `<form>` einzeln gesetzt):
 ⚠️ **Verbindlich:** Vor jedem Code-Change in diesem Repo den Skill **`anthropic-skills:zap-websec`** aufrufen. Pre-Flight-Punkte beantworten bevor Code geschrieben wird.
 
 **Aktuelle bekannte Anti-Pattern (offen):**
-1. Repo ist **PUBLIC** — sollte PRIVATE werden (Make-Webhook-URL ist hardcoded im JS, Spam-Risiko)
-2. Make-Webhook hat **keine HMAC-Signatur** — Angriffsfläche für Bot-Spam direkt auf Webhook
+1. Repo ist **PUBLIC** — sollte PRIVATE werden (zap-websec-Pflicht; im LP-Code stehen nur Pixel-/Formspree-IDs, die sind public by design)
+2. Make-Webhook ohne Auth — Bearer-Token-Härtung ist vorbereitet, aber **noch nicht aktiviert**. Direkteinschleusung an die Webhook-URL möglich (URL ist aber nicht öffentlich: LP → Formspree → Make)
 3. Es gibt keinen Datenschutz-Beauftragten-Sign-Off für den CAPI-Setup (Doku siehe Memory `capi_setup_status.md`)
 
 **PII-Handling:**
@@ -176,7 +178,9 @@ git push origin main
 
 | Datum | Änderung | Commit |
 |---|---|---|
-| 2026-05-28 | Hybrid-CAPI-Vorbereitung: Cookie-Banner refactored auf ZAPConsent v2, alle 6 LPs nutzen jetzt shared component, consent_marketing Hidden-Field für Make-CAPI-Branching, Plausible auf bewerben.html + index.html + vertrieb-dunkel.html nachgezogen | (dieser Commit) |
+| 2026-06-18 | `closer.html` auf ZAPConsent v2 + Fix A nachgezogen (jetzt CAPI-fähig, kein Webfont); CAPI-Doku auf Live-Stand aktualisiert | (dieser PR) |
+| 2026-06-16 | Fix A: `attachToForm` setzt `event_id`/`fbc`/`fbp` + neue `trackLead()` (Browser↔CAPI-Dedup, DSGVO-Bereinigung von `event_source_url`); Pipeline auf khalil@-Org migriert (Scenario `6206652`), CAPI live + getestet (`events_received:1`) | `40a8bca` |
+| 2026-05-28 | Hybrid-CAPI-Vorbereitung: Cookie-Banner refactored auf ZAPConsent v2, alle 6 LPs nutzen jetzt shared component, consent_marketing Hidden-Field für Make-CAPI-Branching, Plausible auf bewerben.html + index.html + vertrieb-dunkel.html nachgezogen | `020c1ce` |
 | 2026-05-27 | Door2Door Mobile-UX-Bugs gefixt | `006cd92` |
 | 2026-05-27 | Plausible auf elektriker.html + Vertrieb-Vorerfahrung.html | `122b5a4` |
 | 2026-05-26 | Door2Door LP komplett neu | `84401b2` + folgende |

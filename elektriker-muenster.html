@@ -464,6 +464,16 @@ section.tight { padding: 36px 22px; }
 .compare-head .b { color: #FF9870 !important; }
 .compare-head .a::before, .compare-head .b::before { display: none !important; }
 
+/* Mobile (<600px): 3-Spalten-Vergleich wird zu eng → Kriterium oben über volle
+   Breite, darunter "Andere" vs "ZAP" nebeneinander (je ~halbe Breite statt Drittel). */
+@media (max-width: 599px) {
+  .compare-row { grid-template-columns: 1fr 1fr; }
+  .compare-row .label { grid-column: 1 / -1; padding-bottom: 6px; }
+  .compare-row > div { padding: 13px 12px; font-size: 13.5px; }
+  .compare-row .a, .compare-row .b { gap: 8px; align-items: flex-start; }
+  .compare-head .label { padding-bottom: 10px; }
+}
+
 /* ====== Fit filter ====== */
 .fit { background: var(--paper); }
 .fit-cards { display: flex; flex-direction: column; gap: 14px; margin-top: 22px; }

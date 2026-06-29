@@ -657,7 +657,10 @@ section.tight { padding: 36px 22px; }
 }
 .hq-pin-wrap {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /* Nur den PUNKT am Zielpunkt verankern (links/oben = Punktmitte), Label läuft nach
+     rechts — sonst würde translate(-50%) die ganze Punkt+Label-Gruppe zentrieren und
+     den Punkt um die halbe Labelbreite vom Ziel wegschieben. */
+  transform: translate(-7px, -50%);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1652,7 +1655,7 @@ body.has-cookie-banner .sticky-cta { display: none; }
           <div class="map-bg"></div>
           <div class="de-map">
             <img class="de-img" src="https://res.cloudinary.com/dzvvvmpsn/image/upload/f_auto,q_auto/v1779182447/68a0584d90d7fa0a7f0b6779_de_karte_v1_gdxegy.jpg" alt="Deutschland-Karte: Start im Raum Münster, Einsatzgebiet West und Nord" />
-            <div class="hq-pin-wrap" style="left: 33%; top: 42%;">
+            <div class="hq-pin-wrap" style="left: 22.9%; top: 40.5%;">
               <span class="hq-pin-dot"></span>
               <span class="hq-pin-label">DEIN START: MÜNSTER</span>
             </div>

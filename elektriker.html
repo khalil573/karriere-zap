@@ -33,13 +33,28 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('consent', 'revoke');
 fbq('init', '851410567212402');
-
-// Pixel feuert nur, wenn Marketing-Consent erteilt wurde (Status via ZAPConsent v2-Schema).
-ZAPConsent.applyPixelConsent();
-ZAPConsent.trackPixelPageViewIfAllowed();
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=851410567212402&ev=PageView&noscript=1" alt="" /></noscript>
 <!-- End Meta Pixel -->
+
+<!-- TikTok Pixel (Consent-gesteuert via ZAPConsent) -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+  // DSGVO: Events werden zurueckgehalten, bis Marketing-Consent erteilt wurde.
+  ttq.holdConsent();
+  ttq.load('D971KGJC77U6Q0JCHBRG');
+  // Kein ttq.page() hier — PageView feuert erst nach Consent (siehe unten).
+}(window, document, 'ttq');
+</script>
+<!-- End TikTok Pixel -->
+
+<!-- Consent zentral anwenden: grant/revoke + PageView fuer Meta UND TikTok je nach Status -->
+<script>
+ZAPConsent.applyPixelConsent();
+ZAPConsent.trackPixelPageViewIfAllowed();
+</script>
 
 <style>
 :root {
@@ -1788,7 +1803,7 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
   <div class="cookie-banner-inner">
     <div class="cookie-banner-text">
       <div class="cookie-banner-eyebrow">🍪 Cookies</div>
-      <p>Wir nutzen Marketing-Cookies (Meta Pixel &amp; Conversions API), um die Wirksamkeit unserer Stellenanzeigen zu messen. Bitte triff eine Auswahl, bevor du dich bewirbst. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Mehr erfahren</a></p>
+      <p>Wir nutzen Marketing-Cookies (Meta- &amp; TikTok-Pixel inkl. Conversions/Events API), um die Wirksamkeit unserer Stellenanzeigen zu messen. Bitte triff eine Auswahl, bevor du dich bewirbst. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Mehr erfahren</a></p>
     </div>
     <div class="cookie-banner-actions">
       <button id="cookie-decline" type="button" class="cookie-btn cookie-btn-decline">Ablehnen</button>

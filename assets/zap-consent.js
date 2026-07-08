@@ -3,14 +3,14 @@
  * --------------------------
  * Zentrale Verwaltung des Cookie-Consent-Status fuer alle ZAP-Karriere-Landingpages.
  *
- * Eingebunden in jeder LP im <head> VOR dem Meta-Pixel-Snippet.
+ * Eingebunden in jeder LP im <head> VOR den Pixel-Snippets (Meta, ggf. TikTok).
  *
  * Speicherort: localStorage['zap_cookie_consent']
  *
  * Schema v2 (JSON):
  *   {
  *     version:   2,
- *     marketing: true|false,   // → Meta Pixel + Meta Conversions API (CAPI)
+ *     marketing: true|false,   // → Meta Pixel + CAPI und TikTok Pixel + Events API
  *     analytics: true|false,   // → Plausible (technisch cookieless, der Vollstaendigkeit halber gefuehrt)
  *     timestamp: "2026-05-28T14:00:00.000Z"
  *   }
@@ -33,10 +33,10 @@
  *   .set({marketing, analytics})        → speichert + returnt Objekt
  *   .acceptAll()                        → marketing=true, analytics=true
  *   .declineAll()                       → marketing=false, analytics=false
- *   .applyPixelConsent()                → fbq('consent','grant'|'revoke') gemaess Status
- *   .trackPixelPageViewIfAllowed()      → fbq('track','PageView') wenn marketing=true
- *   .attachToForm(formEl)               → hidden-fields consent_marketing + event_source_url + event_id (+ fbc/fbp nur mit Consent)
- *   .trackLead(formEl)                  → feuert fbq('track','Lead',{},{eventID}) mit derselben event_id wie das Form (Browser↔CAPI-Dedup)
+ *   .applyPixelConsent()                → Meta fbq + TikTok ttq consent grant/revoke gemaess Status
+ *   .trackPixelPageViewIfAllowed()      → fbq + ttq PageView wenn marketing=true
+ *   .attachToForm(formEl)               → hidden-fields consent_marketing + event_source_url + event_id (+ fbc/fbp/ttclid/ttp nur mit Consent)
+ *   .trackLead(formEl)                  → feuert Meta 'Lead' + TikTok 'SubmitForm' mit derselben event_id wie das Form (Browser↔Server-Dedup)
  *   .bannerInit({bannerEl, acceptBtn, declineBtn, onShown, onHidden, onChange})
  *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided()
  *
@@ -169,6 +169,21 @@
     return '';
   }
 
+  // TikTok-Klick-ID (ttclid) aus der URL; TikTok-Browser-ID aus dem _ttp-Cookie.
+  // Analog zu fbc/fbp: werden nur MIT Marketing-Consent ans Formular gehaengt und
+  // dienen der TikTok-Events-API-Attribution (Server-Seite).
+  function getTtclid() {
+    try {
+      return new global.URLSearchParams(global.location.search).get('ttclid') || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function getTtp() {
+    return readCookie('_ttp');
+  }
+
   // event_source_url fuer CAPI. OHNE Marketing-Consent werden Klick-/Kampagnen-
   // Identifikatoren (fbclid, gclid, utm_*, ...) client-seitig entfernt, damit bei
   // Ablehnung KEIN personenbezogener Identifier an Formspree/Make/Meta gelangt.
@@ -192,17 +207,28 @@
   }
 
   function applyPixelConsent() {
-    if (typeof global.fbq !== 'function') return;
-    if (hasMarketing()) {
-      global.fbq('consent', 'grant');
-    } else {
-      global.fbq('consent', 'revoke');
+    var granted = hasMarketing();
+    // Meta Pixel
+    if (typeof global.fbq === 'function') {
+      global.fbq('consent', granted ? 'grant' : 'revoke');
+    }
+    // TikTok Pixel (nur aktiv, wenn das ttq-Snippet auf dieser Seite geladen ist)
+    if (global.ttq && typeof global.ttq.grantConsent === 'function') {
+      if (granted) {
+        global.ttq.grantConsent();
+      } else {
+        global.ttq.revokeConsent();
+      }
     }
   }
 
   function trackPixelPageViewIfAllowed() {
-    if (typeof global.fbq === 'function' && hasMarketing()) {
+    if (!hasMarketing()) return;
+    if (typeof global.fbq === 'function') {
       global.fbq('track', 'PageView');
+    }
+    if (global.ttq && typeof global.ttq.page === 'function') {
+      global.ttq.page();
     }
   }
 
@@ -252,9 +278,13 @@
     if (hasMarketing()) {
       setHidden('fbc', getFbc());
       setHidden('fbp', readCookie('_fbp'));
+      setHidden('ttclid', getTtclid());
+      setHidden('ttp', getTtp());
     } else {
       setHidden('fbc', '');
       setHidden('fbp', '');
+      setHidden('ttclid', '');
+      setHidden('ttp', '');
     }
   }
 
@@ -267,15 +297,26 @@
    */
   function trackLead(form) {
     attachToForm(form);
-    if (typeof global.fbq !== 'function' || !hasMarketing()) return;
+    if (!hasMarketing()) return;
     var eidField = form
       ? form.querySelector('input[type="hidden"][name="event_id"]')
       : null;
     var eid = eidField ? eidField.value : '';
-    if (eid) {
-      global.fbq('track', 'Lead', {}, { eventID: eid });
-    } else {
-      global.fbq('track', 'Lead');
+    // Meta: 'Lead' mit derselben event_id wie das Form → Browser↔CAPI-Dedup
+    if (typeof global.fbq === 'function') {
+      if (eid) {
+        global.fbq('track', 'Lead', {}, { eventID: eid });
+      } else {
+        global.fbq('track', 'Lead');
+      }
+    }
+    // TikTok: 'SubmitForm' mit derselben event_id → Browser↔Events-API-Dedup
+    if (global.ttq && typeof global.ttq.track === 'function') {
+      if (eid) {
+        global.ttq.track('SubmitForm', {}, { event_id: eid });
+      } else {
+        global.ttq.track('SubmitForm');
+      }
     }
   }
 

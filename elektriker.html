@@ -756,48 +756,6 @@ section.tight { padding: 36px 22px; }
 .step p { font-size: 15px; color: var(--ink-soft); margin: 0; }
 .step .time { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-mute); letter-spacing: 0.08em; margin-top: 6px; }
 
-/* ====== FAQ ====== */
-.faq { background: var(--paper-2); }
-.faq-list { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
-.faq-item {
-  background: var(--paper);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  overflow: hidden;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
-}
-.faq-item.open { border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
-.faq-q {
-  width: 100%;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 18px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--ink);
-}
-.faq-q .ic {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border-strong);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  color: var(--ink-soft);
-  flex-shrink: 0;
-  transition: transform 200ms ease, background 200ms ease, color 200ms ease;
-}
-.faq-item.open .faq-q .ic { transform: rotate(45deg); background: var(--orange); color: white; border-color: var(--orange); }
-.faq-a {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 240ms ease;
-}
-.faq-item.open .faq-a { max-height: 400px; }
-.faq-a-inner { padding: 0 18px 18px 18px; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
-
 /* ====== Form ====== */
 .apply { background: var(--ink); color: var(--paper); position: relative; overflow: hidden; }
 .apply::before {
@@ -1353,11 +1311,6 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
   .step:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
   .step .step-num { margin-bottom: 6px; }
 
-  .faq .wrap { max-width: 820px; }
-  .faq-q { padding: 22px 24px; font-size: 17px; }
-  .faq-a-inner { padding: 0 24px 22px 24px; font-size: 16px; }
-  .faq-item.open .faq-a { max-height: 400px; }
-
   .apply { padding: 110px 0; }
   .apply .apply-inner.wrap {
     display: grid;
@@ -1397,7 +1350,6 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
         <a href="#benefits">Benefits</a>
         <a href="#calc">Gehalt</a>
         <a href="#process">Bewerbung</a>
-        <a href="#faq">FAQ</a>
       </div>
       <a href="#apply" class="nav-cta">
         Bewerben
@@ -1692,36 +1644,6 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
     </div>
   </section>
 
-  <!-- ============= FAQ ============= -->
-  <section class="faq" id="faq">
-    <div class="wrap">
-      <div class="eyebrow">Häufige Fragen</div>
-      <h2 class="display h2">Du fragst, <em style="font-style: normal; color: var(--orange);">wir antworten.</em></h2>
-      <div class="faq-list">
-        <div class="faq-item open">
-          <button class="faq-q" type="button"><span>Bin ich ständig auf Montage?</span><span class="ic">+</span></button>
-          <div class="faq-a"><div class="faq-a-inner">Mo–Do ja, Freitag immer zu Hause. Hotel + Spesen zahlen wir voll, du schläfst nicht im Auto. Pro Woche meistens nur ein Standort.</div></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button"><span>Was ist DGUV V3 eigentlich?</span><span class="ic">+</span></button>
-          <div class="faq-a"><div class="faq-a-inner">Pflichtprüfung elektrischer Geräte in Firmen — PCs, Mehrfachstecker, Kaffeemaschinen, Maschinen. Du arbeitest mit Prüfkoffer, dokumentierst per Tablet. Nach 2 Wochen Einarbeitung läuft das.</div></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button"><span>Brauche ich Meister?</span><span class="ic">+</span></button>
-          <div class="faq-a"><div class="faq-a-inner">Nein. Gesellenbrief Elektriker / Elektroniker für Energie- und Gebäudetechnik (oder vergleichbar) reicht. EFKffT-Schulung machen wir intern. (Meister sind natürlich dennoch willkommen.)</div></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button"><span>Wie ist die Probezeit?</span><span class="ic">+</span></button>
-          <div class="faq-a"><div class="faq-a-inner">6 Monate Probezeit. Beide Seiten können sagen: passt nicht. Keine Hinhaltetaktik.</div></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" type="button"><span>Wann kann ich anfangen?</span><span class="ic">+</span></button>
-          <div class="faq-a"><div class="faq-a-inner">Sobald du kannst. Wir warten gerne 3 Monate auf den richtigen Kollegen — aber wir holen dich auch in 2 Wochen rein, wenn es passt.</div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ============= APPLY ============= -->
   <section class="apply" id="apply">
     <div class="apply-inner wrap">
@@ -1885,16 +1807,6 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
 
   // ---------- Footer year ----------
   document.getElementById('year').textContent = new Date().getFullYear();
-
-  // ---------- FAQ accordion ----------
-  document.querySelectorAll('.faq-item').forEach(function(item) {
-    var btn = item.querySelector('.faq-q');
-    btn.addEventListener('click', function() {
-      var isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function(o) { o.classList.remove('open'); });
-      if (!isOpen) item.classList.add('open');
-    });
-  });
 
   // ---------- Salary calculator ----------
   var slider = document.getElementById('calc-slider');

@@ -289,15 +289,35 @@
   }
 
   /**
+   * Qualifizierungs-Weiche fuer die BROWSER-Conversion — spiegelt EXAKT die
+   * Server-Weiche in n8n ("Consent + qualifiziert?"): disqualifiziert, sobald
+   * eines der harten Kriterien (gesellenbrief/montage/fuehrerschein) mit "nein"
+   * beantwortet ist. Dadurch feuern Browser-Pixel und Events-API fuer DIESELBE
+   * Bewerber-Menge → Dedup passt, und kein unqualifizierter Bewerber wird als
+   * TikTok-/Meta-Conversion gezaehlt (sonst wuerde der Algorithmus auf die
+   * Falschen optimieren). LPs ohne diese Felder (Vertrieb/D2D) → Feld fehlt →
+   * gilt als qualifiziert und feuert normal (unveraendert).
+   */
+  function isQualified(form) {
+    if (!form || typeof form.querySelector !== 'function') return true;
+    var hardCriteria = ['gesellenbrief', 'montage', 'fuehrerschein'];
+    for (var i = 0; i < hardCriteria.length; i++) {
+      var checked = form.querySelector('input[name="' + hardCriteria[i] + '"]:checked');
+      if (checked && checked.value === 'nein') return false;
+    }
+    return true;
+  }
+
+  /**
    * Feuert das Lead-Event sauber: stellt sicher, dass die CAPI-Hidden-Fields
    * (inkl. event_id) am Form haengen, und gibt dieselbe event_id als {eventID}
    * an den Browser-Pixel weiter → Meta dedupliziert Browser- und Server-Event.
-   * Pixel feuert nur mit Marketing-Consent (DSGVO); das Plausible-Goal bleibt
-   * separat in der LP (cookieless, ohne Consent).
+   * Pixel feuert nur mit Marketing-Consent UND wenn qualifiziert (DSGVO +
+   * identisch zur Server-Weiche); das Plausible-Goal bleibt separat in der LP.
    */
   function trackLead(form) {
     attachToForm(form);
-    if (!hasMarketing()) return;
+    if (!hasMarketing() || !isQualified(form)) return;
     var eidField = form
       ? form.querySelector('input[type="hidden"][name="event_id"]')
       : null;

@@ -22,7 +22,8 @@ karriere-zap/
 ├── index.html                  # Vertrieb-Hauptseite (hell)
 ├── vertrieb-dunkel.html        # Vertrieb-Variante (dunkel, aktuell ungenutzt)
 ├── Vertrieb-Vorerfahrung.html  # Vertrieb-LP mit Vorerfahrungs-Filter (Kampagne: "Neue Kampagne für Leads")
-├── elektriker.html             # Elektriker-LP (Kampagne: "Elektriker_V1")
+├── elektriker.html             # Elektriker-LP (Kampagne: "Elektriker_V1", Westdeutschland ab Osnabrück)
+├── elektriker-muenster.html    # Elektriker-LP Münster (DGUV V3, Tesla/4-Tage/Festgehalt, montagebereit) — URL /elektriker-muenster
 ├── Door2Door_vertrieb.html     # D2D-Vertrieb-LP (Kampagne: "ZAP D2D · Vertrieb")
 ├── closer.html                 # Closer-LP (B2B, Fixum + Provision)
 └── bewerben.html               # Funnel-Endziel — generisches Bewerbungsformular
@@ -178,6 +179,7 @@ git push origin main
 
 | Datum | Änderung | Commit |
 |---|---|---|
+| 2026-06-29 | `elektriker-muenster.html` neu: Münster-Variante der Elektriker-LP (DGUV V3, Montagebereitschaft, sicheres unbefristetes Festgehalt). Abgeleitet von `elektriker.html`, voller Tracking-/Consent-/CAPI-/Formspree-Parität (Identifier `elektriker-muenster`). Multi-Agent-Review-Fixes: Radio-Pills fokussierbar + `novalidate` + JS-Validierung (Name/Handy/Mail), iOS-Zoom-Fix (16px), Sticky-CTA blendet bei offenem Cookie-Banner aus, Hero-Reorder (CTA vor Foto auf Mobil), Honeypot `_gotcha`, Tippfehler/Gehaltsrechner-Startwerte/LCP-`fetchpriority`. | (dieser PR) |
 | 2026-06-18 | `closer.html` auf ZAPConsent v2 + Fix A nachgezogen (jetzt CAPI-fähig, kein Webfont); CAPI-Doku auf Live-Stand aktualisiert | (dieser PR) |
 | 2026-06-16 | Fix A: `attachToForm` setzt `event_id`/`fbc`/`fbp` + neue `trackLead()` (Browser↔CAPI-Dedup, DSGVO-Bereinigung von `event_source_url`); Pipeline auf khalil@-Org migriert (Scenario `6206652`), CAPI live + getestet (`events_received:1`) | `40a8bca` |
 | 2026-05-28 | Hybrid-CAPI-Vorbereitung: Cookie-Banner refactored auf ZAPConsent v2, alle 6 LPs nutzen jetzt shared component, consent_marketing Hidden-Field für Make-CAPI-Branching, Plausible auf bewerben.html + index.html + vertrieb-dunkel.html nachgezogen | `020c1ce` |

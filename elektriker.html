@@ -642,21 +642,22 @@ section.tight { padding: 36px 22px; }
 }
 .hq-pin-wrap {
   position: absolute;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  gap: 6px;
   pointer-events: none;
 }
 .hq-pin-dot {
+  position: absolute;
+  left: 0; top: 0;
+  transform: translate(-50%, -50%);
   width: 14px; height: 14px;
   border-radius: 50%;
   background: #FFFFFF;
   border: 3px solid var(--ink);
   box-shadow: 0 0 0 4px rgba(15,20,25,0.12), 0 2px 4px rgba(15,20,25,0.25);
-  flex: 0 0 auto;
 }
 .hq-pin-label {
+  position: absolute;
+  left: 16px; top: 50%;
+  transform: translateY(-50%);
   background: var(--ink);
   color: #FFFFFF;
   font-family: 'JetBrains Mono', monospace;
@@ -1635,7 +1636,7 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
           <div class="map-bg"></div>
           <div class="de-map">
             <img class="de-img" src="https://res.cloudinary.com/dzvvvmpsn/image/upload/f_auto,q_auto/v1779182447/68a0584d90d7fa0a7f0b6779_de_karte_v1_gdxegy.jpg" alt="Deutschland-Karte: Einsatzgebiet im Westen und Norden" />
-            <div class="hq-pin-wrap" style="left: 36%; top: 38%;">
+            <div class="hq-pin-wrap" style="left: 30%; top: 37%;">
               <span class="hq-pin-dot"></span>
               <span class="hq-pin-label">HQ OSNABRÜCK</span>
             </div>

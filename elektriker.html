@@ -394,11 +394,11 @@ section.tight { padding: 36px 22px; }
 }
 .compare-row {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 0.82fr 1fr 1.12fr;
   border-top: 1px solid var(--border);
 }
 .compare-row:first-child { border-top: none; }
-.compare-row > div { padding: 16px 14px; font-size: 14px; }
+.compare-row > div { padding: 11px 8px; font-size: 12px; line-height: 1.25; }
 .compare-row .label {
   font-weight: 700;
   color: var(--ink);
@@ -409,7 +409,7 @@ section.tight { padding: 36px 22px; }
   background: var(--paper-3);
   text-decoration: line-through;
   text-decoration-color: rgba(0,0,0,0.25);
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 6px;
 }
 .compare-row .a::before {
   content: '✕';
@@ -424,23 +424,23 @@ section.tight { padding: 36px 22px; }
   font-weight: 700;
   color: var(--paper);
   background: var(--orange);
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 6px;
   position: relative;
 }
 .compare-row .b::before {
   content: '✓';
   display: inline-flex; align-items: center; justify-content: center;
-  width: 22px; height: 22px;
+  width: 17px; height: 17px;
   border-radius: 50%;
   background: var(--paper);
   color: var(--orange);
   font-weight: 900;
-  font-size: 13px;
+  font-size: 10px;
   flex-shrink: 0;
   margin-right: 0;
   box-shadow: 0 2px 6px rgba(0,0,0,0.10);
 }
-.compare-head { grid-template-columns: 1.1fr 1fr 1.2fr; background: var(--ink) !important; color: var(--paper); }
+.compare-head { background: var(--ink) !important; color: var(--paper); }
 .compare-head .label {
   background: transparent !important; color: rgba(255,255,255,0.55) !important;
   font-size: 11px; font-family: 'JetBrains Mono', monospace;
@@ -451,7 +451,7 @@ section.tight { padding: 36px 22px; }
   color: var(--paper) !important;
   font-family: 'Bricolage Grotesque';
   font-weight: 700;
-  font-size: 15px;
+  font-size: 13px;
   text-decoration: none !important;
   display: flex; align-items: center; gap: 8px;
 }
@@ -1250,7 +1250,9 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
   .compare .wrap { max-width: 920px; }
   .compare-table { margin-top: 36px; }
   .compare-row { grid-template-columns: 1.1fr 1fr 1.2fr; }
-  .compare-row > div { padding: 22px 26px; font-size: 16px; }
+  .compare-row > div { padding: 22px 26px; font-size: 16px; line-height: 1.4; }
+  .compare-row .a, .compare-row .b { gap: 10px; }
+  .compare-row .b::before { width: 22px; height: 22px; font-size: 13px; }
   .compare-head .a, .compare-head .b { font-size: 16px; }
 
   .fit-cards {

@@ -291,20 +291,25 @@
   /**
    * Qualifizierungs-Weiche fuer die BROWSER-Conversion — spiegelt EXAKT die
    * Server-Weiche in n8n ("Consent + qualifiziert?"): disqualifiziert, sobald
-   * eines der harten Kriterien (gesellenbrief/montage/fuehrerschein) mit "nein"
-   * beantwortet ist. Dadurch feuern Browser-Pixel und Events-API fuer DIESELBE
-   * Bewerber-Menge → Dedup passt, und kein unqualifizierter Bewerber wird als
-   * TikTok-/Meta-Conversion gezaehlt (sonst wuerde der Algorithmus auf die
-   * Falschen optimieren). LPs ohne diese Felder (Vertrieb/D2D) → Feld fehlt →
-   * gilt als qualifiziert und feuert normal (unveraendert).
+   * eines der harten Kriterien nicht erfuellt ist. gesellenbrief/fuehrerschein
+   * duerfen nur nicht "nein" sein (reines ja/nein-Feld); montage MUSS explizit
+   * "ja" sein — "regional" gilt NICHT als qualifiziert (GF-Vorgabe: nur volle
+   * Mo-Do-Reisebereitschaft ist brauchbar). Dadurch feuern Browser-Pixel und
+   * Events-API fuer DIESELBE Bewerber-Menge → Dedup passt, und kein
+   * unqualifizierter Bewerber wird als TikTok-/Meta-Conversion gezaehlt (sonst
+   * wuerde der Algorithmus auf die Falschen optimieren). LPs ohne diese Felder
+   * (Vertrieb/D2D) → Feld fehlt → gilt als qualifiziert und feuert normal
+   * (unveraendert).
    */
   function isQualified(form) {
     if (!form || typeof form.querySelector !== 'function') return true;
-    var hardCriteria = ['gesellenbrief', 'montage', 'fuehrerschein'];
-    for (var i = 0; i < hardCriteria.length; i++) {
-      var checked = form.querySelector('input[name="' + hardCriteria[i] + '"]:checked');
+    var mustNotBeNein = ['gesellenbrief', 'fuehrerschein'];
+    for (var i = 0; i < mustNotBeNein.length; i++) {
+      var checked = form.querySelector('input[name="' + mustNotBeNein[i] + '"]:checked');
       if (checked && checked.value === 'nein') return false;
     }
+    var montage = form.querySelector('input[name="montage"]:checked');
+    if (montage && montage.value !== 'ja') return false;
     return true;
   }
 

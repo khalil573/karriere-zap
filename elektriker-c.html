@@ -310,7 +310,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     <h2 class="display">Hast du einen Gesellenbrief als Elektriker / Elektroniker?</h2>
     <div class="cta-stack">
       <button class="btn btn-option" data-field="gesellenbrief" data-value="ja" data-goto="fuehrerschein">Ja <span class="arrow">→</span></button>
-      <button class="btn btn-option" data-field="gesellenbrief" data-value="nein" data-goto="decline" data-decline="einen Gesellenbrief als Elektriker oder Elektroniker">Noch nicht <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="gesellenbrief" data-value="nein" data-goto="fuehrerschein">Noch nicht <span class="arrow">→</span></button>
     </div>
   </section>
 
@@ -320,7 +320,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     <h2 class="display">Hast du einen Führerschein Klasse B?</h2>
     <div class="cta-stack">
       <button class="btn btn-option" data-field="fuehrerschein" data-value="ja" data-goto="montage">Ja <span class="arrow">→</span></button>
-      <button class="btn btn-option" data-field="fuehrerschein" data-value="nein" data-goto="decline" data-decline="einen Führerschein der Klasse B">Nein <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="fuehrerschein" data-value="nein" data-goto="montage">Nein <span class="arrow">→</span></button>
     </div>
   </section>
 
@@ -391,15 +391,6 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     <p class="lede">Ravn meldet sich bei dir innerhalb von 48 Stunden. Halt dein Telefon bereit.</p>
   </section>
 
-  <!-- DECLINE -->
-  <section class="step center" data-step="decline">
-    <div class="big-ic soft">🙏</div>
-    <h2 class="display">Danke für deine Ehrlichkeit!</h2>
-    <p class="lede">Für diese Stelle brauchst du leider <b id="decline-reason">die Voraussetzungen</b>. Melde dich gern, sobald das passt — oder schau bei unseren anderen Stellen vorbei.</p>
-    <div class="cta-stack">
-      <a class="btn btn-option" href="https://karriere.zap-pruefstelle.de" style="justify-content:center;">Andere Stellen ansehen</a>
-    </div>
-  </section>
 
 </div>
 
@@ -422,7 +413,6 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
   var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
   var progressFill = document.getElementById('progress-fill');
   var backBtn = document.getElementById('back-btn');
-  var declineReasonEl = document.getElementById('decline-reason');
 
   // Reihenfolge der Haupt-Schritte (für Fortschrittsbalken)
   var order = ['intro', 'value', 'gesellenbrief', 'fuehrerschein', 'montage', 'callwhen', 'contact'];
@@ -436,7 +426,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     var i = order.indexOf(id);
     var pct = i >= 0 ? (i / (order.length - 1)) * 100 : 100;
     progressFill.style.width = pct + '%';
-    var hideBack = (id === 'intro' || id === 'success' || id === 'decline');
+    var hideBack = (id === 'intro' || id === 'success');
     backBtn.style.display = hideBack ? 'none' : 'flex';
     var container = document.getElementById('funnel');
     if (container) container.scrollTop = 0;
@@ -462,8 +452,6 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
         var input = document.getElementById('h-' + field);
         if (input) input.value = value;
       }
-      var decline = btn.getAttribute('data-decline');
-      if (decline && declineReasonEl) declineReasonEl.textContent = decline;
       goTo(btn.getAttribute('data-goto'));
     });
   });
@@ -485,18 +473,27 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     var hp = form.querySelector('[name="_gotcha"]');
     if (hp && hp.value) { return; }
 
+    var probe = new FormData(form);
+    var gesellenbrief = probe.get('gesellenbrief');
+    var fuehrerschein = probe.get('fuehrerschein');
+    var montage = probe.get('montage');
+
+    // Qualifikation = Gesellenbrief JA und Fuehrerschein JA (identisch zu A/B).
+    var qualifiziert = (gesellenbrief === 'ja' && fuehrerschein === 'ja' && !!montage);
+
+    // AUSSORTIERT: NICHTS uebermitteln, KEINE Conversion (kein Pixel-Lead, kein
+    // 'Bewerbung Submit'-Ziel) — aber trotzdem denselben Success-Screen zeigen,
+    // damit niemand zurueckgeht und die Antwort aendert. Nur ein separates,
+    // NICHT als Conversion gezaehltes Plausible-Event fuer die Sichtbarkeit.
+    if (!qualifiziert) {
+      if (typeof window.plausible === 'function') { window.plausible('Aussortiert'); }
+      goTo('success');
+      return;
+    }
+
+    // QUALIFIZIERT -> echte Bewerbung + Conversion-Tracking
     ZAPConsent.attachToForm(form);
-
     var data = new FormData(form);
-    var gesellenbrief = data.get('gesellenbrief');
-    var fuehrerschein = data.get('fuehrerschein');
-    var montage = data.get('montage');
-
-    // Sicherheitsnetz (der Funnel filtert bereits per Routing)
-    if (gesellenbrief !== 'ja') { return showError('Für diese Stelle ist ein Gesellenbrief Voraussetzung.'); }
-    if (fuehrerschein !== 'ja') { return showError('Ein Führerschein Klasse B ist für die Stelle nötig.'); }
-    if (!montage) { return showError('Bitte beantworte die Montage-Frage.'); }
-
     var nachricht = [
       '🔌 BEWERBUNG ELEKTRIKER (m/w/d) — LP-C Funnel / Tesla / 4-Tage-Woche',
       '',

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Elektriker (m/w/d) bei ZAP — in 60 Sekunden bewerben, lebenslauffrei.</title>
+<meta name="description" content="Elektriker gesucht: Tesla Model 3, 4-Tage-Woche, 3.100–4.500 €. Bewirb dich in 60 Sekunden — lebenslauffrei, ein paar Fragen, fertig." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Plausible Analytics (cookieless, EU-hosted, DSGVO-konform, kein Consent nötig) -->
+<script async src="https://plausible.io/js/pa-7oSK2XPYPV2eTKJGR7Wq3.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<!-- End Plausible -->
+
+<!-- ZAP Consent Manager (Pflicht VOR Meta Pixel laden) -->
+<script src="/assets/zap-consent.js"></script>
+
+<!-- Meta Pixel (Consent-gesteuert via ZAPConsent) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('consent', 'revoke');
+fbq('init', '851410567212402');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=851410567212402&ev=PageView&noscript=1" alt="" /></noscript>
+<!-- End Meta Pixel -->
+
+<!-- TikTok Pixel (Consent-gesteuert via ZAPConsent) -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+  // DSGVO: Events werden zurueckgehalten, bis Marketing-Consent erteilt wurde.
+  ttq.holdConsent();
+  ttq.load('D971KGJC77U6Q0JCHBRG');
+  // Kein ttq.page() hier — PageView feuert erst nach Consent (siehe unten).
+}(window, document, 'ttq');
+</script>
+<!-- End TikTok Pixel -->
+
+<!-- Consent zentral anwenden: grant/revoke + PageView fuer Meta UND TikTok je nach Status -->
+<script>
+ZAPConsent.applyPixelConsent();
+ZAPConsent.trackPixelPageViewIfAllowed();
+</script>
+
+<style>
+:root {
+  --orange: #E24E1F;
+  --orange-700: #C73E14;
+  --ink: #0F1419;
+  --ink-2: #161D24;
+  --paper: #FFFFFF;
+  --mute: rgba(255,255,255,0.62);
+  --line: rgba(255,255,255,0.14);
+  --r: 16px;
+  --success: #4ADE80;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: var(--paper);
+  background: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+.display { font-family: 'Bricolage Grotesque', 'Manrope', sans-serif; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+button, input, select { font-family: inherit; font-size: inherit; color: inherit; }
+
+/* ====== Funnel shell ====== */
+.funnel {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+/* progress bar */
+.progress {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 40;
+  height: 4px; background: rgba(255,255,255,0.10);
+}
+.progress-fill {
+  height: 100%; width: 0%;
+  background: var(--orange);
+  border-radius: 0 3px 3px 0;
+  transition: width .4s cubic-bezier(.4,0,.2,1);
+}
+
+/* top bar (back + logo) */
+.topbar {
+  position: absolute; top: 4px; left: 0; right: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px calc(14px);
+}
+.back-btn {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid var(--line);
+  color: var(--paper); cursor: pointer;
+}
+.logo { display: flex; align-items: baseline; gap: 2px; opacity: .92; }
+.logo .mark { font-family: 'Bricolage Grotesque'; font-weight: 800; letter-spacing: -0.04em; font-size: 19px; }
+.logo .dot { color: var(--orange); font-weight: 800; font-size: 19px; }
+.logo .sub { font-size: 10px; color: var(--mute); font-weight: 600; letter-spacing: .06em; margin-left: 5px; text-transform: uppercase; }
+
+/* ====== Steps ====== */
+.step {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 92px 24px calc(28px + env(safe-area-inset-bottom));
+  opacity: 0;
+}
+.step.active { display: flex; z-index: 10; animation: stepIn .38s cubic-bezier(.4,0,.2,1) forwards; }
+@keyframes stepIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.step.center { justify-content: center; }
+
+/* hero with photo bg */
+.step.hero {
+  background:
+    linear-gradient(180deg, rgba(15,20,25,0.35) 0%, rgba(15,20,25,0.72) 55%, rgba(15,20,25,0.96) 100%),
+    url('https://res.cloudinary.com/dzvvvmpsn/image/upload/c_fill,g_auto,w_1080,h_1920,f_auto,q_auto/v1779177896/WhatsApp_Image_2026-05-19_at_10.00.12_eaobfl.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: #FF9870; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px;
+}
+.eyebrow::before { content: ''; width: 18px; height: 1px; background: #FF9870; }
+
+.step h1 { font-size: clamp(30px, 8.6vw, 46px); margin: 0; }
+.step h1 em { font-style: normal; color: #FF7A4A; }
+.step h2 { font-family: 'Bricolage Grotesque'; font-weight: 700; letter-spacing: -0.02em; line-height: 1.12; font-size: clamp(26px, 7.4vw, 38px); margin: 0 0 8px 0; }
+.step .lede { font-size: 17px; color: var(--mute); margin: 14px 0 0 0; line-height: 1.5; }
+.step .lede b { color: var(--paper); }
+.q-hint { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mute); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
+
+/* chips row */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 600;
+  background: rgba(255,255,255,0.08); border: 1px solid var(--line);
+}
+.chip.solid { background: var(--orange); border-color: var(--orange); }
+.chip .d { width: 6px; height: 6px; border-radius: 50%; background: #FF7A4A; }
+.chip.solid .d { background: #fff; }
+
+/* big value list */
+.value-list { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+.value-list .vi { display: flex; align-items: center; gap: 14px; font-size: 19px; font-weight: 600; }
+.value-list .vi .vic {
+  flex-shrink: 0; width: 42px; height: 42px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+  background: rgba(226,78,31,0.16); border: 1px solid rgba(226,78,31,0.35);
+}
+
+/* CTA + option buttons */
+.cta-stack { margin-top: 26px; display: flex; flex-direction: column; gap: 10px; }
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 18px 22px; border-radius: var(--r);
+  font-weight: 700; font-size: 17px; cursor: pointer; border: none;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.btn:active { transform: scale(.98); }
+.btn-primary { background: var(--orange); color: #fff; box-shadow: 0 10px 26px rgba(226,78,31,0.32); }
+.btn-primary:active { background: var(--orange-700); }
+.btn-option {
+  background: rgba(255,255,255,0.05); color: var(--paper);
+  border: 1.5px solid var(--line); justify-content: space-between;
+  text-align: left; font-size: 17px;
+}
+.btn-option:active, .btn-option.sel { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.btn-option .arrow { opacity: .5; }
+.btn-option:active .arrow, .btn-option.sel .arrow { opacity: 1; }
+
+.step .meta {
+  margin-top: 16px; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--mute); letter-spacing: .06em;
+}
+
+/* trust row on hero */
+.trust-row { display: flex; align-items: center; gap: 10px; margin-top: 18px; font-size: 13px; color: var(--mute); }
+.trust-row .stars { color: #FFB020; letter-spacing: 1px; }
+
+/* contact form */
+.field { margin-bottom: 12px; text-align: left; }
+.field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--paper); }
+.field input {
+  width: 100%; padding: 15px 16px; border-radius: 13px;
+  border: 1.5px solid var(--line); background: rgba(255,255,255,0.05);
+  font-size: 16px; color: var(--paper); transition: border-color .14s ease, background .14s ease;
+}
+.field input::placeholder { color: rgba(255,255,255,0.4); }
+.field input:focus { outline: none; border-color: var(--orange); background: rgba(255,255,255,0.09); }
+.form-error { margin: 6px 0 0; padding: 10px 12px; border-radius: 11px; background: rgba(183,59,46,0.18); border: 1px solid rgba(244,181,167,0.4); color: #FFC9BE; font-size: 13px; }
+.form-error[hidden] { display: none; }
+.privacy { font-size: 11.5px; color: var(--mute); margin-top: 12px; line-height: 1.5; text-align: center; }
+.privacy a { color: #FF9870; text-decoration: underline; }
+
+/* ravn card */
+.ravn { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.ravn img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; object-position: center top; border: 1px solid var(--line); flex-shrink: 0; }
+.ravn .rt { font-size: 13.5px; color: var(--mute); line-height: 1.35; }
+.ravn .rt b { color: var(--paper); }
+
+/* success / decline */
+.big-ic {
+  width: 74px; height: 74px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 38px; margin-bottom: 20px;
+}
+.big-ic.ok { background: rgba(74,222,128,0.16); border: 1px solid rgba(74,222,128,0.4); color: var(--success); }
+.big-ic.soft { background: rgba(255,255,255,0.08); border: 1px solid var(--line); }
+.step.center h2 { margin-top: 0; }
+.step.center .lede { margin-bottom: 0; }
+
+.hp-field { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
+
+/* cookie banner */
+.cookie-banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+  background: #0A0E12; color: var(--paper);
+  padding: 18px 20px calc(18px + env(safe-area-inset-bottom));
+  border-top: 3px solid var(--orange); box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+  font-size: 13.5px; line-height: 1.5;
+}
+.cookie-banner[hidden] { display: none; }
+.cookie-inner { max-width: 520px; margin: 0 auto; }
+.cookie-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #FF7A4A; font-weight: 600; margin-bottom: 4px; }
+.cookie-banner p { margin: 0 0 12px; color: var(--mute); }
+.cookie-banner a { color: #FF9870; text-decoration: underline; }
+.cookie-actions { display: flex; gap: 10px; }
+.cookie-btn { flex: 1; padding: 12px; border-radius: 11px; font-weight: 600; font-size: 14px; cursor: pointer; border: none; }
+.cookie-btn.decline { background: transparent; color: var(--paper); border: 1px solid var(--line); }
+.cookie-btn.accept { background: var(--orange); color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="funnel" id="funnel">
+  <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="topbar">
+    <button class="back-btn" id="back-btn" aria-label="Zurück">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="logo"><span class="mark">ZAP</span><span class="dot">.</span><span class="sub">Karriere</span></div>
+    <div style="width:38px"></div>
+  </div>
+
+  <!-- STEP 1: HERO -->
+  <section class="step hero active" data-step="intro">
+    <div class="eyebrow">Elektriker m/w/d · Festanstellung</div>
+    <h1 class="display">Kein Bock mehr auf <em>Baustelle, Dreck &amp; Überstunden?</em></h1>
+    <p class="lede">Dann prüf bei uns tagsüber Steckdosen in Büros — <b>Tesla Model 3</b>, <b>4-Tage-Woche</b>, jeden Freitag frei.</p>
+    <div class="trust-row"><span class="stars">★★★★★</span> 15-köpfiges Team · familiär statt Konzern</div>
+    <div class="cta-stack">
+      <button class="btn btn-primary" data-goto="value">Los geht's <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+      <div class="meta">60 SEK · LEBENSLAUFFREI · RÜCKRUF &lt; 48 STD</div>
+    </div>
+  </section>
+
+  <!-- STEP 2: VALUE -->
+  <section class="step center" data-step="value">
+    <div class="q-hint">Das erwartet dich</div>
+    <h2 class="display">Warum unsere Elektriker nicht mehr wechseln:</h2>
+    <div class="value-list">
+      <div class="vi"><span class="vic">🚗</span> Tesla Model 3 — auch privat</div>
+      <div class="vi"><span class="vic">📅</span> 4-Tage-Woche, Freitag frei</div>
+      <div class="vi"><span class="vic">💶</span> 3.100–4.500 € brutto</div>
+      <div class="vi"><span class="vic">🏖️</span> 30 Tage Urlaub</div>
+    </div>
+    <div class="cta-stack">
+      <button class="btn btn-primary" data-goto="gesellenbrief">Passt das zu mir? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- STEP 3: Q1 Gesellenbrief -->
+  <section class="step center" data-step="gesellenbrief">
+    <div class="q-hint">Frage 1 von 4</div>
+    <h2 class="display">Hast du einen Gesellenbrief als Elektriker / Elektroniker?</h2>
+    <div class="cta-stack">
+      <button class="btn btn-option" data-field="gesellenbrief" data-value="ja" data-goto="fuehrerschein">Ja <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="gesellenbrief" data-value="nein" data-goto="decline" data-decline="einen Gesellenbrief als Elektriker oder Elektroniker">Noch nicht <span class="arrow">→</span></button>
+    </div>
+  </section>
+
+  <!-- STEP 4: Q2 Führerschein -->
+  <section class="step center" data-step="fuehrerschein">
+    <div class="q-hint">Frage 2 von 4</div>
+    <h2 class="display">Hast du einen Führerschein Klasse B?</h2>
+    <div class="cta-stack">
+      <button class="btn btn-option" data-field="fuehrerschein" data-value="ja" data-goto="montage">Ja <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="fuehrerschein" data-value="nein" data-goto="decline" data-decline="einen Führerschein der Klasse B">Nein <span class="arrow">→</span></button>
+    </div>
+  </section>
+
+  <!-- STEP 5: Q3 Montage -->
+  <section class="step center" data-step="montage">
+    <div class="q-hint">Frage 3 von 4</div>
+    <h2 class="display">Bist du bereit, Mo–Do auf Montage zu sein?</h2>
+    <p class="lede" style="margin-bottom:6px;">Hotel &amp; Spesen zahlen wir voll.</p>
+    <div class="cta-stack">
+      <button class="btn btn-option" data-field="montage" data-value="ja" data-goto="callwhen">Ja, klar <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="montage" data-value="regional" data-goto="callwhen">Nur regional <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="montage" data-value="nein" data-goto="callwhen">Lieber nicht <span class="arrow">→</span></button>
+    </div>
+  </section>
+
+  <!-- STEP 6: Q4 callwhen -->
+  <section class="step center" data-step="callwhen">
+    <div class="q-hint">Frage 4 von 4</div>
+    <h2 class="display">Wann sollen wir dich am besten anrufen?</h2>
+    <div class="cta-stack">
+      <button class="btn btn-option" data-field="callwhen" data-value="Vormittags (08–12 Uhr)" data-goto="contact">Vormittags <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="callwhen" data-value="Nachmittags (14–17 Uhr)" data-goto="contact">Nachmittags <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="callwhen" data-value="Abends (nach 17 Uhr)" data-goto="contact">Abends <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="callwhen" data-value="Egal, ruft einfach an" data-goto="contact">Egal, ruft einfach an <span class="arrow">→</span></button>
+    </div>
+  </section>
+
+  <!-- STEP 7: CONTACT -->
+  <section class="step center" data-step="contact">
+    <div class="q-hint">Fast geschafft 🎉</div>
+    <h2 class="display">Wohin soll Ravn dich zurückrufen?</h2>
+    <div class="ravn">
+      <img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_fill,g_auto:subject,ar_1:1,w_120,f_auto,q_auto/v1779182899/WhatsApp_Image_2026-05-19_at_11.27.56_gcrtqr.jpg" alt="Ravn P." loading="lazy" />
+      <div class="rt">Ravn ruft dich <b>persönlich</b> zurück — in unter 48 Std. Kein Bewerbungsgespräch mit Krawatte.</div>
+    </div>
+    <form id="apply-form" action="https://formspree.io/f/xqewlovo" method="POST">
+      <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <div class="field">
+        <label for="f-name">Dein Name</label>
+        <input id="f-name" type="text" name="name" autocomplete="name" placeholder="z.B. Max Mustermann" required />
+      </div>
+      <div class="field">
+        <label for="f-phone">Handynummer</label>
+        <input id="f-phone" type="tel" name="telefon" inputmode="tel" autocomplete="tel" placeholder="z.B. 0151 …" required />
+      </div>
+      <div class="field">
+        <label for="f-email">E-Mail</label>
+        <input id="f-email" type="email" name="email" autocomplete="email" placeholder="z.B. max@beispiel.de" required />
+      </div>
+      <input type="hidden" name="gesellenbrief" id="h-gesellenbrief" />
+      <input type="hidden" name="fuehrerschein" id="h-fuehrerschein" />
+      <input type="hidden" name="montage" id="h-montage" />
+      <input type="hidden" name="callwhen" id="h-callwhen" />
+      <input type="hidden" name="_subject" value="Neue Bewerbung Elektriker (m/w/d) — LP-C (Funnel) · Tesla / 4-Tage-Woche" />
+      <input type="hidden" name="aktueller_beruf" value="Elektriker-Bewerbung via karriere.zap-pruefstelle.de/elektriker-c.html" />
+      <div class="cta-stack" style="margin-top:8px;">
+        <button id="apply-submit" class="btn btn-primary" type="submit"><span class="btn-label">Rückruf sichern</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+      </div>
+      <div id="form-error" class="form-error" hidden></div>
+      <div class="privacy">🔒 Geht direkt an Personaler Ravn. Kein Bot, kein Newsletter. Mit Absenden stimmst du der <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a> zu.</div>
+    </form>
+  </section>
+
+  <!-- SUCCESS -->
+  <section class="step center" data-step="success">
+    <div class="big-ic ok">✓</div>
+    <h2 class="display">Bewerbung raus!</h2>
+    <p class="lede">Ravn meldet sich bei dir innerhalb von 48 Stunden. Halt dein Telefon bereit.</p>
+  </section>
+
+  <!-- DECLINE -->
+  <section class="step center" data-step="decline">
+    <div class="big-ic soft">🙏</div>
+    <h2 class="display">Danke für deine Ehrlichkeit!</h2>
+    <p class="lede">Für diese Stelle brauchst du leider <b id="decline-reason">die Voraussetzungen</b>. Melde dich gern, sobald das passt — oder schau bei unseren anderen Stellen vorbei.</p>
+    <div class="cta-stack">
+      <a class="btn btn-option" href="https://karriere.zap-pruefstelle.de" style="justify-content:center;">Andere Stellen ansehen</a>
+    </div>
+  </section>
+
+</div>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner" class="cookie-banner" hidden>
+  <div class="cookie-inner">
+    <div class="cookie-eyebrow">🍪 Cookies</div>
+    <p>Wir nutzen Marketing-Cookies (Meta- &amp; TikTok-Pixel), um die Wirksamkeit unserer Stellenanzeigen zu messen. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Mehr erfahren</a></p>
+    <div class="cookie-actions">
+      <button id="cookie-decline" type="button" class="cookie-btn decline">Ablehnen</button>
+      <button id="cookie-accept" type="button" class="cookie-btn accept">Akzeptieren</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var progressFill = document.getElementById('progress-fill');
+  var backBtn = document.getElementById('back-btn');
+  var declineReasonEl = document.getElementById('decline-reason');
+
+  // Reihenfolge der Haupt-Schritte (für Fortschrittsbalken)
+  var order = ['intro', 'value', 'gesellenbrief', 'fuehrerschein', 'montage', 'callwhen', 'contact'];
+  var history = ['intro'];
+
+  function currentStep() { return history[history.length - 1]; }
+
+  function render() {
+    var id = currentStep();
+    steps.forEach(function (s) { s.classList.toggle('active', s.dataset.step === id); });
+    var i = order.indexOf(id);
+    var pct = i >= 0 ? (i / (order.length - 1)) * 100 : 100;
+    progressFill.style.width = pct + '%';
+    var hideBack = (id === 'intro' || id === 'success' || id === 'decline');
+    backBtn.style.display = hideBack ? 'none' : 'flex';
+    var container = document.getElementById('funnel');
+    if (container) container.scrollTop = 0;
+  }
+
+  function goTo(id) {
+    if (id === currentStep()) return;
+    history.push(id);
+    render();
+  }
+
+  backBtn.addEventListener('click', function () {
+    if (history.length > 1) { history.pop(); render(); }
+  });
+
+  // Klick-Handler für alle Funnel-Buttons (data-goto / data-field / data-value / data-decline)
+  document.querySelectorAll('[data-goto]').forEach(function (btn) {
+    if (btn.tagName === 'A') return; // Links (z.B. Decline-CTA) normal lassen
+    btn.addEventListener('click', function () {
+      var field = btn.getAttribute('data-field');
+      var value = btn.getAttribute('data-value');
+      if (field) {
+        var input = document.getElementById('h-' + field);
+        if (input) input.value = value;
+      }
+      var decline = btn.getAttribute('data-decline');
+      if (decline && declineReasonEl) declineReasonEl.textContent = decline;
+      goTo(btn.getAttribute('data-goto'));
+    });
+  });
+
+  // ---------- Formular-Absenden ----------
+  var form = document.getElementById('apply-form');
+  var submitBtn = document.getElementById('apply-submit');
+  var btnLabel = submitBtn.querySelector('.btn-label');
+  var errorEl = document.getElementById('form-error');
+
+  function showError(msg) { errorEl.textContent = msg; errorEl.hidden = false; }
+  function clearError() { errorEl.hidden = true; errorEl.textContent = ''; }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    clearError();
+
+    // Honeypot
+    var hp = form.querySelector('[name="_gotcha"]');
+    if (hp && hp.value) { return; }
+
+    ZAPConsent.attachToForm(form);
+
+    var data = new FormData(form);
+    var gesellenbrief = data.get('gesellenbrief');
+    var fuehrerschein = data.get('fuehrerschein');
+    var montage = data.get('montage');
+
+    // Sicherheitsnetz (der Funnel filtert bereits per Routing)
+    if (gesellenbrief !== 'ja') { return showError('Für diese Stelle ist ein Gesellenbrief Voraussetzung.'); }
+    if (fuehrerschein !== 'ja') { return showError('Ein Führerschein Klasse B ist für die Stelle nötig.'); }
+    if (!montage) { return showError('Bitte beantworte die Montage-Frage.'); }
+
+    var nachricht = [
+      '🔌 BEWERBUNG ELEKTRIKER (m/w/d) — LP-C Funnel / Tesla / 4-Tage-Woche',
+      '',
+      'Gesellenbrief: ' + gesellenbrief,
+      'Montage Mo–Do bereit: ' + montage,
+      'Führerschein Klasse B: ' + fuehrerschein
+    ];
+    var callwhen = data.get('callwhen');
+    if (callwhen) nachricht.push('Erreichbarkeit: ' + callwhen);
+    data.set('nachricht', nachricht.join('\n'));
+
+    // Prefix für Trello-Titel: markiert A/B-Variante C
+    data.set('name', '🔌 Elektriker-C — ' + (data.get('name') || ''));
+
+    submitBtn.disabled = true;
+    btnLabel.textContent = 'Wird gesendet …';
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: data
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Senden fehlgeschlagen (' + res.status + ').');
+      return res.json();
+    }).then(function () {
+      ZAPConsent.trackLead(form);
+      if (typeof window.plausible === 'function') { window.plausible('Bewerbung Submit'); }
+      goTo('success');
+    }).catch(function (err) {
+      submitBtn.disabled = false;
+      btnLabel.textContent = 'Rückruf sichern';
+      showError(err.message || 'Etwas ist schiefgelaufen. Bitte ruf uns direkt an: 0541 9321 3072.');
+    });
+  });
+
+  // ---------- Cookie Banner ----------
+  ZAPConsent.bannerInit({
+    bannerEl: document.getElementById('cookie-banner'),
+    acceptBtn: document.getElementById('cookie-accept'),
+    declineBtn: document.getElementById('cookie-decline')
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

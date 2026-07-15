@@ -36,7 +36,8 @@
  *   .applyPixelConsent()                → Meta fbq + TikTok ttq consent grant/revoke gemaess Status
  *   .trackPixelPageViewIfAllowed()      → fbq + ttq PageView wenn marketing=true
  *   .attachToForm(formEl)               → hidden-fields consent_marketing + event_source_url + event_id (+ fbc/fbp/ttclid/ttp nur mit Consent)
- *   .trackLead(formEl)                  → feuert Meta 'Lead' + TikTok 'SubmitForm' mit derselben event_id wie das Form (Browser↔Server-Dedup)
+ *   .trackLead(formEl)                  → feuert Meta 'Lead' + TikTok 'SubmitForm' mit derselben event_id wie das Form (Browser↔Server-Dedup);
+ *                                         vorab Advanced Matching: E-Mail/Telefon SHA-256-gehasht an fbq('init')/ttq.identify (nie Klartext)
  *   .bannerInit({bannerEl, acceptBtn, declineBtn, onShown, onHidden, onChange})
  *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided()
  *
@@ -167,6 +168,45 @@
       if (fbclid) return 'fb.1.' + Date.now() + '.' + fbclid;
     } catch (e) {}
     return '';
+  }
+
+  // --- Advanced Matching (Meta + TikTok) ---
+  // Beim Lead-Event werden E-Mail/Telefon SHA-256-gehasht an die Pixel gegeben
+  // (Meta: fbq('init', id, {em, ph}); TikTok: ttq.identify). NIE Klartext, nur
+  // mit Marketing-Consent UND nur fuer qualifizierte Bewerber (gleiche Weiche
+  // wie das Lead-Event selbst). Verbessert die Zuordnung Bewerbung↔Anzeige.
+  var META_PIXEL_ID = '851410567212402';
+
+  function sha256Hex(value) {
+    try {
+      if (!value || !global.crypto || !global.crypto.subtle || !global.TextEncoder) {
+        return Promise.resolve('');
+      }
+      return global.crypto.subtle
+        .digest('SHA-256', new TextEncoder().encode(value))
+        .then(function (buf) {
+          return Array.prototype.map
+            .call(new Uint8Array(buf), function (b) {
+              return ('0' + b.toString(16)).slice(-2);
+            })
+            .join('');
+        })
+        .catch(function () { return ''; });
+    } catch (e) {
+      return Promise.resolve('');
+    }
+  }
+
+  // E.164-Normalisierung (DE-Default) — identisch zur Server-Seite in n8n,
+  // damit Browser- und Server-Hash denselben Wert ergeben.
+  function toE164(raw) {
+    var d = String(raw || '').replace(/[^\d+]/g, '');
+    if (!d) return '';
+    if (d[0] === '+') return d;
+    if (d.indexOf('00') === 0) return '+' + d.slice(2);
+    if (d[0] === '0') return '+49' + d.slice(1);
+    if (d.indexOf('49') === 0) return '+' + d;
+    return '+49' + d;
   }
 
   // TikTok-Klick-ID (ttclid) aus der URL; TikTok-Browser-ID aus dem _ttp-Cookie.
@@ -327,21 +367,55 @@
       ? form.querySelector('input[type="hidden"][name="event_id"]')
       : null;
     var eid = eidField ? eidField.value : '';
-    // Meta: 'Lead' mit derselben event_id wie das Form → Browser↔CAPI-Dedup
-    if (typeof global.fbq === 'function') {
-      if (eid) {
-        global.fbq('track', 'Lead', {}, { eventID: eid });
-      } else {
-        global.fbq('track', 'Lead');
+
+    function fireEvents() {
+      // Meta: 'Lead' mit derselben event_id wie das Form → Browser↔CAPI-Dedup
+      if (typeof global.fbq === 'function') {
+        if (eid) {
+          global.fbq('track', 'Lead', {}, { eventID: eid });
+        } else {
+          global.fbq('track', 'Lead');
+        }
+      }
+      // TikTok: 'SubmitForm' mit derselben event_id → Browser↔Events-API-Dedup
+      if (global.ttq && typeof global.ttq.track === 'function') {
+        if (eid) {
+          global.ttq.track('SubmitForm', {}, { event_id: eid });
+        } else {
+          global.ttq.track('SubmitForm');
+        }
       }
     }
-    // TikTok: 'SubmitForm' mit derselben event_id → Browser↔Events-API-Dedup
-    if (global.ttq && typeof global.ttq.track === 'function') {
-      if (eid) {
-        global.ttq.track('SubmitForm', {}, { event_id: eid });
-      } else {
-        global.ttq.track('SubmitForm');
-      }
+
+    // Advanced Matching: E-Mail/Telefon SHA-256-gehasht an die Pixel geben,
+    // DANN das Event feuern. Schlaegt das Hashing fehl → Event ohne Matching
+    // feuern (nie blockieren, nie Klartext).
+    var emailField = form ? form.querySelector('input[name="email"]') : null;
+    var phoneField = form ? form.querySelector('input[name="telefon"]') : null;
+    var email = emailField ? String(emailField.value || '').trim().toLowerCase() : '';
+    var phoneE164 = toE164(phoneField ? phoneField.value : '');
+
+    try {
+      Promise.all([
+        sha256Hex(email),
+        // Meta-Normalisierung: Ziffern inkl. Laendercode, ohne '+'
+        sha256Hex(phoneE164 ? phoneE164.slice(1) : ''),
+        // TikTok-Normalisierung: E.164 inkl. '+'
+        sha256Hex(phoneE164)
+      ]).then(function (hashes) {
+        var emHash = hashes[0];
+        var phMeta = hashes[1];
+        var phTikTok = hashes[2];
+        if (typeof global.fbq === 'function' && (emHash || phMeta)) {
+          global.fbq('init', META_PIXEL_ID, { em: emHash, ph: phMeta });
+        }
+        if (global.ttq && typeof global.ttq.identify === 'function' && (emHash || phTikTok)) {
+          global.ttq.identify({ sha256_email: emHash, sha256_phone_number: phTikTok });
+        }
+        fireEvents();
+      }).catch(fireEvents);
+    } catch (e) {
+      fireEvents();
     }
   }
 

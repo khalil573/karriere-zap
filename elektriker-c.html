@@ -420,6 +420,25 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 
   function currentStep() { return history[history.length - 1]; }
 
+  // Schritt-Tracking (Plausible, cookieless, keine PII): pro Session einmal je
+  // erreichtem Schritt ein Event — das Funnel-Äquivalent zur Scroll-Tiefe.
+  // 'intro' = Pageview (nicht extra getrackt); success = Bewerbung Submit/Aussortiert.
+  var STEP_EVENTS = {
+    value: 'C-Funnel 1 Value',
+    gesellenbrief: 'C-Funnel 2 Gesellenbrief',
+    fuehrerschein: 'C-Funnel 3 Fuehrerschein',
+    montage: 'C-Funnel 4 Montage',
+    callwhen: 'C-Funnel 5 Erreichbarkeit',
+    contact: 'C-Funnel 6 Kontakt'
+  };
+  var trackedSteps = {};
+  function trackStep(id) {
+    var ev = STEP_EVENTS[id];
+    if (!ev || trackedSteps[id]) return;
+    trackedSteps[id] = true;
+    if (typeof window.plausible === 'function') { window.plausible(ev); }
+  }
+
   function render() {
     var id = currentStep();
     steps.forEach(function (s) { s.classList.toggle('active', s.dataset.step === id); });
@@ -435,6 +454,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
   function goTo(id) {
     if (id === currentStep()) return;
     history.push(id);
+    trackStep(id);
     render();
   }
 

@@ -40,12 +40,16 @@
  *                                         vorab Advanced Matching: E-Mail/Telefon SHA-256-gehasht an fbq('init')/ttq.identify (nie Klartext)
  *   .bannerInit({bannerEl, acceptBtn, declineBtn, onShown, onHidden, onChange})
  *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided();
- *                                         misst Banner-Interaktion via Plausible (Consent Shown/Accepted/Declined, cookieless)
+ *                                         misst Banner-Interaktion via Plausible (Consent Shown/Accepted/Declined, cookieless);
+ *                                         A/B-Test der Banner-Texte: pro Pageview zufaellige Variante (BANNER_VARIANTS),
+ *                                         Variante v2 feuert eigene Event-Namen mit Suffix " V2"
  *
  * Banner-DOM-Erwartung:
  *   - bannerEl   = das Container-Element (kann hidden attribute oder display:none nutzen)
  *   - acceptBtn  = Button-Element fuer "Akzeptieren"
  *   - declineBtn = Button-Element fuer "Ablehnen"
+ *   - im Banner: Headline mit class="cookie-modal-title", Text-<p> mit class="cookie-modal-text"
+ *     (stabile Hooks fuer den Varianten-Text-Tausch; Fallback: erstes h2/p im Banner)
  */
 (function (global) {
   'use strict';
@@ -439,6 +443,101 @@
     }
   }
 
+  // --- A/B-Test der Banner-Texte -------------------------------------------
+  //
+  // Varianten-Zuweisung BEWUSST OHNE Storage (kein localStorage, kein Cookie,
+  // kein sessionStorage): Nach § 25 TTDSG ist das Speichern/Auslesen von
+  // Informationen auf dem Endgeraet ohne Einwilligung nur zulaessig, wenn es
+  // "unbedingt erforderlich" ist — eine A/B-Test-Zuweisung ist das nicht, und
+  // das Banner erscheint per Definition VOR jeder Einwilligung. Deshalb wird
+  // pro Pageview rein zufaellig neu zugewiesen (Math.random, fluechtig im
+  // Speicher). Das ist methodisch sauber, weil die Consent-Entscheidung
+  // praktisch immer auf genau der Seite faellt, auf der das Banner erscheint —
+  // Shown/Accepted/Declined eines Pageviews gehoeren immer zur selben Variante.
+  //
+  // Fairness: Die Zuweisung passiert hier in der geteilten Komponente und ist
+  // voellig unabhaengig davon, welche Landingpage (elektriker / -b / -c) das
+  // Banner einbindet — jede LP bekommt dieselbe gleichverteilte Zufallsziehung,
+  // die Varianten sind also ueber alle LPs identisch verteilt.
+  //
+  // Messung je Variante ueber variantenspezifische EVENT-NAMEN (eventSuffix),
+  // z. B. 'Consent Accepted' (Kontrolle) vs. 'Consent Accepted V2'. Bewusst
+  // KEINE Plausible-Custom-Props: die sind im aktuellen Plausible-Plan nicht
+  // enthalten. Die Kontrolle feuert weiterhin exakt die bestehenden Namen und
+  // bleibt damit historisch vergleichbar; Gesamtquote = Summe beider Varianten.
+  //
+  // Neue Variante hinzufuegen = ein weiterer Array-Eintrag
+  // { name, eventSuffix, texts }.
+  // texts: null → Kontrolle, das Markup der Seite bleibt unveraendert.
+  // Der Datenschutz-Link (href/target/rel) wird IMMER aus dem bestehenden
+  // Markup wiederverwendet, Varianten tauschen nur dessen sichtbares Label.
+  var BANNER_VARIANTS = [
+    {
+      // Kontrolle = exakt der heutige Stand (Texte stehen im HTML der LPs),
+      // Event-Namen unveraendert (leerer Suffix)
+      name: 'modal-v1',
+      eventSuffix: '',
+      texts: null
+    },
+    {
+      // Text-Variante: kuerzer + direkter (eine Design-Philosophie, sonst
+      // nichts geaendert — Farben/Layout/Buttongroessen bleiben identisch)
+      name: 'modal-v2',
+      eventSuffix: ' V2',
+      texts: {
+        headline: 'Kurz gefragt:',
+        textBeforeLink: 'Dürfen wir messen, welche Anzeige dich hergebracht hat? Details: ',
+        linkLabel: 'Datenschutzerklärung',
+        textAfterLink: '.',
+        accept: 'Ja, passt 👍',
+        decline: 'Nein danke'
+      }
+    }
+  ];
+
+  // Gleichverteilte Zufallsziehung ueber alle Varianten (bei 2 Varianten
+  // identisch zu Math.random() < 0.5), pro Pageview neu — siehe oben.
+  function pickBannerVariant() {
+    var i = Math.floor(Math.random() * BANNER_VARIANTS.length);
+    return BANNER_VARIANTS[i] || BANNER_VARIANTS[0];
+  }
+
+  // Tauscht die Banner-Texte im bestehenden Markup gegen die der Variante.
+  // Gibt die effektiv angezeigte Variante zurueck: schlaegt das Umtexten
+  // fehl, bleibt die Kontrolle sichtbar und es wird auch als Kontrolle
+  // gemessen (Messung darf nie luegen, Consent-Flow nie brechen).
+  function applyBannerVariant(banner, acceptBtn, declineBtn, variant) {
+    var control = BANNER_VARIANTS[0];
+    if (!variant || !variant.texts) return control;
+    var t = variant.texts;
+    try {
+      var title = banner.querySelector('.cookie-modal-title') ||
+        banner.querySelector('h2');
+      var text = banner.querySelector('.cookie-modal-text') ||
+        banner.querySelector('p');
+      if (!title || !text) return control;
+
+      // Bestehendes <a> (inkl. href/target/rel) wiederverwenden — Varianten
+      // aendern nur das sichtbare Label, nie das Link-Ziel.
+      var link = text.querySelector('a');
+      title.textContent = t.headline;
+      while (text.firstChild) {
+        text.removeChild(text.firstChild);
+      }
+      text.appendChild(document.createTextNode(t.textBeforeLink));
+      if (link) {
+        link.textContent = t.linkLabel;
+        text.appendChild(link);
+      }
+      text.appendChild(document.createTextNode(t.textAfterLink));
+      acceptBtn.textContent = t.accept;
+      declineBtn.textContent = t.decline;
+      return variant;
+    } catch (e) {
+      return control;
+    }
+  }
+
   function bannerInit(opts) {
     opts = opts || {};
     var banner = opts.bannerEl;
@@ -462,17 +561,25 @@
       if (typeof opts.onShown === 'function') opts.onShown();
     }
 
+    // A/B-Test: Variante pro Pageview ziehen (ohne Storage, s. o.) und die
+    // Texte VOR dem Anzeigen tauschen. Shown/Accepted/Declined desselben
+    // Pageviews tragen dadurch garantiert denselben Event-Namens-Suffix.
+    var variant = applyBannerVariant(
+      banner, acceptBtn, declineBtn, pickBannerVariant()
+    );
+    var suffix = variant.eventSuffix || '';
+
     if (!hasDecided()) {
       show();
       // Nur zaehlen, wenn der Banner wirklich angezeigt wurde
-      trackConsentEvent('Consent Shown');
+      trackConsentEvent('Consent Shown' + suffix);
     }
 
     acceptBtn.addEventListener('click', function () {
       var state = acceptAll();
       applyPixelConsent();
       trackPixelPageViewIfAllowed();
-      trackConsentEvent('Consent Accepted');
+      trackConsentEvent('Consent Accepted' + suffix);
       if (typeof opts.onChange === 'function') opts.onChange(state);
       hide();
     });
@@ -480,7 +587,7 @@
     declineBtn.addEventListener('click', function () {
       var state = declineAll();
       applyPixelConsent();
-      trackConsentEvent('Consent Declined');
+      trackConsentEvent('Consent Declined' + suffix);
       if (typeof opts.onChange === 'function') opts.onChange(state);
       hide();
     });

@@ -320,11 +320,15 @@
       setHidden('fbp', readCookie('_fbp'));
       setHidden('ttclid', getTtclid());
       setHidden('ttp', getTtp());
+      // User-Agent fuer CAPI/Events-API-Match-Quality (client_user_agent) —
+      // wie fbc/fbp nur mit Marketing-Consent, sonst leer (fail-closed)
+      setHidden('client_ua', (global.navigator && global.navigator.userAgent) || '');
     } else {
       setHidden('fbc', '');
       setHidden('fbp', '');
       setHidden('ttclid', '');
       setHidden('ttp', '');
+      setHidden('client_ua', '');
     }
   }
 

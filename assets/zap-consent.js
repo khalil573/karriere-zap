@@ -219,6 +219,19 @@
     return '+49' + d;
   }
 
+  // Vor-/Nachname aus dem vollen Namensfeld fuer Meta Advanced Matching (fn/ln):
+  // erster Whitespace-Token = Vorname, Rest = Nachname (kann leer sein).
+  // Normalisierung: lowercase + trim + Mehrfach-Whitespace kollabieren;
+  // Umlaute/UTF-8 bleiben unveraendert (Meta akzeptiert UTF-8 vor dem Hashing).
+  // Wird NUR gehasht weitergegeben (sha256Hex), nie Klartext.
+  function splitName(raw) {
+    var norm = String(raw || '').toLowerCase().trim().replace(/\s+/g, ' ');
+    if (!norm) return { fn: '', ln: '' };
+    var idx = norm.indexOf(' ');
+    if (idx === -1) return { fn: norm, ln: '' };
+    return { fn: norm.slice(0, idx), ln: norm.slice(idx + 1) };
+  }
+
   // TikTok-Klick-ID (ttclid) aus der URL; TikTok-Browser-ID aus dem _ttp-Cookie.
   // Analog zu fbc/fbp: werden nur MIT Marketing-Consent ans Formular gehaengt und
   // dienen der TikTok-Events-API-Attribution (Server-Seite).
@@ -420,13 +433,20 @@
       }
     }
 
-    // Advanced Matching: E-Mail/Telefon SHA-256-gehasht an die Pixel geben,
-    // DANN das Event feuern. Schlaegt das Hashing fehl → Event ohne Matching
-    // feuern (nie blockieren, nie Klartext).
+    // Advanced Matching: E-Mail/Telefon/Vorname/Nachname SHA-256-gehasht an
+    // die Pixel geben, DANN das Event feuern. Schlaegt das Hashing fehl →
+    // Event ohne Matching feuern (nie blockieren, nie Klartext).
+    // Alle Match-Keys laufen nur hier — also consent-gated (hasMarketing)
+    // UND nur fuer qualifizierte Bewerber (isQualified, Gate oben). Die
+    // Datenschutzerklaerung nennt die gehashten Kontaktdaten inkl. Name
+    // (Stand 16.07.2026). Zweck: Event Match Quality (EMQ).
     var emailField = form ? form.querySelector('input[name="email"]') : null;
     var phoneField = form ? form.querySelector('input[name="telefon"]') : null;
+    var nameField = form ? form.querySelector('input[name="name"]') : null;
     var email = emailField ? String(emailField.value || '').trim().toLowerCase() : '';
     var phoneE164 = toE164(phoneField ? phoneField.value : '');
+    // Fehlendes Namensfeld → leere Strings, kein Fehler (LPs ohne Namensfeld)
+    var nameParts = splitName(nameField ? nameField.value : '');
 
     try {
       Promise.all([
@@ -434,14 +454,33 @@
         // Meta-Normalisierung: Ziffern inkl. Laendercode, ohne '+'
         sha256Hex(phoneE164 ? phoneE164.slice(1) : ''),
         // TikTok-Normalisierung: E.164 inkl. '+'
-        sha256Hex(phoneE164)
+        sha256Hex(phoneE164),
+        sha256Hex(nameParts.fn),
+        sha256Hex(nameParts.ln)
       ]).then(function (hashes) {
         var emHash = hashes[0];
         var phMeta = hashes[1];
         var phTikTok = hashes[2];
-        if (typeof global.fbq === 'function' && (emHash || phMeta)) {
-          global.fbq('init', META_PIXEL_ID, { em: emHash, ph: phMeta });
+        var fnHash = hashes[3];
+        var lnHash = hashes[4];
+        if (typeof global.fbq === 'function') {
+          // Nur nicht-leere Match-Keys uebergeben (leere Keys weglassen).
+          // external_id = E-Mail-Hash als stabile pseudonyme ID wiederverwendet
+          // (kein neues Datum, nur ein zusaetzlicher Schluessel fuer EMQ).
+          var matchData = {};
+          if (emHash) matchData.em = emHash;
+          if (phMeta) matchData.ph = phMeta;
+          if (fnHash) matchData.fn = fnHash;
+          if (lnHash) matchData.ln = lnHash;
+          if (emHash) matchData.external_id = emHash;
+          var hasMatchData = false;
+          for (var k in matchData) { hasMatchData = true; break; }
+          if (hasMatchData) {
+            global.fbq('init', META_PIXEL_ID, matchData);
+          }
         }
+        // TikTok bewusst UNVERAENDERT: Advanced Matching kennt dort keine
+        // Namensfelder, external_id bleibt fuer TikTok unangetastet.
         if (global.ttq && typeof global.ttq.identify === 'function' && (emHash || phTikTok)) {
           global.ttq.identify({ sha256_email: emHash, sha256_phone_number: phTikTok });
         }

@@ -182,6 +182,11 @@
   // wie das Lead-Event selbst). Verbessert die Zuordnung Bewerbung↔Anzeige.
   var META_PIXEL_ID = '851410567212402';
 
+  // n8n-Enrichment-Endpoint (IP/UA fuer Server-Events). Pfad-Token ist
+  // public by design — der Endpoint validiert Origin/UUID fail-closed und
+  // kann selbst kein Conversion-Event ausloesen.
+  var ENRICH_URL = 'https://zappruefstelle.app.n8n.cloud/webhook/enrich-VPGkwxTWh43mCffWxinA';
+
   function sha256Hex(value) {
     try {
       if (!value || !global.crypto || !global.crypto.subtle || !global.TextEncoder) {
@@ -376,6 +381,25 @@
       ? form.querySelector('input[type="hidden"][name="event_id"]')
       : null;
     var eid = eidField ? eidField.value : '';
+
+    // IP/UA-Enrichment fuer die Server-Events (Meta CAPI / TikTok Events API):
+    // Mini-POST mit NUR der event_id an n8n — der Server liest IP+User-Agent
+    // aus den Request-Headern (kurzlebig gespeichert, Delete-after-read).
+    // Laeuft NUR hier, also consent- UND qualifiziert-gated wie das Event
+    // selbst. Der Endpoint kann allein KEIN Event ausloesen (das feuert erst
+    // die Formspree-Submission). Fire-and-forget: darf den Submit nie bremsen.
+    if (eid) {
+      try {
+        global.fetch(ENRICH_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event_id: String(eid).toLowerCase() }),
+          keepalive: true
+        }).catch(function () {});
+      } catch (e) {
+        // Enrichment ist optional — Fehler niemals durchreichen
+      }
+    }
 
     function fireEvents() {
       // Meta: 'Lead' mit derselben event_id wie das Form → Browser↔CAPI-Dedup

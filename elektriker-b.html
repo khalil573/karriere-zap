@@ -1071,74 +1071,77 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
 .spacer-sm { height: 14px; }
 .spacer-md { height: 22px; }
 
-/* ====== Cookie Banner ====== */
+/* ====== Cookie Consent Modal (zentriert, identisch auf allen 3 Testarmen) ====== */
 .cookie-banner {
   position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 9999;
-  background: var(--ink);
-  color: var(--paper);
-  padding: 20px 22px calc(20px + env(safe-area-inset-bottom));
-  border-top: 3px solid var(--orange);
-  box-shadow: 0 -10px 40px rgba(0,0,0,0.35);
-  font-size: 14px;
-  line-height: 1.5;
-}
-.cookie-banner[hidden] { display: none; }
-.cookie-banner-inner {
-  max-width: 1200px;
-  margin: 0 auto;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(14,14,14,0.55);
   display: flex;
   align-items: center;
-  gap: 22px;
-  flex-wrap: wrap;
+  justify-content: center;
+  padding: 16px;
 }
-.cookie-banner-text { flex: 1; min-width: 260px; }
-.cookie-banner-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #FF7A4A;
-  font-weight: 600;
-  margin-bottom: 4px;
+.cookie-banner[hidden] { display: none !important; }
+.cookie-modal {
+  background: #FFFFFF;
+  color: #0E0E0E;
+  border-radius: 18px;
+  padding: 24px;
+  width: 92vw;
+  max-width: 480px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+  font-size: 15px;
+  line-height: 1.55;
+  text-align: left;
 }
-.cookie-banner-text p {
-  margin: 0;
-  color: rgba(255,255,255,0.88);
-  font-size: 14px;
+.cookie-modal h2 {
+  margin: 0 0 10px;
+  font-family: 'Bricolage Grotesque', 'Manrope', system-ui, sans-serif;
+  font-size: 21px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: #0E0E0E;
 }
-.cookie-banner-text a {
-  color: #FF7A4A;
-  text-decoration: underline;
+.cookie-modal p {
+  margin: 0 0 18px;
+  color: rgba(14,14,14,0.75);
 }
-.cookie-banner-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.cookie-modal a { color: #C73E14; text-decoration: underline; }
+.cookie-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 .cookie-btn {
-  padding: 12px 22px;
-  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  padding: 0 18px;
+  border-radius: 12px;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
-  border: none;
-  transition: background 140ms ease, transform 140ms ease;
+  text-align: center;
+  transition: background 140ms ease;
 }
+.cookie-btn-accept {
+  background: #E24E1F;
+  color: #FFFFFF;
+  border: 1.5px solid #E24E1F;
+}
+.cookie-btn-accept:hover { background: #C73E14; border-color: #C73E14; }
 .cookie-btn-decline {
   background: transparent;
-  color: var(--paper);
-  border: 1px solid rgba(255,255,255,0.35);
+  color: #0E0E0E;
+  border: 1.5px solid rgba(14,14,14,0.4);
 }
-.cookie-btn-decline:hover { background: rgba(255,255,255,0.08); }
-.cookie-btn-accept {
-  background: var(--orange);
-  color: var(--paper);
-}
-.cookie-btn-accept:hover { background: var(--orange-700); transform: translateY(-1px); }
-
-body.has-cookie-banner .sticky-cta { bottom: 116px; }
-@media (min-width: 880px) {
-  .cookie-banner { padding-left: 56px; padding-right: 56px; }
-}
+.cookie-btn-decline:hover { background: rgba(14,14,14,0.05); }
 
 /* Hidden ravn variant toggle */
 .ravn-card.is-hidden,
@@ -1919,16 +1922,14 @@ body.has-cookie-banner .sticky-cta { bottom: 116px; }
 
 </div>
 
-<!-- ============= COOKIE BANNER ============= -->
-<div id="cookie-banner" class="cookie-banner" hidden>
-  <div class="cookie-banner-inner">
-    <div class="cookie-banner-text">
-      <div class="cookie-banner-eyebrow">🍪 Cookies</div>
-      <p>Wir nutzen Marketing-Cookies (Meta- &amp; TikTok-Pixel inkl. Conversions/Events API), um die Wirksamkeit unserer Stellenanzeigen zu messen. Bitte triff eine Auswahl, bevor du dich bewirbst. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Mehr erfahren</a></p>
-    </div>
-    <div class="cookie-banner-actions">
-      <button id="cookie-decline" type="button" class="cookie-btn cookie-btn-decline">Ablehnen</button>
-      <button id="cookie-accept" type="button" class="cookie-btn cookie-btn-accept">Akzeptieren</button>
+<!-- ============= COOKIE CONSENT MODAL ============= -->
+<div id="cookie-banner" class="cookie-banner" hidden role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+  <div class="cookie-modal">
+    <h2 id="cookie-modal-title">Kurze Frage, dann geht’s los:</h2>
+    <p>Dürfen wir sehen, über welche Anzeige du uns gefunden hast? Das hilft uns, Werbekosten zu sparen. Mehr dazu in der <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
+    <div class="cookie-actions">
+      <button id="cookie-accept" type="button" class="cookie-btn cookie-btn-accept">Ja, klar 👍</button>
+      <button id="cookie-decline" type="button" class="cookie-btn cookie-btn-decline">Ohne Tracking weiter</button>
     </div>
   </div>
 </div>

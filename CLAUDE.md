@@ -1,6 +1,8 @@
 # karriere-zap — Repo-Notizen für Claude
 
 > Diese Datei ist die **erste Quelle**, die Claude in einer neuen Session liest. Beim Arbeiten an diesem Repo: zuerst hier lesen, dann Code anfassen.
+>
+> ⚠️ **Für jede NEUE Landingpage/Ad/Kampagne/jedes Formular gilt zusätzlich verbindlich der Skill `pagebuilder`** (`~/.claude/skills/pagebuilder/SKILL.md`) — er erzwingt Consent-Modal, volles Match-Key-Set, Enrichment, Plausible-Goals, Qualifiziert-Gate, UTM- und DSE-Disziplin von Anfang an (GF-Direktive 2026-07-16).
 
 ## Projekt in einem Satz
 

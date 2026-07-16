@@ -39,7 +39,8 @@
  *   .trackLead(formEl)                  → feuert Meta 'Lead' + TikTok 'SubmitForm' mit derselben event_id wie das Form (Browser↔Server-Dedup);
  *                                         vorab Advanced Matching: E-Mail/Telefon SHA-256-gehasht an fbq('init')/ttq.identify (nie Klartext)
  *   .bannerInit({bannerEl, acceptBtn, declineBtn, onShown, onHidden, onChange})
- *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided()
+ *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided();
+ *                                         misst Banner-Interaktion via Plausible (Consent Shown/Accepted/Declined, cookieless)
  *
  * Banner-DOM-Erwartung:
  *   - bannerEl   = das Container-Element (kann hidden attribute oder display:none nutzen)
@@ -423,6 +424,21 @@
     }
   }
 
+  // Consent-Banner-Messung ueber Plausible (cookieless, aggregiert, keine
+  // Personendaten) — misst nur die Interaktion mit dem Banner selbst und ist
+  // daher VOR einer Einwilligung zulaessig (kein Cookie, keine PII). Feuert
+  // ausschliesslich wenn window.plausible geladen ist und darf den
+  // Consent-Flow NIE blockieren oder verzoegern (fire-and-forget, try/catch).
+  function trackConsentEvent(name) {
+    try {
+      if (typeof global.plausible === 'function') {
+        global.plausible(name);
+      }
+    } catch (e) {
+      // Messung ist optional — Fehler niemals in den Consent-Flow durchreichen
+    }
+  }
+
   function bannerInit(opts) {
     opts = opts || {};
     var banner = opts.bannerEl;
@@ -448,12 +464,15 @@
 
     if (!hasDecided()) {
       show();
+      // Nur zaehlen, wenn der Banner wirklich angezeigt wurde
+      trackConsentEvent('Consent Shown');
     }
 
     acceptBtn.addEventListener('click', function () {
       var state = acceptAll();
       applyPixelConsent();
       trackPixelPageViewIfAllowed();
+      trackConsentEvent('Consent Accepted');
       if (typeof opts.onChange === 'function') opts.onChange(state);
       hide();
     });
@@ -461,6 +480,7 @@
     declineBtn.addEventListener('click', function () {
       var state = declineAll();
       applyPixelConsent();
+      trackConsentEvent('Consent Declined');
       if (typeof opts.onChange === 'function') opts.onChange(state);
       hide();
     });

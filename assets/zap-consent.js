@@ -37,9 +37,11 @@
  *   .trackPixelPageViewIfAllowed()      → fbq + ttq PageView wenn marketing=true
  *   .attachToForm(formEl)               → hidden-fields consent_marketing + event_source_url + event_id (+ fbc/fbp/ttclid/ttp nur mit Consent)
  *   .trackLead(formEl)                  → feuert Meta 'Lead' + TikTok 'SubmitForm' mit derselben event_id wie das Form (Browser↔Server-Dedup);
- *                                         vorab Advanced Matching: E-Mail/Telefon SHA-256-gehasht an fbq('init')/ttq.identify (nie Klartext)
+ *                                         vorab Advanced Matching: E-Mail/Telefon SHA-256-gehasht an fbq('init')/ttq.identify (nie Klartext);
+ *                                         Meta zusaetzlich fn/ln (aus Namensfeld) + external_id (= E-Mail-Hash) fuer Event Match Quality
  *   .bannerInit({bannerEl, acceptBtn, declineBtn, onShown, onHidden, onChange})
- *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided()
+ *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided();
+ *                                         misst Banner-Interaktion via Plausible (Consent Shown/Accepted/Declined, cookieless)
  *
  * Banner-DOM-Erwartung:
  *   - bannerEl   = das Container-Element (kann hidden attribute oder display:none nutzen)
@@ -207,6 +209,19 @@
     if (d[0] === '0') return '+49' + d.slice(1);
     if (d.indexOf('49') === 0) return '+' + d;
     return '+49' + d;
+  }
+
+  // Vor-/Nachname aus dem vollen Namensfeld fuer Meta Advanced Matching (fn/ln):
+  // erster Whitespace-Token = Vorname, Rest = Nachname (kann leer sein).
+  // Normalisierung: lowercase + trim + Mehrfach-Whitespace kollabieren;
+  // Umlaute/UTF-8 bleiben unveraendert (Meta akzeptiert UTF-8 vor dem Hashing).
+  // Wird NUR gehasht weitergegeben (sha256Hex), nie Klartext.
+  function splitName(raw) {
+    var norm = String(raw || '').toLowerCase().trim().replace(/\s+/g, ' ');
+    if (!norm) return { fn: '', ln: '' };
+    var idx = norm.indexOf(' ');
+    if (idx === -1) return { fn: norm, ln: '' };
+    return { fn: norm.slice(0, idx), ln: norm.slice(idx + 1) };
   }
 
   // TikTok-Klick-ID (ttclid) aus der URL; TikTok-Browser-ID aus dem _ttp-Cookie.
@@ -391,13 +406,20 @@
       }
     }
 
-    // Advanced Matching: E-Mail/Telefon SHA-256-gehasht an die Pixel geben,
-    // DANN das Event feuern. Schlaegt das Hashing fehl → Event ohne Matching
-    // feuern (nie blockieren, nie Klartext).
+    // Advanced Matching: E-Mail/Telefon/Vorname/Nachname SHA-256-gehasht an
+    // die Pixel geben, DANN das Event feuern. Schlaegt das Hashing fehl →
+    // Event ohne Matching feuern (nie blockieren, nie Klartext).
+    // Alle Match-Keys sind SHA-256-pseudonymisiert und laufen nur hier —
+    // also consent-gated (hasMarketing) UND nur fuer qualifizierte Bewerber
+    // (isQualified, Gate oben). Zweck: Event Match Quality (EMQ) — bessere
+    // Zuordnung Bewerbung↔Anzeige, keine neuen Datenerhebungen.
     var emailField = form ? form.querySelector('input[name="email"]') : null;
     var phoneField = form ? form.querySelector('input[name="telefon"]') : null;
+    var nameField = form ? form.querySelector('input[name="name"]') : null;
     var email = emailField ? String(emailField.value || '').trim().toLowerCase() : '';
     var phoneE164 = toE164(phoneField ? phoneField.value : '');
+    // Fehlendes Namensfeld → leere Strings, kein Fehler (LPs ohne Namensfeld)
+    var nameParts = splitName(nameField ? nameField.value : '');
 
     try {
       Promise.all([
@@ -405,14 +427,33 @@
         // Meta-Normalisierung: Ziffern inkl. Laendercode, ohne '+'
         sha256Hex(phoneE164 ? phoneE164.slice(1) : ''),
         // TikTok-Normalisierung: E.164 inkl. '+'
-        sha256Hex(phoneE164)
+        sha256Hex(phoneE164),
+        sha256Hex(nameParts.fn),
+        sha256Hex(nameParts.ln)
       ]).then(function (hashes) {
         var emHash = hashes[0];
         var phMeta = hashes[1];
         var phTikTok = hashes[2];
-        if (typeof global.fbq === 'function' && (emHash || phMeta)) {
-          global.fbq('init', META_PIXEL_ID, { em: emHash, ph: phMeta });
+        var fnHash = hashes[3];
+        var lnHash = hashes[4];
+        if (typeof global.fbq === 'function') {
+          // Nur nicht-leere Match-Keys uebergeben (leere Keys weglassen).
+          // external_id = E-Mail-Hash als stabile pseudonyme ID wiederverwendet
+          // (kein neues Datum, nur ein zusaetzlicher Schluessel fuer EMQ).
+          var matchData = {};
+          if (emHash) matchData.em = emHash;
+          if (phMeta) matchData.ph = phMeta;
+          if (fnHash) matchData.fn = fnHash;
+          if (lnHash) matchData.ln = lnHash;
+          if (emHash) matchData.external_id = emHash;
+          var hasMatchData = false;
+          for (var k in matchData) { hasMatchData = true; break; }
+          if (hasMatchData) {
+            global.fbq('init', META_PIXEL_ID, matchData);
+          }
         }
+        // TikTok bewusst UNVERAENDERT: Advanced Matching kennt dort keine
+        // Namensfelder, external_id bleibt fuer TikTok unangetastet.
         if (global.ttq && typeof global.ttq.identify === 'function' && (emHash || phTikTok)) {
           global.ttq.identify({ sha256_email: emHash, sha256_phone_number: phTikTok });
         }
@@ -420,6 +461,21 @@
       }).catch(fireEvents);
     } catch (e) {
       fireEvents();
+    }
+  }
+
+  // Consent-Banner-Messung ueber Plausible (cookieless, aggregiert, keine
+  // Personendaten) — misst nur die Interaktion mit dem Banner selbst und ist
+  // daher VOR einer Einwilligung zulaessig (kein Cookie, keine PII). Feuert
+  // ausschliesslich wenn window.plausible geladen ist und darf den
+  // Consent-Flow NIE blockieren oder verzoegern (fire-and-forget, try/catch).
+  function trackConsentEvent(name) {
+    try {
+      if (typeof global.plausible === 'function') {
+        global.plausible(name);
+      }
+    } catch (e) {
+      // Messung ist optional — Fehler niemals in den Consent-Flow durchreichen
     }
   }
 
@@ -448,12 +504,15 @@
 
     if (!hasDecided()) {
       show();
+      // Nur zaehlen, wenn der Banner wirklich angezeigt wurde
+      trackConsentEvent('Consent Shown');
     }
 
     acceptBtn.addEventListener('click', function () {
       var state = acceptAll();
       applyPixelConsent();
       trackPixelPageViewIfAllowed();
+      trackConsentEvent('Consent Accepted');
       if (typeof opts.onChange === 'function') opts.onChange(state);
       hide();
     });
@@ -461,6 +520,7 @@
     declineBtn.addEventListener('click', function () {
       var state = declineAll();
       applyPixelConsent();
+      trackConsentEvent('Consent Declined');
       if (typeof opts.onChange === 'function') opts.onChange(state);
       hide();
     });

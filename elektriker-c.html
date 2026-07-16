@@ -246,23 +246,77 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 
 .hp-field { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
 
-/* cookie banner */
+/* ====== Cookie Consent Modal (zentriert, identisch auf allen 3 Testarmen) ====== */
 .cookie-banner {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
-  background: #0A0E12; color: var(--paper);
-  padding: 18px 20px calc(18px + env(safe-area-inset-bottom));
-  border-top: 3px solid var(--orange); box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
-  font-size: 13.5px; line-height: 1.5;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(14,14,14,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
 }
-.cookie-banner[hidden] { display: none; }
-.cookie-inner { max-width: 520px; margin: 0 auto; }
-.cookie-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #FF7A4A; font-weight: 600; margin-bottom: 4px; }
-.cookie-banner p { margin: 0 0 12px; color: var(--mute); }
-.cookie-banner a { color: #FF9870; text-decoration: underline; }
-.cookie-actions { display: flex; gap: 10px; }
-.cookie-btn { flex: 1; padding: 12px; border-radius: 11px; font-weight: 600; font-size: 14px; cursor: pointer; border: none; }
-.cookie-btn.decline { background: transparent; color: var(--paper); border: 1px solid var(--line); }
-.cookie-btn.accept { background: var(--orange); color: #fff; }
+.cookie-banner[hidden] { display: none !important; }
+.cookie-modal {
+  background: #FFFFFF;
+  color: #0E0E0E;
+  border-radius: 18px;
+  padding: 24px;
+  width: 92vw;
+  max-width: 480px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+  font-size: 15px;
+  line-height: 1.55;
+  text-align: left;
+}
+.cookie-modal h2 {
+  margin: 0 0 10px;
+  font-family: 'Bricolage Grotesque', 'Manrope', system-ui, sans-serif;
+  font-size: 21px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: #0E0E0E;
+}
+.cookie-modal p {
+  margin: 0 0 18px;
+  color: rgba(14,14,14,0.75);
+}
+.cookie-modal a { color: #C73E14; text-decoration: underline; }
+.cookie-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cookie-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: background 140ms ease;
+}
+.cookie-btn-accept {
+  background: #E24E1F;
+  color: #FFFFFF;
+  border: 1.5px solid #E24E1F;
+}
+.cookie-btn-accept:hover { background: #C73E14; border-color: #C73E14; }
+.cookie-btn-decline {
+  background: transparent;
+  color: #0E0E0E;
+  border: 1.5px solid rgba(14,14,14,0.4);
+}
+.cookie-btn-decline:hover { background: rgba(14,14,14,0.05); }
 </style>
 </head>
 <body>
@@ -394,14 +448,14 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 
 </div>
 
-<!-- COOKIE BANNER -->
-<div id="cookie-banner" class="cookie-banner" hidden>
-  <div class="cookie-inner">
-    <div class="cookie-eyebrow">🍪 Cookies</div>
-    <p>Wir nutzen Marketing-Cookies (Meta- &amp; TikTok-Pixel), um die Wirksamkeit unserer Stellenanzeigen zu messen. <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Mehr erfahren</a></p>
+<!-- ============= COOKIE CONSENT MODAL ============= -->
+<div id="cookie-banner" class="cookie-banner" hidden role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+  <div class="cookie-modal">
+    <h2 id="cookie-modal-title">Kurze Frage, dann geht’s los:</h2>
+    <p>Dürfen wir sehen, über welche Anzeige du uns gefunden hast? Das hilft uns, Werbekosten zu sparen. Mehr dazu in der <a href="https://www.zap-pruefstelle.de/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
     <div class="cookie-actions">
-      <button id="cookie-decline" type="button" class="cookie-btn decline">Ablehnen</button>
-      <button id="cookie-accept" type="button" class="cookie-btn accept">Akzeptieren</button>
+      <button id="cookie-accept" type="button" class="cookie-btn cookie-btn-accept">Ja, klar 👍</button>
+      <button id="cookie-decline" type="button" class="cookie-btn cookie-btn-decline">Ohne Tracking weiter</button>
     </div>
   </div>
 </div>

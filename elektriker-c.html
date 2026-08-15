@@ -552,7 +552,12 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     var fuehrerschein = probe.get('fuehrerschein');
     var montage = probe.get('montage');
 
-    // Qualifikation = Gesellenbrief JA und Fuehrerschein JA (identisch zu A/B).
+    // Qualifikation fuer die ECHTE Uebermittlung: Gesellenbrief JA, Fuehrerschein
+    // JA, Montage-Frage beantwortet. GF-Entscheid 15.08.2026: montage=regional/nein
+    // wird BEWUSST mit uebermittelt — diese Bewerber sollen im Trello-Board landen
+    // (wie auf LP-A/B), duerfen aber NICHT als Meta-/TikTok-Conversion zaehlen.
+    // Das erzwingen isQualified() in zap-consent.js (Browser-Pixel) und die
+    // n8n-Weiche montage==='ja' (Server-Events) — nicht dieses Gate hier.
     var qualifiziert = (gesellenbrief === 'ja' && fuehrerschein === 'ja' && !!montage);
 
     // AUSSORTIERT: NICHTS uebermitteln, KEINE Conversion (kein Pixel-Lead, kein

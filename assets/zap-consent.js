@@ -367,16 +367,25 @@
    * wuerde der Algorithmus auf die Falschen optimieren). LPs ohne diese Felder
    * (Vertrieb/D2D) → Feld fehlt → gilt als qualifiziert und feuert normal
    * (unveraendert).
+   *
+   * Gelesen wird per FormData, damit BEIDE Formular-Bauarten greifen:
+   * Radio-Buttons (LP-A/B) UND Hidden-Inputs (der LP-C-Funnel schreibt seine
+   * Antworten in <input type="hidden">). Ein reiner ':checked'-Selektor
+   * uebersieht die Hidden-Inputs und wuerde LP-C ungeprueft durchwinken.
    */
   function isQualified(form) {
     if (!form || typeof form.querySelector !== 'function') return true;
-    var mustNotBeNein = ['gesellenbrief', 'fuehrerschein'];
-    for (var i = 0; i < mustNotBeNein.length; i++) {
-      var checked = form.querySelector('input[name="' + mustNotBeNein[i] + '"]:checked');
-      if (checked && checked.value === 'nein') return false;
+    var probe = null;
+    try { probe = new FormData(form); } catch (e) { /* Fallback: ':checked' unten */ }
+    function fieldValue(name) {
+      if (probe && probe.get(name) !== null) return String(probe.get(name));
+      var checked = form.querySelector('input[name="' + name + '"]:checked');
+      return checked ? String(checked.value) : null;
     }
-    var montage = form.querySelector('input[name="montage"]:checked');
-    if (montage && montage.value !== 'ja') return false;
+    if (fieldValue('gesellenbrief') === 'nein') return false;
+    if (fieldValue('fuehrerschein') === 'nein') return false;
+    var montage = fieldValue('montage');
+    if (montage !== null && montage !== 'ja') return false;
     return true;
   }
 

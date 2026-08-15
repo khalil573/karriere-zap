@@ -42,7 +42,10 @@
  *                                       → wires up Banner-Buttons + zeigt Banner wenn !hasDecided();
  *                                         misst Banner-Interaktion via Plausible (Consent Shown/Accepted/Declined, cookieless);
  *                                         A/B-Test der Banner-Texte: pro Pageview zufaellige Variante (BANNER_VARIANTS),
- *                                         Variante v2 feuert eigene Event-Namen mit Suffix " V2"
+ *                                         Nicht-Kontroll-Varianten feuern eigene Event-Namen mit Suffix (z. B. " V3").
+ *                                         ⚠️ Ein neuer Suffix braucht drei NEUE Plausible-Goals
+ *                                         ("Consent Shown/Accepted/Declined <Suffix>") — undefinierte
+ *                                         Custom-Events verwirft Plausible still, der Arm waere blind.
  *
  * Banner-DOM-Erwartung:
  *   - bannerEl   = das Container-Element (kann hidden attribute oder display:none nutzen)
@@ -552,17 +555,38 @@
       texts: null
     },
     {
-      // Text-Variante: kuerzer + direkter (eine Design-Philosophie, sonst
-      // nichts geaendert — Farben/Layout/Buttongroessen bleiben identisch)
-      name: 'modal-v2',
-      eventSuffix: ' V2',
+      // Herausforderer (seit 15.08.2026). Identisch zur Kontrolle bis auf
+      // EINEN Satz: die Begruendung. v1 begruendet mit unserem Vorteil
+      // ("Das hilft uns, Werbekosten zu sparen"), v3 mit dem des Bewerbers
+      // ("Stellen wie diese genau den Leuten zeigen, die sie suchen").
+      //
+      // BEWUSST nur eine Variable: Headline, Einstiegsfrage und BEIDE
+      // Button-Labels sind exakt die der Kontrolle. Der Vorgaenger-Test
+      // v1-vs-v2 unterschied sich in vier Punkten gleichzeitig (Headline,
+      // Begruendung, Accept-Label, Decline-Label) — er hat gezeigt DASS v1
+      // gewinnt, konnte aber nicht sagen WARUM. Genau das beantwortet dieser
+      // Test.
+      //
+      // Der Ablehn-Weg bleibt absichtlich unangetastet: "Ohne Tracking
+      // weiter" wie in der Kontrolle. Ablehnen muss genauso leicht bleiben
+      // wie Zustimmen (DSGVO Art. 4 Nr. 11 / § 25 TTDSG) — eine Zustimmung,
+      // die nur durch erschwertes Ablehnen zustande kommt, ist keine
+      // wirksame Einwilligung. Optimiert wird ausschliesslich ueber die
+      // Begruendung, nie ueber Reibung.
+      //
+      // Die Begruendung muss zutreffen, sonst waere die Einwilligung nicht
+      // informiert: bessere Anzeigen-Zuordnung fuehrt tatsaechlich zu
+      // gezielterer Ausspielung — es wird nichts versprochen, was ueber die
+      // reale Funktion hinausgeht.
+      name: 'modal-v3',
+      eventSuffix: ' V3',
       texts: {
-        headline: 'Kurz gefragt:',
-        textBeforeLink: 'Dürfen wir messen, welche Anzeige dich hergebracht hat? Details: ',
+        headline: 'Kurze Frage, dann geht’s los:',
+        textBeforeLink: 'Dürfen wir sehen, über welche Anzeige du uns gefunden hast? Dann können wir Stellen wie diese genau den Leuten zeigen, die sie suchen. Mehr dazu in der ',
         linkLabel: 'Datenschutzerklärung',
         textAfterLink: '.',
-        accept: 'Ja, passt 👍',
-        decline: 'Nein danke'
+        accept: 'Ja, klar 👍',
+        decline: 'Ohne Tracking weiter'
       }
     }
   ];

@@ -26,7 +26,8 @@ karriere-zap/
 ├── Vertrieb-Vorerfahrung.html  # Vertrieb-LP mit Vorerfahrungs-Filter (Kampagne: "Neue Kampagne für Leads")
 ├── elektriker.html             # Elektriker-LP (Kampagne: "Elektriker_V1")
 ├── Door2Door_vertrieb.html     # D2D-Vertrieb-LP (Kampagne: "ZAP D2D · Vertrieb")
-├── closer.html                 # Closer-LP (B2B, Fixum + Provision)
+├── closer.html                 # Closer-LP (B2B, Fixum + Provision) ⚠️ zitiert noch Alt-GF Zerbe — Text veraltet
+├── closer-funnel.html          # Closer-Funnel-LP (C-Mechanik; harte K.-o.: ≥3 J. Vertrieb, Closing-Skills, 100 % Office OS; Aussortiert = kein Submit)
 └── bewerben.html               # Funnel-Endziel — generisches Bewerbungsformular
 ```
 

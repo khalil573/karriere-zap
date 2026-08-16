@@ -142,15 +142,20 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 .step.scrollable { justify-content: flex-start; overflow-y: auto; }
 .step.scrollable .step-inner { margin: auto 0; }
 
-/* hero with photo bg */
+/* hero with photo bg — Schlagzeilen oben, Bild frei in der Mitte, CTA unten */
 .step.hero h1, .step.hero .eyebrow, .step.hero .trust-row { text-shadow: 0 1px 16px rgba(10,14,18,0.65); }
 .step.hero {
+  justify-content: space-between;
+  padding-top: 84px;
   background:
-    linear-gradient(180deg, rgba(15,20,25,0.08) 0%, rgba(15,20,25,0.34) 52%, rgba(15,20,25,0.90) 76%, rgba(15,20,25,0.96) 100%),
+    linear-gradient(180deg, rgba(15,20,25,0.60) 0%, rgba(15,20,25,0.34) 30%, rgba(15,20,25,0.10) 52%, rgba(15,20,25,0.55) 78%, rgba(15,20,25,0.92) 100%),
     url('https://res.cloudinary.com/dzvvvmpsn/image/upload/c_fill,g_auto,w_1080,h_1920,f_auto,q_auto/v1779177896/WhatsApp_Image_2026-05-19_at_10.00.12_eaobfl.jpg');
   background-size: cover;
   background-position: center;
 }
+.hero-lines span { display: block; font-size: clamp(23px, 6.4vw, 33px); line-height: 1.16; }
+.hero-lines span + span { margin-top: 9px; }
+.hero-lines .hl-orange { color: #FF7A4A; }
 
 .eyebrow {
   font-family: 'JetBrains Mono', monospace;
@@ -186,15 +191,15 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
   padding-bottom: 8px; border-bottom: 1px solid var(--paper);
 }
 .deal-sec ul { list-style: none; margin: 0; padding: 0; }
-.deal-sec li { display: flex; gap: 12px; font-size: 14px; line-height: 1.45; padding: 9px 0; border-bottom: 1px solid var(--line); }
-.deal-sec li b { color: var(--paper); }
+.deal-sec li { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .deal-sec li .dm {
-  flex-shrink: 0; min-width: 16px; padding-top: 1px;
+  flex-shrink: 0; min-width: 16px; padding-top: 2px;
   font-family: 'JetBrains Mono', monospace; font-weight: 500;
 }
 .deal-sec.get .dm { color: var(--success); }
 .deal-sec.give .dm { color: #FF7A4A; }
-.deal-sec li span:last-child { color: rgba(255,255,255,0.78); }
+.deal-sec .dt { font-size: 14.5px; font-weight: 700; line-height: 1.35; color: var(--paper); }
+.deal-sec .dt small { display: block; font-size: 13px; font-weight: 500; color: var(--mute); margin-top: 2px; line-height: 1.4; }
 
 /* CTA + option buttons */
 .cta-stack { margin-top: 26px; display: flex; flex-direction: column; gap: 10px; }
@@ -238,7 +243,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 /* echtes Büro-Foto (Benefits) */
 .office-shot { margin-top: 14px; }
 .office-shot img {
-  display: block; width: 100%; height: 128px; object-fit: cover;
+  display: block; width: 100%; height: 190px; object-fit: cover;
   border-radius: 10px; border: 1px solid var(--line);
 }
 .office-shot .cap {
@@ -376,8 +381,15 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 
   <!-- STEP 1: HERO -->
   <section class="step hero active" data-step="intro">
-    <div class="eyebrow">Closer m/w/d · Osnabrück</div>
-    <h1 class="display">Fertige Termine. Ein Pflichtprodukt. <em>3.500–6.000 € im Monat.</em></h1>
+    <div class="hero-top">
+      <div class="eyebrow">Closer m/w/d · Osnabrück</div>
+      <h1 class="display hero-lines">
+        <span>Fertige warme B2B-Termine.</span>
+        <span class="hl-orange">3.500–6.000 € Gehalt pro Monat.</span>
+        <span>Gesetzlich vorgeschriebenes Produkt.</span>
+      </h1>
+    </div>
+    <div class="hero-bottom">
     <div class="trust-row">
       <div class="face-stack">
         <img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/c_fill,g_auto:subject,ar_1:1,w_120,f_auto,q_auto/v1779182899/WhatsApp_Image_2026-05-19_at_11.27.56_gcrtqr.jpg" alt="Ravn, Personalreferent bei ZAP" loading="lazy" />
@@ -389,6 +401,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     <div class="cta-stack">
       <button class="btn btn-primary" data-goto="value">Zeig mir den Job <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
       <div class="meta">3 MINUTEN · OHNE LEBENSLAUF · DISKRET</div>
+    </div>
     </div>
   </section>
 
@@ -406,7 +419,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
         <div class="vi"><span class="vn">06</span><div class="vt">Probleme löst die Geschäftsführung. Real.<small>Meist innerhalb von 30 Tagen — kein „nehmen wir mal mit".</small></div></div>
       </div>
       <div class="office-shot">
-        <img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/f_auto,q_auto,w_1000/v1776770480/buero-flur_dxgg8g.jpg" alt="Unser Büro in der Winkelhausenstraße 13, Osnabrück" loading="lazy" />
+        <img src="https://res.cloudinary.com/dzvvvmpsn/image/upload/w_1000,f_auto,q_auto,e_improve:60/e_brightness:12/v1776770480/buero-flur_dxgg8g.jpg" alt="Unser Büro in der Winkelhausenstraße 13, Osnabrück" loading="lazy" />
         <div class="cap">Echt, kein Stock-Foto: unser Büro, Winkelhausenstraße 13</div>
       </div>
       <p class="lede" style="margin-top:16px;">Dazu <b>Feierabend um 16 Uhr</b> und <b>28 Tage Urlaub</b>. Hier passt einfach alles, um richtig gut zu arbeiten.</p>
@@ -424,17 +437,17 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
       <div class="deal-sec get">
         <div class="dc-head">Du kannst erwarten</div>
         <ul>
-          <li><span class="dm">+</span><span><b>3.500–6.000 € im Monat</b> — langfristig, Fixum + Provision</span></li>
-          <li><span class="dm">+</span><span><b>Wertschätzung, immer</b> — und ein Büro, in dem gelacht wird und die Stimmung stimmt</span></li>
+          <li><span class="dm">+</span><div class="dt">3.500–6.000 € im Monat<small>Langfristig — Fixum + Provision.</small></div></li>
+          <li><span class="dm">+</span><div class="dt">Wertschätzung, immer<small>Und ein Büro, in dem gelacht wird und die Stimmung stimmt.</small></div></li>
         </ul>
       </div>
       <div class="deal-sec give">
         <div class="dc-head">Wir erwarten</div>
         <ul>
-          <li><span class="dm">&gt;</span><span><b>75.000–200.000 € Closingvolumen</b> pro Monat</span></li>
-          <li><span class="dm">&gt;</span><span><b>Vollgas aus eigenem Antrieb</b> — wer motiviert werden muss, ist hier falsch. Keine Ausreden, nicht freitags, nicht im Sommerloch.</span></li>
-          <li><span class="dm">&gt;</span><span><b>Kritik klar annehmen, ohne Drama</b> — wir reden direkt und erwarten emotionale Stabilität</span></li>
-          <li><span class="dm">&gt;</span><span><b>Humor</b> — hier wird gelacht und hopsgenommen. Wer dabei sauer wird, bleibt besser weg.</span></li>
+          <li><span class="dm">&gt;</span><div class="dt">75.000–200.000 € Closingvolumen pro Monat</div></li>
+          <li><span class="dm">&gt;</span><div class="dt">Vollgas aus eigenem Antrieb<small>Wer motiviert werden muss, ist hier falsch. Keine Ausreden — nicht freitags, nicht im Sommerloch.</small></div></li>
+          <li><span class="dm">&gt;</span><div class="dt">Kritik klar annehmen, ohne Drama<small>Wir reden direkt und erwarten emotionale Stabilität.</small></div></li>
+          <li><span class="dm">&gt;</span><div class="dt">Humor<small>Hier wird gelacht und hopsgenommen. Wer dabei sauer wird, bleibt besser weg.</small></div></li>
         </ul>
       </div>
       <p class="lede" style="margin-top:14px; font-size:14.5px;">Die Benefits können wir nur liefern, weil jeder Einzelne hier abliefert. Deshalb sortieren die nächsten 6 Fragen hart aus.</p>

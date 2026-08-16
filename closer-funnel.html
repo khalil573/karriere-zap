@@ -606,6 +606,20 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
   var order = ['intro', 'value', 'deal', 'erfahrung', 'closing', 'office', 'warum', 'gelernt', 'callwhen', 'contact'];
   var history = ['intro'];
 
+  // Creative-Attribution: welches Anzeigenmotiv hat den Bewerber gebracht?
+  // Liest utm_content (Standard) oder ?c= aus der URL, sanitized. Landet im
+  // Trello-Karten-Titel UND im Karten-Text → im Board sofort ersichtlich,
+  // ohne dass ein neues Feld noetig ist. Kein PII, rein technischer Marker.
+  var CREATIVE = (function () {
+    try {
+      var q = new URLSearchParams(window.location.search);
+      var raw = (q.get('utm_content') || q.get('c') || '').trim();
+      raw = raw.replace(/[^a-z0-9 _-]/gi, '').slice(0, 40);
+      if (!raw) return '';
+      return raw.charAt(0).toUpperCase() + raw.slice(1);
+    } catch (e) { return ''; }
+  })();
+
   function currentStep() { return history[history.length - 1]; }
 
   // Schritt-Tracking (Plausible, cookieless, keine PII): pro Session einmal je
@@ -735,6 +749,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     var data = new FormData(form);
     var nachricht = [
       '💼 BEWERBUNG CLOSER (m/w/d) — LP Closer / Office Osnabrück',
+      (CREATIVE ? 'Anzeige/Creative: ' + CREATIVE : ''),
       '',
       'Vertriebserfahrung: ' + erfahrung,
       'Einwandbehandlung/Closing beherrscht: ' + closing,
@@ -748,8 +763,9 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     if (callwhen) nachricht.push('', 'Erreichbarkeit: ' + callwhen);
     data.set('nachricht', nachricht.join('\n'));
 
-    // Prefix für Trello-Titel
-    data.set('name', '💼 Closer — ' + (data.get('name') || ''));
+    // Prefix für Trello-Titel — inkl. Creative-Tag, damit im Board sofort
+    // sichtbar ist, über welches Anzeigenmotiv der Bewerber kam.
+    data.set('name', '💼 Closer' + (CREATIVE ? ' [' + CREATIVE + ']' : '') + ' — ' + (data.get('name') || ''));
 
     submitBtn.disabled = true;
     btnLabel.textContent = 'Wird gesendet …';

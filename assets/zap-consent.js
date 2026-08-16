@@ -386,6 +386,19 @@
     if (fieldValue('fuehrerschein') === 'nein') return false;
     var montage = fieldValue('montage');
     if (montage !== null && montage !== 'ja') return false;
+    // Closer-Funnel (harte K.-o.-Kriterien, GF-Vorgabe 15./16.08.2026):
+    // Sobald EINES der Closer-Felder existiert (auf closer-funnel.html sind die
+    // Hidden-Inputs immer im DOM, ggf. leer), gelten alle drei Kriterien
+    // fail-closed — identisch zur n8n-Weiche "Consent + qualifiziert?".
+    // LPs ohne diese Felder (Elektriker/Vertrieb/D2D): Block wird uebersprungen.
+    var erfahrung = fieldValue('erfahrung');
+    var closing = fieldValue('closing');
+    var office = fieldValue('office');
+    if (erfahrung !== null || closing !== null || office !== null) {
+      if (erfahrung !== '3-5 Jahre' && erfahrung !== 'mehr als 5 Jahre') return false;
+      if (closing !== 'ja') return false;
+      if (office !== 'ja') return false;
+    }
     return true;
   }
 

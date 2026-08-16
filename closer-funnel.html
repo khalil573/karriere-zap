@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Closer (m/w/d) bei ZAP in Osnabrück — fertige B2B-Termine, Pflichtprodukt, 3.500–6.000 € im Monat.</title>
-<meta name="description" content="Closer gesucht (m/w/d): warme B2B-Termine vom eigenen Opener-Team, DGUV V3 als gesetzliches Pflichtprodukt, 50 % Provision sofort bei Abschluss, Einzelbüro, 16-Uhr-Feierabend, 28 Tage Urlaub. Langfristig 3.500–6.000 € im Monat. Bewirb dich in 60 Sekunden — lebenslauffrei." />
+<meta name="description" content="Closer gesucht (m/w/d): warme B2B-Termine vom eigenen Opener-Team, DGUV V3 als gesetzliches Pflichtprodukt, 50 % Provision sofort bei Abschluss, Einzelbüro, 16-Uhr-Feierabend, 28 Tage Urlaub. Langfristig 3.500–6.000 € im Monat. Bewirb dich in 3 Minuten — lebenslauffrei." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,7 +79,7 @@ body {
 }
 .display { font-family: 'Bricolage Grotesque', 'Manrope', sans-serif; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
 .mono { font-family: 'JetBrains Mono', monospace; }
-button, input, select { font-family: inherit; font-size: inherit; color: inherit; }
+button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
 
 /* ====== Funnel shell ====== */
 .funnel {
@@ -256,6 +256,14 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 }
 .field input::placeholder { color: rgba(255,255,255,0.4); }
 .field input:focus { outline: none; border-color: var(--orange); background: rgba(255,255,255,0.09); }
+.field textarea {
+  width: 100%; min-height: 150px; padding: 15px 16px; border-radius: 10px;
+  border: 1.5px solid var(--line); background: rgba(255,255,255,0.05);
+  font-size: 16px; color: var(--paper); line-height: 1.5; resize: vertical;
+  transition: border-color .14s ease, background .14s ease;
+}
+.field textarea::placeholder { color: rgba(255,255,255,0.4); }
+.field textarea:focus { outline: none; border-color: var(--orange); background: rgba(255,255,255,0.09); }
 .form-error { margin: 6px 0 0; padding: 10px 12px; border-radius: 11px; background: rgba(183,59,46,0.18); border: 1px solid rgba(244,181,167,0.4); color: #FFC9BE; font-size: 13px; }
 .form-error[hidden] { display: none; }
 .privacy { font-size: 11.5px; color: var(--mute); margin-top: 12px; line-height: 1.5; text-align: center; }
@@ -380,7 +388,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     </div>
     <div class="cta-stack">
       <button class="btn btn-primary" data-goto="value">Zeig mir den Job <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-      <div class="meta">60 SEKUNDEN · OHNE LEBENSLAUF · DISKRET</div>
+      <div class="meta">3 MINUTEN · OHNE LEBENSLAUF · DISKRET</div>
     </div>
   </section>
 
@@ -429,16 +437,16 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
           <li><span class="dm">&gt;</span><span><b>Humor</b> — hier wird gelacht und hopsgenommen. Wer dabei sauer wird, bleibt besser weg.</span></li>
         </ul>
       </div>
-      <p class="lede" style="margin-top:14px; font-size:14.5px;">Die Benefits können wir nur liefern, weil jeder Einzelne hier abliefert. Deshalb sortieren die nächsten 4 Fragen hart aus.</p>
+      <p class="lede" style="margin-top:14px; font-size:14.5px;">Die Benefits können wir nur liefern, weil jeder Einzelne hier abliefert. Deshalb sortieren die nächsten 6 Fragen hart aus.</p>
       <div class="cta-stack">
-        <button class="btn btn-primary" data-goto="erfahrung">Bin ich dabei? — 4 kurze Fragen <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+        <button class="btn btn-primary" data-goto="erfahrung">Bin ich dabei? — 6 Fragen <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
       </div>
     </div>
   </section>
 
   <!-- STEP 4: Q1 Vertriebserfahrung -->
   <section class="step center" data-step="erfahrung">
-    <div class="q-hint">Frage 1 von 4</div>
+    <div class="q-hint">Frage 1 von 6</div>
     <h2 class="display">Wie viel Vertriebserfahrung bringst du mit?</h2>
     <p class="lede" style="margin-bottom:6px;">Egal ob Closing, Inside Sales, D2D oder Telesales.</p>
     <div class="cta-stack">
@@ -451,7 +459,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 
   <!-- STEP 5: Q2 Closing-Skills -->
   <section class="step center" data-step="closing">
-    <div class="q-hint">Frage 2 von 4</div>
+    <div class="q-hint">Frage 2 von 6</div>
     <h2 class="display">Einwandbehandlung, Preisgespräch, Abschluss — beherrschst du das heute schon?</h2>
     <p class="lede" style="margin-bottom:6px;">Ehrliche Antwort. Wir bilden keine Anfänger aus — wir geben dir Termine.</p>
     <div class="cta-stack">
@@ -462,18 +470,48 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 
   <!-- STEP 6: Q3 Office Osnabrück -->
   <section class="step center" data-step="office">
-    <div class="q-hint">Frage 3 von 4</div>
+    <div class="q-hint">Frage 3 von 6</div>
     <h2 class="display">Der Job läuft 100 % im Büro in Osnabrück — kein Remote, kein Hybrid.</h2>
     <p class="lede" style="margin-bottom:6px;">Dafür: Opener im selben Raum, kurze Wege, echtes Team statt Discord-Einsamkeit.</p>
     <div class="cta-stack">
-      <button class="btn btn-option" data-field="office" data-value="ja" data-goto="callwhen">Passt für mich <span class="arrow">→</span></button>
-      <button class="btn btn-option" data-field="office" data-value="nein" data-goto="callwhen">Ich will remote arbeiten <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="office" data-value="ja" data-goto="warum">Passt für mich <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="office" data-value="nein" data-goto="warum">Ich will remote arbeiten <span class="arrow">→</span></button>
     </div>
   </section>
 
-  <!-- STEP 7: Q4 callwhen -->
+  <!-- STEP: F1 Freitext — Warum Vertrieb (GF-Frage wörtlich) -->
+  <section class="step center" data-step="warum">
+    <div class="q-hint">Frage 4 von 6</div>
+    <h2 class="display">Warum arbeitest du im Vertrieb?</h2>
+    <p class="lede" style="margin-bottom:14px;">Wie bist du dazu gekommen — und wohin willst du dich entwickeln?</p>
+    <div class="field">
+      <label for="ta-warum" class="sr-only" style="position:absolute;left:-9999px;">Warum arbeitest du im Vertrieb?</label>
+      <textarea id="ta-warum" placeholder="Ehrlich und in deinen Worten — 2 bis 4 Sätze reichen."></textarea>
+    </div>
+    <div id="warum-error" class="form-error" hidden></div>
+    <div class="cta-stack" style="margin-top:10px;">
+      <button class="btn btn-primary" id="btn-warum" type="button">Weiter <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- STEP: F2 Freitext — Verkaufen gelernt (GF-Frage wörtlich) -->
+  <section class="step center" data-step="gelernt">
+    <div class="q-hint">Frage 5 von 6</div>
+    <h2 class="display">Von wem hast du verkaufen gelernt?</h2>
+    <p class="lede" style="margin-bottom:14px;">Welche Bücher, Coachings oder Trainer hast du gelesen oder gebucht?</p>
+    <div class="field">
+      <label for="ta-gelernt" class="sr-only" style="position:absolute;left:-9999px;">Von wem hast du verkaufen gelernt?</label>
+      <textarea id="ta-gelernt" placeholder="Namen, Bücher, Programme — was dich wirklich geprägt hat."></textarea>
+    </div>
+    <div id="gelernt-error" class="form-error" hidden></div>
+    <div class="cta-stack" style="margin-top:10px;">
+      <button class="btn btn-primary" id="btn-gelernt" type="button">Weiter <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- STEP: Q6 callwhen -->
   <section class="step center" data-step="callwhen">
-    <div class="q-hint">Frage 4 von 4</div>
+    <div class="q-hint">Frage 6 von 6</div>
     <h2 class="display">Wann sollen wir dich am besten anrufen?</h2>
     <div class="cta-stack">
       <button class="btn btn-option" data-field="callwhen" data-value="Vormittags (08–12 Uhr)" data-goto="contact">Vormittags <span class="arrow">→</span></button>
@@ -508,6 +546,8 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
       <input type="hidden" name="erfahrung" id="h-erfahrung" />
       <input type="hidden" name="closing" id="h-closing" />
       <input type="hidden" name="office" id="h-office" />
+      <input type="hidden" name="warum_vertrieb" id="h-warum_vertrieb" />
+      <input type="hidden" name="verkaufen_gelernt" id="h-verkaufen_gelernt" />
       <input type="hidden" name="callwhen" id="h-callwhen" />
       <input type="hidden" name="_subject" value="Neue Bewerbung Closer (m/w/d) — LP Closer · Office Osnabrück" />
       <input type="hidden" name="_quelle" value="closer-funnel.html" />
@@ -550,7 +590,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
   var backBtn = document.getElementById('back-btn');
 
   // Reihenfolge der Haupt-Schritte (für Fortschrittsbalken)
-  var order = ['intro', 'value', 'deal', 'erfahrung', 'closing', 'office', 'callwhen', 'contact'];
+  var order = ['intro', 'value', 'deal', 'erfahrung', 'closing', 'office', 'warum', 'gelernt', 'callwhen', 'contact'];
   var history = ['intro'];
 
   function currentStep() { return history[history.length - 1]; }
@@ -558,14 +598,16 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
   // Schritt-Tracking (Plausible, cookieless, keine PII): pro Session einmal je
   // erreichtem Schritt ein Event — das Funnel-Äquivalent zur Scroll-Tiefe.
   // 'intro' = Pageview (nicht extra getrackt); success = Bewerbung Submit/Aussortiert.
-  // 'Closer-Funnel 1b Deal' braucht ein eigenes Plausible-Goal (Custom Events ohne
-  // Goal werden verworfen) — die übrigen 6 Goals existieren seit 15.08.
+  // Jedes Event braucht ein Plausible-Goal (Custom Events ohne Goal werden
+  // verworfen). Goals 1–6 seit 15.08., '1b Deal' + '4b Warum' + '4c Gelernt' seit 16.08.
   var STEP_EVENTS = {
     value: 'Closer-Funnel 1 Value',
     deal: 'Closer-Funnel 1b Deal',
     erfahrung: 'Closer-Funnel 2 Erfahrung',
     closing: 'Closer-Funnel 3 Closing',
     office: 'Closer-Funnel 4 Office',
+    warum: 'Closer-Funnel 4b Warum',
+    gelernt: 'Closer-Funnel 4c Gelernt',
     callwhen: 'Closer-Funnel 5 Erreichbarkeit',
     contact: 'Closer-Funnel 6 Kontakt'
   };
@@ -616,6 +658,26 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     });
   });
 
+  // Freitext-Steps: Weiter nur mit Substanz (>= 20 Zeichen), Wert -> Hidden-Field
+  function wireFreitext(btnId, taId, hiddenId, errId, nextStep) {
+    document.getElementById(btnId).addEventListener('click', function () {
+      var ta = document.getElementById(taId);
+      var err = document.getElementById(errId);
+      var val = ta.value.trim();
+      if (val.length < 20) {
+        err.textContent = 'Gib uns 2–3 ehrliche Sätze — das hier liest Ravn persönlich.';
+        err.hidden = false;
+        ta.focus();
+        return;
+      }
+      err.hidden = true;
+      document.getElementById(hiddenId).value = val;
+      goTo(nextStep);
+    });
+  }
+  wireFreitext('btn-warum', 'ta-warum', 'h-warum_vertrieb', 'warum-error', 'gelernt');
+  wireFreitext('btn-gelernt', 'ta-gelernt', 'h-verkaufen_gelernt', 'gelernt-error', 'callwhen');
+
   // ---------- Formular-Absenden ----------
   var form = document.getElementById('apply-form');
   var submitBtn = document.getElementById('apply-submit');
@@ -665,8 +727,12 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
       'Einwandbehandlung/Closing beherrscht: ' + closing,
       '100 % Office Osnabrück ok: ' + office
     ];
+    var warum = data.get('warum_vertrieb');
+    if (warum) nachricht.push('', 'Warum Vertrieb / Entwicklung:', warum);
+    var gelernt = data.get('verkaufen_gelernt');
+    if (gelernt) nachricht.push('', 'Verkaufen gelernt von (Buecher/Coachings/Trainer):', gelernt);
     var callwhen = data.get('callwhen');
-    if (callwhen) nachricht.push('Erreichbarkeit: ' + callwhen);
+    if (callwhen) nachricht.push('', 'Erreichbarkeit: ' + callwhen);
     data.set('nachricht', nachricht.join('\n'));
 
     // Prefix für Trello-Titel

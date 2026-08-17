@@ -553,19 +553,41 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     var montage = probe.get('montage');
 
     // Qualifikation fuer die ECHTE Uebermittlung: Gesellenbrief JA, Fuehrerschein
-    // JA, Montage-Frage beantwortet. GF-Entscheid 15.08.2026: montage=regional/nein
-    // wird BEWUSST mit uebermittelt — diese Bewerber sollen im Trello-Board landen
-    // (wie auf LP-A/B), duerfen aber NICHT als Meta-/TikTok-Conversion zaehlen.
-    // Das erzwingen isQualified() in zap-consent.js (Browser-Pixel) und die
-    // n8n-Weiche montage==='ja' (Server-Events) — nicht dieses Gate hier.
-    var qualifiziert = (gesellenbrief === 'ja' && fuehrerschein === 'ja' && !!montage);
+    // JA, Montage JA.
+    //
+    // GF-Entscheid 17.08.2026 — HARTER AUSSCHLUSS fuer montage=regional.
+    // Vorher (15.08.) galt 'regional' als weich: die Bewerbung ging trotzdem an
+    // Formspree/Trello und wurde nur von den Pixel-Conversions ausgenommen. Am
+    // 16.08. waren daraufhin 3 von 4 neuen LP-C-Bewerbern 'regional' (Juli-Quote
+    // ~38 %) — die Karten kosteten Ravn Anrufzeit, ohne besetzbar zu sein.
+    // Ab jetzt gilt 'regional' wie 'nein': aussortiert, keine Uebermittlung.
+    //
+    // Damit ist dieses Funnel-Gate deckungsgleich mit den beiden nachgelagerten
+    // Gates (isQualified() in zap-consent.js fuer die Browser-Pixel, n8n-Weiche
+    // FxzN9PrjPTBKizYu fuer die Server-Events) — alle drei verlangen montage==='ja'.
+    // Bei Aenderungen an dieser Regel IMMER alle drei gleichzeitig anfassen,
+    // sonst driften sie auseinander (Monitoring: meta-pixel-browser-gate-drift).
+    var qualifiziert = (gesellenbrief === 'ja' && fuehrerschein === 'ja' && montage === 'ja');
 
     // AUSSORTIERT: NICHTS uebermitteln, KEINE Conversion (kein Pixel-Lead, kein
     // 'Bewerbung Submit'-Ziel) — aber trotzdem denselben Success-Screen zeigen,
-    // damit niemand zurueckgeht und die Antwort aendert. Nur ein separates,
-    // NICHT als Conversion gezaehltes Plausible-Event fuer die Sichtbarkeit.
+    // damit niemand zurueckgeht und die Antwort aendert. Nur separate, NICHT als
+    // Conversion gezaehlte Plausible-Events fuer die Sichtbarkeit.
+    //
+    // Wichtig: seit dem harten Ausschluss legen 'regional'-Bewerber KEINE
+    // Trello-Karte mehr an. Das eigene Ziel 'Aussortiert Montage regional' ist
+    // damit die einzige verbleibende Messung der Regional-Quote — die
+    // Tagesroutine liest sie von hier (vorher aus Trello).
     if (!qualifiziert) {
-      if (typeof window.plausible === 'function') { window.plausible('Aussortiert'); }
+      if (typeof window.plausible === 'function') {
+        var grund = gesellenbrief !== 'ja' ? 'gesellenbrief'
+                  : fuehrerschein !== 'ja' ? 'fuehrerschein'
+                  : 'montage-' + (montage || 'leer');
+        window.plausible('Aussortiert', { props: { grund: grund } });
+        if (montage === 'regional' && gesellenbrief === 'ja' && fuehrerschein === 'ja') {
+          window.plausible('Aussortiert Montage regional');
+        }
+      }
       goTo('success');
       return;
     }

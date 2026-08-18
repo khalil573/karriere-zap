@@ -564,20 +564,10 @@
       eventSuffix: '',
       texts: null
     },
-    {
-      // Text-Variante: kuerzer + direkter (eine Design-Philosophie, sonst
-      // nichts geaendert — Farben/Layout/Buttongroessen bleiben identisch)
-      name: 'modal-v2',
-      eventSuffix: ' V2',
-      texts: {
-        headline: 'Kurz gefragt:',
-        textBeforeLink: 'Dürfen wir messen, welche Anzeige dich hergebracht hat? Details: ',
-        linkLabel: 'Datenschutzerklärung',
-        textAfterLink: '.',
-        accept: 'Ja, passt 👍',
-        decline: 'Nein danke'
-      }
-    }
+    // modal-v2 ('Kurz gefragt:' / 'Ja, passt 👍' / 'Nein danke') entfernt am
+    // 18.08.2026 (GF-Entscheid): Test war am 07.08. zugunsten v1 entschieden,
+    // v1 lag auch danach konstant vorn (17.08.: v1 54,2 % vs. v2 36,1 %).
+    // Historie in ~/Claude/Ads-Journal.md; neue Variante = neuer Array-Eintrag.
   ];
 
   // Gleichverteilte Zufallsziehung ueber alle Varianten (bei 2 Varianten

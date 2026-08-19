@@ -191,12 +191,12 @@ git push origin main
 
 ## Denk-Check (Closer-Funnel, seit 2026-08-19)
 
-`closer-funnel.html` hat vor dem Kontaktschritt **4 sprach-/kulturneutrale Muster-Matrizen** (Raven-Stil, per JS gerendert in `buildQuiz()`; Nr. 1–3 einfach, Nr. 4 schwer = Form+Punkt+Position). Oben laeuft ein **60-Sek-Timer** (`#quiz-timer`) ueber alle 4 Aufgaben; laeuft er ab, geht es zum Kontakt (unbeantwortet = falsch). Zweck: Lead-Qualität — nur wer **≥ 3 von 4** richtig hat, zählt als Conversion (Schwelle `PASS_THRESHOLD` in der Edge Function).
+`closer-funnel.html` hat vor dem Kontaktschritt **4 sprach-/kulturneutrale Muster-Matrizen** (Raven-Stil, per JS gerendert in `buildQuiz()`; Nr. 1–3 einfach, Nr. 4 = echte Raven-Matrix mit 3 Regeln (Latin-Square-Form + Diagonal-Fuellung + Position je Spalte), 8 Optionen). Oben laeuft ein **60-Sek-Timer** (`#quiz-timer`) ueber alle 4 Aufgaben; laeuft er ab, geht es zum Kontakt (unbeantwortet = falsch). Zweck: Lead-Qualität — nur wer **≥ 3 von 4** richtig hat, zählt als Conversion (Schwelle `PASS_THRESHOLD` in der Edge Function).
 
 - **Lösungsschlüssel liegt AUSSCHLIESSLICH in der DB** (`public.closer_quiz_answers`, Supabase-Projekt `uzxdctlbccchmlckweso`, RLS an ohne Policy → nur `service_role`). NICHT im HTML, NICHT in n8n.
 - Validator = Edge Function **`closer-quiz-check`** (`verify_jwt=false`, CORS-Allowlist = Prod-Domain + Deploy-Previews). Gibt nur `{score,total,passed}` zurück — nie welche Frage richtig war.
 - Client sendet die gewählten Buchstaben `q1/q2/q3` + `quiz_score` + `quiz_passed` (Edge-Ergebnis, relayed) ans Formular. `ZAPConsent.trackLead()` feuert nur bei `passed`.
 - **Doppelt verdrahtet** (wie Qualifiziert-Gate): n8n-IF „Consent + qualifiziert?" verlangt für Closer zusätzlich `quiz_passed==='true'` → CAPI/TikTok-Event nur bei bestanden. Elektriker/montage-LPs unberührt.
 - **Nicht bestanden ≠ verloren:** Bewerbung geht trotzdem an Formspree → Trello-Karte (Titel-Prefix `⚠️ Denk-Check X/3`, `nachricht` mit Score). Nur die Conversion feuert nicht. (GF-Entscheid 19.08.)
-- Fragen/Antworten ändern = Zeilen in `public.closer_quiz_answers` (`correct_option` A..F; aktuell q1=C q2=B q3=C q4=C) **und** die `QUIZZES`-Definition in `closer-funnel.html` anpassen — Reihenfolge der Optionen bestimmt den Buchstaben.
+- Fragen/Antworten ändern = Zeilen in `public.closer_quiz_answers` (`correct_option` A..F; aktuell q1=C q2=B q3=C q4=B) **und** die `QUIZZES`-Definition in `closer-funnel.html` anpassen — Reihenfolge der Optionen bestimmt den Buchstaben.
 - Plausible-Goals: `Closer-Funnel 7 Denkcheck` (erreicht), `Quiz Bestanden`, `Quiz Nicht bestanden`.

@@ -603,7 +603,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     <div class="step-inner">
       <div class="q-hint">Denk-Check · 4 von 4 · knifflig</div>
       <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
-      <p class="quiz-lead">Zwei Regeln gleichzeitig — Form und Punkt.</p>
+      <p class="quiz-lead">Drei Regeln gleichzeitig — Form, Füllung und Position.</p>
       <div class="matrix" data-quiz="4"></div>
       <div class="quiz-grid" data-quiz-opts="4"></div>
     </div>
@@ -955,7 +955,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
   // welche Option richtig ist, weiss ausschliesslich die DB (Edge Function
   // closer-quiz-check). Der Client sendet nur den gewaehlten Buchstaben (A..F).
   var QUIZ_CHECK_URL = 'https://uzxdctlbccchmlckweso.supabase.co/functions/v1/closer-quiz-check';
-  var LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
+  var LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
   // --- SVG-Primitive (viewBox 120x120) ---
   function svg(inner) {
@@ -1045,17 +1045,26 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
         { k: 'square', r: SZ.m }, { k: 'diamond', r: SZ.l }, { k: 'square', r: SZ.s }
       ]
     },
-    { // Q4 (SCHWER) — Form je SPALTE, Punkt (Fuellung+Position) je ZEILE:
-      // Zeile1 gefuellt/oben · Zeile2 hohl/mitte · Zeile3 gefuellt/unten -> Quadrat gefuellt unten (C)
+    { // Q4 (SCHWER, echte Raven-Matrix, 3 Regeln GLEICHZEITIG) — wie das GF-Beispiel:
+      //  · Form = Lateinisches Quadrat (jede Reihe & Spalte: Kreis/Dreieck/Quadrat) -> fehlt: Dreieck
+      //  · Fuellung = Hauptdiagonale gefuellt, sonst hohl -> (3,3) liegt auf Diagonale -> gefuellt
+      //  · Position = je Spalte (Sp1 oben, Sp2 mitte, Sp3 unten) -> Sp3 -> unten
+      //  Loesung: Dreieck, gefuellter Punkt, unten = Option B (8 Optionen)
       type: 'shapedot',
       matrix: [
-        { shape: 'circle', fill: true, pos: 'top' }, { shape: 'triangle', fill: true, pos: 'top' }, { shape: 'square', fill: true, pos: 'top' },
-        { shape: 'circle', fill: false, pos: 'center' }, { shape: 'triangle', fill: false, pos: 'center' }, { shape: 'square', fill: false, pos: 'center' },
-        { shape: 'circle', fill: true, pos: 'bottom' }, { shape: 'triangle', fill: true, pos: 'bottom' }, '?'
+        { shape: 'circle', fill: true, pos: 'top' }, { shape: 'triangle', fill: false, pos: 'center' }, { shape: 'square', fill: false, pos: 'bottom' },
+        { shape: 'triangle', fill: false, pos: 'top' }, { shape: 'square', fill: true, pos: 'center' }, { shape: 'circle', fill: false, pos: 'bottom' },
+        { shape: 'square', fill: false, pos: 'top' }, { shape: 'circle', fill: false, pos: 'center' }, '?'
       ],
       options: [
-        { shape: 'circle', fill: true, pos: 'bottom' }, { shape: 'square', fill: false, pos: 'bottom' }, { shape: 'square', fill: true, pos: 'bottom' },
-        { shape: 'square', fill: true, pos: 'top' }, { shape: 'triangle', fill: true, pos: 'bottom' }, { shape: 'square', fill: true, pos: 'center' }
+        { shape: 'triangle', fill: true, pos: 'center' },  // A falsche Position
+        { shape: 'triangle', fill: true, pos: 'bottom' },  // B RICHTIG
+        { shape: 'square', fill: true, pos: 'bottom' },     // C falsche Form
+        { shape: 'triangle', fill: false, pos: 'bottom' },  // D falsche Fuellung
+        { shape: 'circle', fill: true, pos: 'bottom' },     // E falsche Form
+        { shape: 'triangle', fill: true, pos: 'top' },      // F falsche Position
+        { shape: 'triangle', fill: false, pos: 'center' },  // G falsche Fuellung+Position
+        { shape: 'square', fill: true, pos: 'center' }      // H falsche Form+Position
       ]
     }
   ];

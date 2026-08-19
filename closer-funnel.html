@@ -392,6 +392,12 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 .matrix .cell svg, .quiz-opt svg { width: 100%; height: 100%; display: block; }
 .qshape { fill: none; stroke: #141414; stroke-width: 5; stroke-linejoin: round; }
 .qdot-fill { fill: #E24E1F; }
+.qdot-ring { fill: none; stroke: #E24E1F; stroke-width: 5; }
+/* 60-Sek-Timer oben */
+.timer-slot { min-width: 38px; display: flex; justify-content: flex-end; }
+.quiz-timer { display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; color: #141414; background: #F1ECE3; border: 1px solid rgba(14,14,14,0.14); border-radius: 8px; padding: 4px 9px; line-height: 1; }
+.quiz-timer .tclock { font-size: 13px; }
+.quiz-timer.low { color: #C23E10; border-color: rgba(194,62,16,0.5); background: #FBEAE2; }
 .qmark { fill: rgba(226,78,31,0.85); font: 700 46px 'Bricolage Grotesque', system-ui, sans-serif; }
 </style>
 </head>
@@ -404,7 +410,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     </button>
     <div class="logo"><span class="mark">ZAP</span><span class="dot">.</span><span class="sub">Karriere</span></div>
-    <div style="width:38px"></div>
+    <div class="timer-slot"><div class="quiz-timer" id="quiz-timer" hidden aria-live="polite"><span class="tclock" aria-hidden="true">⏱</span><span id="quiz-timer-val">1:00</span></div></div>
   </div>
 
   <!-- STEP 1: HERO -->
@@ -562,13 +568,14 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     </div>
   </section>
 
-  <!-- DENK-CHECK: 3 Muster-Matrizen (sprach-/kulturneutral). Loesungen liegen NUR in der DB
-       (Edge Function closer-quiz-check). Optionen werden per JS gerendert (buildQuiz). -->
+  <!-- DENK-CHECK: 4 Muster-Matrizen (sprach-/kulturneutral, Nr. 4 schwer). Loesungen liegen NUR
+       in der DB (Edge Function closer-quiz-check). Optionen per JS gerendert (buildQuiz).
+       60-Sek-Timer #quiz-timer laeuft ueber alle 4 Schritte. -->
   <section class="step center scrollable" data-step="quiz1">
     <div class="step-inner">
-      <div class="q-hint">Denk-Check · 1 von 3</div>
+      <div class="q-hint">Denk-Check · 1 von 4</div>
       <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
-      <p class="quiz-lead">Kein Fachwissen nötig — reine Logik. Tippe die passende Kachel an.</p>
+      <p class="quiz-lead">Kein Fachwissen nötig — reine Logik, gegen die Uhr. Tippe die passende Kachel an.</p>
       <div class="matrix" data-quiz="1"></div>
       <div class="quiz-grid" data-quiz-opts="1"></div>
     </div>
@@ -576,7 +583,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 
   <section class="step center scrollable" data-step="quiz2">
     <div class="step-inner">
-      <div class="q-hint">Denk-Check · 2 von 3</div>
+      <div class="q-hint">Denk-Check · 2 von 4</div>
       <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
       <div class="matrix" data-quiz="2"></div>
       <div class="quiz-grid" data-quiz-opts="2"></div>
@@ -585,10 +592,20 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 
   <section class="step center scrollable" data-step="quiz3">
     <div class="step-inner">
-      <div class="q-hint">Denk-Check · 3 von 3</div>
+      <div class="q-hint">Denk-Check · 3 von 4</div>
       <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
       <div class="matrix" data-quiz="3"></div>
       <div class="quiz-grid" data-quiz-opts="3"></div>
+    </div>
+  </section>
+
+  <section class="step center scrollable" data-step="quiz4">
+    <div class="step-inner">
+      <div class="q-hint">Denk-Check · 4 von 4 · knifflig</div>
+      <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
+      <p class="quiz-lead">Zwei Regeln gleichzeitig — Form und Punkt.</p>
+      <div class="matrix" data-quiz="4"></div>
+      <div class="quiz-grid" data-quiz-opts="4"></div>
     </div>
   </section>
 
@@ -624,6 +641,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
       <input type="hidden" name="q1" id="h-q1" />
       <input type="hidden" name="q2" id="h-q2" />
       <input type="hidden" name="q3" id="h-q3" />
+      <input type="hidden" name="q4" id="h-q4" />
       <input type="hidden" name="quiz_score" id="h-quiz_score" />
       <input type="hidden" name="quiz_passed" id="h-quiz_passed" />
       <input type="hidden" name="_subject" value="Neue Bewerbung Closer (m/w/d) — LP Closer · Office Osnabrück" />
@@ -667,7 +685,8 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
   var backBtn = document.getElementById('back-btn');
 
   // Reihenfolge der Haupt-Schritte (für Fortschrittsbalken)
-  var order = ['intro', 'value', 'deal', 'erfahrung', 'closing', 'office', 'warum', 'gelernt', 'callwhen', 'quiz1', 'quiz2', 'quiz3', 'contact'];
+  var order = ['intro', 'value', 'deal', 'erfahrung', 'closing', 'office', 'warum', 'gelernt', 'callwhen', 'quiz1', 'quiz2', 'quiz3', 'quiz4', 'contact'];
+  var QUIZ_STEPS = ['quiz1', 'quiz2', 'quiz3', 'quiz4'];
   var history = ['intro'];
 
   // Creative-Attribution: welches Anzeigenmotiv hat den Bewerber gebracht?
@@ -711,6 +730,35 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     if (typeof window.plausible === 'function') { window.plausible(ev); }
   }
 
+  // --- 60-Sekunden-Timer fuer den Denk-Check (laeuft ueber alle 4 Aufgaben) ---
+  var timerEl = document.getElementById('quiz-timer');
+  var timerValEl = document.getElementById('quiz-timer-val');
+  var QUIZ_SECONDS = 60;
+  var quizTimer = { id: null, remaining: QUIZ_SECONDS, started: false };
+  function fmtTime(s) { s = Math.max(0, s); return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+  function paintTimer() {
+    if (timerValEl) timerValEl.textContent = fmtTime(quizTimer.remaining);
+    if (timerEl) { if (quizTimer.remaining <= 15) timerEl.classList.add('low'); else timerEl.classList.remove('low'); }
+  }
+  function startQuizTimer() {
+    if (quizTimer.started) return;
+    quizTimer.started = true;
+    quizTimer.remaining = QUIZ_SECONDS;
+    paintTimer();
+    quizTimer.id = setInterval(function () {
+      quizTimer.remaining -= 1;
+      paintTimer();
+      if (quizTimer.remaining <= 0) {
+        stopQuizTimer();
+        // Zeit abgelaufen: unbeantwortete Fragen zaehlen als falsch -> weiter zum Kontakt.
+        if (QUIZ_STEPS.indexOf(currentStep()) !== -1) { goTo('contact'); }
+      }
+    }, 1000);
+  }
+  function stopQuizTimer() {
+    if (quizTimer.id) { clearInterval(quizTimer.id); quizTimer.id = null; }
+  }
+
   function render() {
     var id = currentStep();
     steps.forEach(function (s) { s.classList.toggle('active', s.dataset.step === id); });
@@ -719,6 +767,11 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     progressFill.style.width = pct + '%';
     var hideBack = (id === 'intro' || id === 'success');
     backBtn.style.display = hideBack ? 'none' : 'flex';
+    // Timer nur waehrend der 4 Denk-Check-Schritte zeigen; beim ersten Erreichen starten.
+    var inQuiz = QUIZ_STEPS.indexOf(id) !== -1;
+    if (timerEl) timerEl.hidden = !inQuiz;
+    if (inQuiz) startQuizTimer();
+    if (id === 'contact' || id === 'success') stopQuizTimer();
     var container = document.getElementById('funnel');
     if (container) container.scrollTop = 0;
     var activeEl = document.querySelector('.step.active');
@@ -834,7 +887,8 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     var quizAnswers = {
       q1: String(probe.get('q1') || ''),
       q2: String(probe.get('q2') || ''),
-      q3: String(probe.get('q3') || '')
+      q3: String(probe.get('q3') || ''),
+      q4: String(probe.get('q4') || '')
     };
     var quizPassed = false;
 
@@ -922,7 +976,14 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     }
     return '';
   }
-  // N gefuellte Punkte, zeilenweise (max 3 je Reihe), zentriert
+  // Punkt an Position (gefuellt = Scheibe, hohl = Ring) — fuer die schwere Aufgabe
+  var POS = { top: [60, 24], bottom: [60, 96], left: [24, 60], right: [96, 60], center: [60, 60] };
+  function dot(x, y, fill) {
+    return fill
+      ? '<circle class="qdot-fill" cx="' + x + '" cy="' + y + '" r="10"/>'
+      : '<circle class="qdot-ring" cx="' + x + '" cy="' + y + '" r="9"/>';
+  }
+  // N gefuellte Punkte, zeilenweise (max 3 je Reihe), zentriert — Zahlenmatrix
   function dotsEl(n) {
     var out = '', xs = [42, 60, 78], perRow = 3;
     var rows = Math.ceil(n / perRow);
@@ -930,7 +991,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     for (var i = 0; i < n; i++) {
       var row = Math.floor(i / perRow), col = i % perRow;
       var inRow = Math.min(perRow, n - row * perRow);
-      var xOff = (perRow - inRow) * 9; // Restreihe zentrieren
+      var xOff = (perRow - inRow) * 9;
       out += '<circle class="qdot-fill" cx="' + (xs[col] + xOff) + '" cy="' + (yStart + row * 22) + '" r="8"/>';
     }
     return out;
@@ -939,9 +1000,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
   function arrowEl(angle) {
     var a = angle * Math.PI / 180, L = 34;
     var dx = Math.sin(a), dy = -Math.cos(a);
-    var tx = 60 + dx * L, ty = 60 + dy * L;
-    var bx = 60 - dx * L, by = 60 - dy * L;
-    // Pfeilspitze
+    var tx = 60 + dx * L, ty = 60 + dy * L, bx = 60 - dx * L, by = 60 - dy * L;
     var a1 = (angle - 150) * Math.PI / 180, a2 = (angle + 150) * Math.PI / 180;
     var h1x = tx + Math.sin(a1) * 16, h1y = ty - Math.cos(a1) * 16;
     var h2x = tx + Math.sin(a2) * 16, h2y = ty - Math.cos(a2) * 16;
@@ -956,24 +1015,25 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     if (type === 'count') return svg(dotsEl(v));
     if (type === 'arrow') return svg(arrowEl(v));
     if (type === 'shape') return svg(shapeEl(v.k, v.r));
+    if (type === 'shapedot') { var p = POS[v.pos]; return svg(shapeEl(v.shape, 38) + dot(p[0], p[1], v.fill)); }
     return svg('');
   }
 
-  // --- Aufgaben-Definitionen ---
-  // r-Groessen fuer shape-Aufgabe
+  // --- Aufgaben-Definitionen (3 einfache + 1 schwere) ---
+  // Loesungen liegen NUR in der DB (public.closer_quiz_answers): q1=C, q2=B, q3=C, q4=C.
   var SZ = { s: 22, m: 33, l: 46 };
   var QUIZZES = [
-    { // Q1 — Zahlenmatrix (Latin Square). Antwort: 2 Punkte -> Option C
+    { // Q1 — Zahlenmatrix (Latin Square 1/2/3) -> fehlt: 2 Punkte (C)
       type: 'count',
       matrix: [1, 2, 3, 2, 3, 1, 3, 1, '?'],
       options: [1, 3, 2, 4, 6, 5]
     },
-    { // Q2 — Pfeil dreht 45 Grad im Uhrzeigersinn. Antwort: oben (0) -> Option B
+    { // Q2 — Pfeil dreht 45 Grad im Uhrzeigersinn -> fehlt: oben (B)
       type: 'arrow',
       matrix: [0, 45, 90, 135, 180, 225, 270, 315, '?'],
       options: [180, 0, 270, 90, 45, 225]
     },
-    { // Q3 — Spalte=Form, Zeile=Groesse. Antwort: grosses Quadrat -> Option C
+    { // Q3 — Spalte=Form, Zeile=Groesse -> fehlt: grosses Quadrat (C)
       type: 'shape',
       matrix: [
         { k: 'circle', r: SZ.s }, { k: 'triangle', r: SZ.s }, { k: 'square', r: SZ.s },
@@ -983,6 +1043,19 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
       options: [
         { k: 'circle', r: SZ.l }, { k: 'triangle', r: SZ.l }, { k: 'square', r: SZ.l },
         { k: 'square', r: SZ.m }, { k: 'diamond', r: SZ.l }, { k: 'square', r: SZ.s }
+      ]
+    },
+    { // Q4 (SCHWER) — Form je SPALTE, Punkt (Fuellung+Position) je ZEILE:
+      // Zeile1 gefuellt/oben · Zeile2 hohl/mitte · Zeile3 gefuellt/unten -> Quadrat gefuellt unten (C)
+      type: 'shapedot',
+      matrix: [
+        { shape: 'circle', fill: true, pos: 'top' }, { shape: 'triangle', fill: true, pos: 'top' }, { shape: 'square', fill: true, pos: 'top' },
+        { shape: 'circle', fill: false, pos: 'center' }, { shape: 'triangle', fill: false, pos: 'center' }, { shape: 'square', fill: false, pos: 'center' },
+        { shape: 'circle', fill: true, pos: 'bottom' }, { shape: 'triangle', fill: true, pos: 'bottom' }, '?'
+      ],
+      options: [
+        { shape: 'circle', fill: true, pos: 'bottom' }, { shape: 'square', fill: false, pos: 'bottom' }, { shape: 'square', fill: true, pos: 'bottom' },
+        { shape: 'square', fill: true, pos: 'top' }, { shape: 'triangle', fill: true, pos: 'bottom' }, { shape: 'square', fill: true, pos: 'center' }
       ]
     }
   ];
@@ -996,7 +1069,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
       matrixEl.innerHTML = quiz.matrix.map(function (c) {
         return '<div class="cell' + (c === '?' ? ' q' : '') + '">' + renderCell(quiz.type, c) + '</div>';
       }).join('');
-      var nextStep = (n < 3) ? ('quiz' + (n + 1)) : 'contact';
+      var nextStep = (n < QUIZZES.length) ? ('quiz' + (n + 1)) : 'contact';
       optsEl.innerHTML = quiz.options.map(function (c, i) {
         return '<button type="button" class="quiz-opt" data-q="q' + n + '" data-letter="' + LETTERS[i] + '" aria-label="Option ' + LETTERS[i] + '">' + renderCell(quiz.type, c) + '</button>';
       }).join('');

@@ -191,7 +191,7 @@ git push origin main
 
 ## Denk-Check (Closer-Funnel, seit 2026-08-19)
 
-`closer-funnel.html` hat vor dem Kontaktschritt **4 sprach-/kulturneutrale Muster-Matrizen** (Raven-Stil, per JS gerendert in `buildQuiz()`; Nr. 1–3 einfach, Nr. 4 = echte Raven-Matrix mit 3 Regeln (Latin-Square-Form + Diagonal-Fuellung + Position je Spalte), 8 Optionen). Oben laeuft ein **60-Sek-Timer** (`#quiz-timer`) ueber alle 4 Aufgaben; laeuft er ab, geht es zum Kontakt (unbeantwortet = falsch). Zweck: Lead-Qualität — nur wer **≥ 3 von 4** richtig hat, zählt als Conversion (Schwelle `PASS_THRESHOLD` in der Edge Function).
+`closer-funnel.html` hat vor dem Kontaktschritt **4 sprach-/kulturneutrale Muster-Matrizen** (Raven-Stil, per JS gerendert in `buildQuiz()`; Nr. 1–3 einfach, Nr. 4 = echte Raven-Matrix mit 3 Regeln (Latin-Square-Form + Diagonal-Fuellung + Position je Spalte), 8 Optionen). Oben laeuft ein **4-Minuten-Timer** (`#quiz-timer`, `QUIZ_SECONDS`) ueber alle 4 Aufgaben; laeuft er ab, geht es zum Kontakt (unbeantwortet = falsch). Zweck: Lead-Qualität — nur wer **≥ 3 von 4** richtig hat, zählt als Conversion (Schwelle `PASS_THRESHOLD` in der Edge Function).
 
 - **Lösungsschlüssel liegt AUSSCHLIESSLICH in der DB** (`public.closer_quiz_answers`, Supabase-Projekt `uzxdctlbccchmlckweso`, RLS an ohne Policy → nur `service_role`). NICHT im HTML, NICHT in n8n.
 - Validator = Edge Function **`closer-quiz-check`** (`verify_jwt=false`, CORS-Allowlist = Prod-Domain + Deploy-Previews). Gibt nur `{score,total,passed}` zurück — nie welche Frage richtig war.

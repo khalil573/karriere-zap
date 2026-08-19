@@ -188,3 +188,15 @@ git push origin main
 | 2026-05-27 | Door2Door Mobile-UX-Bugs gefixt | `006cd92` |
 | 2026-05-27 | Plausible auf elektriker.html + Vertrieb-Vorerfahrung.html | `122b5a4` |
 | 2026-05-26 | Door2Door LP komplett neu | `84401b2` + folgende |
+
+## Denk-Check (Closer-Funnel, seit 2026-08-19)
+
+`closer-funnel.html` hat vor dem Kontaktschritt **3 sprach-/kulturneutrale Muster-Matrizen** (Raven-Stil, per JS gerendert in `buildQuiz()`). Zweck: Lead-Qualität — nur wer **≥ 2 von 3** richtig hat, zählt als Conversion.
+
+- **Lösungsschlüssel liegt AUSSCHLIESSLICH in der DB** (`public.closer_quiz_answers`, Supabase-Projekt `uzxdctlbccchmlckweso`, RLS an ohne Policy → nur `service_role`). NICHT im HTML, NICHT in n8n.
+- Validator = Edge Function **`closer-quiz-check`** (`verify_jwt=false`, CORS-Allowlist = Prod-Domain + Deploy-Previews). Gibt nur `{score,total,passed}` zurück — nie welche Frage richtig war.
+- Client sendet die gewählten Buchstaben `q1/q2/q3` + `quiz_score` + `quiz_passed` (Edge-Ergebnis, relayed) ans Formular. `ZAPConsent.trackLead()` feuert nur bei `passed`.
+- **Doppelt verdrahtet** (wie Qualifiziert-Gate): n8n-IF „Consent + qualifiziert?" verlangt für Closer zusätzlich `quiz_passed==='true'` → CAPI/TikTok-Event nur bei bestanden. Elektriker/montage-LPs unberührt.
+- **Nicht bestanden ≠ verloren:** Bewerbung geht trotzdem an Formspree → Trello-Karte (Titel-Prefix `⚠️ Denk-Check X/3`, `nachricht` mit Score). Nur die Conversion feuert nicht. (GF-Entscheid 19.08.)
+- Fragen/Antworten ändern = Zeilen in `public.closer_quiz_answers` (`correct_option` A..F) **und** die `QUIZZES`-Definition in `closer-funnel.html` anpassen — Reihenfolge der Optionen bestimmt den Buchstaben.
+- Plausible-Goals: `Closer-Funnel 7 Denkcheck` (erreicht), `Quiz Bestanden`, `Quiz Nicht bestanden`.

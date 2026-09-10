@@ -32,6 +32,13 @@ karriere-zap/
 └── bewerben.html               # Funnel-Endziel — generisches Bewerbungsformular
 ```
 
+| `dguv-v3/index.html` (+ `style.css`, `app.js`) | `/dguv-v3/` | **Kunden-Infoseite** („Mehr erfahren"-Button der Cold-Mail-Vorlage in Close) — KEIN Recruiting |
+
+> **Ausnahme `dguv-v3/` (seit 10.09.2026):** bewusst OHNE Meta-Pixel, Plausible, Cookie-Banner und Formspree — reine Infoseite
+> für Kunden, keine Datenerhebung, deshalb kein Consent nötig. Eigene Security-Header nur für `/dguv-v3/*` in `_headers`
+> (CSP ohne Inline-JS/-CSS). `app.js` reicht nur `utm_*`-Parameter aus dem E-Mail-Link an den Zeeg-Buchungslink weiter.
+> Änderungen an der Seite: nur `dguv-v3/` anfassen, `_headers`-Block nicht auf andere Pfade ausweiten.
+
 ⚠️ **URL-Case-Gotcha:** `Vertrieb-Vorerfahrung.html` und `Door2Door_vertrieb.html` haben CamelCase im Filename, die Live-URLs sind aber lowercase (`/vertrieb-vorerfahrung`, `/door2door_vertrieb`). Netlify routet case-insensitive, aber Plausible misst die gewählte URL-Form — bei Verlinkung immer lowercase verwenden.
 
 ## Tracking-Stack (3 Schichten)

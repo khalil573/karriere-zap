@@ -127,7 +127,11 @@ main { max-width: 760px; margin: 0 auto; padding: 0 20px 40px; }
   .block h2, .cta-box h2 { font-size: 23px; }
   .btn { display: block; text-align: center; width: 100%; }
   .cta-row { gap: 12px; }
-  .btn-text { display: block; }
+  .btn-text {
+    display: block; width: 100%; text-align: center;
+    padding: 13px 22px; border: 1px solid var(--orange); border-radius: 8px;
+    color: var(--orange-dark); text-decoration: none;
+  }
   .fact { grid-template-columns: 1fr; gap: 2px; }
   .cta-box { padding: 24px 20px; }
   .foot-inner, .legal { padding-left: 16px; padding-right: 16px; }

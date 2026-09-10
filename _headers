@@ -1,0 +1,8 @@
+# Security-Header NUR für die Kunden-Infoseite /dguv-v3/ (Skill zap-websec).
+# Bestehende Recruiting-Landingpages bleiben unberührt (kein globaler Block).
+/dguv-v3/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), interest-cohort=(), browsing-topics=()
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; object-src 'none'

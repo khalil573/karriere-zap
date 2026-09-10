@@ -5,7 +5,10 @@
   'use strict';
   var ALLOWED = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
                  'first_name', 'last_name', 'email', 'mobile'];
-  var DEFAULTS = { utm_source: 'lp', utm_medium: 'web', utm_campaign: 'mehr-erfahren-dguv-v3' };
+  // Ohne Parameter (z. B. nach der Webflow-Weiterleitung www.zap-pruefstelle.de/mehr-erfahren, die
+  // Query-Strings verwirft): Die Seite ist nur aus der Cold-Mail verlinkt, daher zählt die Buchung
+  // als Cold-Mail-Buchung; der Close-Lead wird dann über die E-Mail-Adresse zugeordnet.
+  var DEFAULTS = { utm_source: 'close', utm_medium: 'lp', utm_campaign: 'coldmail-dguv-v3' };
   var incoming;
   try { incoming = new URLSearchParams(window.location.search); } catch (e) { incoming = null; }
 

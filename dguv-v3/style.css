@@ -85,12 +85,23 @@ main { max-width: 760px; margin: 0 auto; padding: 0 20px 40px; }
 .reasons h3, .steps h3 { font-family: var(--sans); font-size: 18px; font-weight: 700; margin-bottom: 4px; }
 .reasons p, .steps p { color: var(--ink); max-width: 620px; }
 
-/* Facts */
+/* Facts (aufklappbar) */
+.facts-hint { font-family: var(--mono); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
 .facts { margin: 0; }
-.fact { display: grid; grid-template-columns: 160px 1fr; gap: 6px 20px; padding: 16px 0; border-top: 1px solid var(--line); }
+.fact { border-top: 1px solid var(--line); }
 .fact:last-child { border-bottom: 1px solid var(--line); }
-.fact dt { font-family: var(--mono); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--orange); padding-top: 5px; }
-.fact dd { margin: 0; max-width: 620px; }
+.fact summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px 0;
+}
+.fact summary::-webkit-details-marker { display: none; }
+.fact summary::marker { content: ""; }
+.fact-label { font-family: var(--mono); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--orange); }
+.fact-marker { font-family: var(--mono); font-size: 20px; line-height: 1; color: var(--ink); transition: transform .15s ease; }
+.fact[open] .fact-marker { transform: rotate(45deg); }
+.fact summary:hover .fact-label { color: var(--orange-dark); }
+.fact p { margin: 0 0 20px; max-width: 620px; }
 
 /* CTA box */
 .cta-box {
@@ -132,7 +143,7 @@ main { max-width: 760px; margin: 0 auto; padding: 0 20px 40px; }
     padding: 13px 22px; border: 1px solid var(--orange); border-radius: 8px;
     color: var(--orange-dark); text-decoration: none;
   }
-  .fact { grid-template-columns: 1fr; gap: 2px; }
+  .fact-label { font-size: 14px; }
   .cta-box { padding: 24px 20px; }
   .foot-inner, .legal { padding-left: 16px; padding-right: 16px; }
 }

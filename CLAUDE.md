@@ -33,6 +33,7 @@ karriere-zap/
 ```
 
 | `dguv-v3/index.html` (+ `style.css`, `app.js`) | `/dguv-v3/` | **Kunden-Infoseite** („Mehr erfahren"-Button der Cold-Mail-Vorlage in Close) — KEIN Recruiting |
+| `dguv-v3/fragen/index.html` (nutzt `../style.css`, `../app.js`) | `/dguv-v3/fragen/` | **Kunden-Infoseite „Drei Fragen"** („Mehr erfahren"-Button der Infomail-Vorlage in Close: nie gehört / Pflicht? / Vermieter?) — KEIN Recruiting; `<body data-campaign="infomail-dguv-v3">` steuert die Default-Kennung in `app.js` |
 
 > **Ausnahme `dguv-v3/` (seit 10.09.2026):** bewusst OHNE Meta-Pixel, Plausible, Cookie-Banner und Formspree — reine Infoseite
 > für Kunden, keine Datenerhebung, deshalb kein Consent nötig. Eigene Security-Header nur für `/dguv-v3/*` in `_headers`

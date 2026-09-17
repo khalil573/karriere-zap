@@ -29,6 +29,8 @@ karriere-zap/
 ├── closer.html                 # Closer-LP (B2B, Fixum + Provision) ⚠️ zitiert noch Alt-GF Zerbe — Text veraltet
 ├── closer-funnel.html          # Closer-Funnel-LP ARM A (C-Mechanik; harte K.-o.: ≥3 J. Vertrieb, Closing-Skills, 100 % Office OS; Aussortiert = kein Submit)
 ├── closer-funnel-b.html        # Closer-Funnel-LP ARM B — identischer Funnel, nur Hero/Value pushen Opener-Team + Pflichtprodukt (A/B: EINE Variable = Botschaft)
+├── verkaeufer.html             # Verkäufer-Kurz-LP (17.09.2026, PR #67): Hero + Benefits + Galerie + Formular unten, keine Gates
+├── verkaeufer-osnabrueck.html  # Verkäufer-LP v2 (17.09.2026, PR #68): Formular als 2. Bildschirm, keine Gates; ⚠️ Dateiname/`_quelle` NIE mit „closer" (n8n-Gate)
 └── bewerben.html               # Funnel-Endziel — generisches Bewerbungsformular
 ```
 

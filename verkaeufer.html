@@ -329,6 +329,13 @@ footer .ki{margin-left:auto;font-size:12px}
     } catch (e) { return ''; }
   })();
 
+  // ---------- Cookie Banner (zentrale Logik, A/B-Varianten in zap-consent.js) ----------
+  ZAPConsent.bannerInit({
+    bannerEl: document.getElementById('cookie-banner'),
+    acceptBtn: document.getElementById('cookie-accept'),
+    declineBtn: document.getElementById('cookie-decline')
+  });
+
   var form = document.getElementById('apply-form');
   var submitBtn = document.getElementById('apply-submit');
   var btnLabel = submitBtn.querySelector('.btn-label');

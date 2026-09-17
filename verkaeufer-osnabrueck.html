@@ -101,7 +101,6 @@ section{padding:56px 0}
 .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:26px;border-bottom:1px solid var(--line);padding-bottom:14px}
 .sec-head .n{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--accent-deep);letter-spacing:.1em}
 h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;letter-spacing:-.03em;font-size:clamp(27px,4.6vw,44px);line-height:1.04;text-transform:uppercase}
-.sec-sub{margin-left:auto;font-size:14px;color:var(--ink-50);text-align:right}
 .lede{font-size:clamp(16px,2.2vw,19px);color:var(--ink-70);max-width:52ch}
 
 /* Formular (Bildschirm 2) */
@@ -133,15 +132,12 @@ h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;letter-spacing:-
 .benefits li:first-child{border-top:1px solid var(--line-soft)}
 .benefits .num{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;color:var(--accent-deep)}
 .benefits .t{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(20px,3.2vw,29px);letter-spacing:-.02em;line-height:1.18}
-.benefits .d{grid-column:2/-1;font-size:16px;color:var(--ink-70);margin-top:5px;max-width:58ch}
 
 /* Galerie */
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .gal figure{position:relative;border-radius:12px;overflow:hidden;background:#e6e1d9;aspect-ratio:4/5}
 .gal img{width:100%;height:100%;object-fit:cover}
 .gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 11px;font:500 13px 'Manrope',sans-serif;color:#fff;background:linear-gradient(180deg,rgba(20,24,28,0) 0%,rgba(20,24,28,.72) 72%)}
-.gal-foot{margin-top:18px;display:flex;align-items:baseline;gap:14px;font-size:15px;color:var(--ink-70)}
-.gal-foot b{font-family:'JetBrains Mono',monospace;color:var(--accent-deep);font-weight:600}
 
 /* Der Deal */
 .deal{display:grid;grid-template-columns:1fr 1fr;gap:32px}
@@ -150,7 +146,6 @@ h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;letter-spacing:-
 .deal li{padding:16px 0;border-bottom:1px solid var(--line-soft)}
 .deal .dt{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:19px;letter-spacing:-.01em;line-height:1.2}
 .deal .dm{font-family:'JetBrains Mono',monospace;color:var(--accent-deep);font-weight:600;margin-right:8px}
-.deal .dd{margin-top:4px;font-size:15px;color:var(--ink-70)}
 
 /* FAQ (nativ aufklappbar, kein JS) */
 .faq details{border-top:1px solid var(--line-soft)}
@@ -195,7 +190,6 @@ footer .ki{margin-left:auto;font-size:12px}
   .gal{grid-template-columns:repeat(2,1fr);gap:10px}
   section{padding:44px 0}
   .sec-head{flex-wrap:wrap;gap:8px}
-  .sec-sub{margin-left:0;text-align:left;width:100%}
   .benefits li{grid-template-columns:40px 1fr;gap:14px}
   .deal{grid-template-columns:1fr;gap:26px}
 }
@@ -296,38 +290,31 @@ footer .ki{margin-left:auto;font-size:12px}
       <div class="sec-head">
         <span class="n">01</span>
         <h2>Die Fakten</h2>
-        <span class="sec-sub">Was du bekommst — konkret.</span>
       </div>
       <ul class="benefits">
         <li>
           <span class="num">01</span>
           <span class="t">Tesla als Firmenwagen</span>
-          <p class="d">Steht auf dem Parkplatz, nicht im Prospekt.</p>
         </li>
         <li>
           <span class="num">02</span>
           <span class="t">Fixum + Provision</span>
-          <p class="d">Hohes fünfstelliges Jahresgehalt. Sofort-Bonus auf jeden Abschluss — nicht erst, wenn der Kunde zahlt.</p>
         </li>
         <li>
           <span class="num">03</span>
           <span class="t">Warme Termine, kein Cold Calling</span>
-          <p class="d">Das Opener-Team legt dir fertige B2B-Termine in den Kalender, dazu Inbounds. Du clost.</p>
         </li>
         <li>
           <span class="num">04</span>
           <span class="t">Pflichtprodukt DGUV V3</span>
-          <p class="d">Gesetzlich vorgeschrieben. Deine Kunden müssen kaufen.</p>
         </li>
         <li>
           <span class="num">05</span>
           <span class="t">Einzelbüro statt Großraum</span>
-          <p class="d">Höhenverstellbarer Tisch, Walkingpad, MacBook, klimatisiert. Winkelhausenstraße 13, Osnabrück.</p>
         </li>
         <li>
           <span class="num">06</span>
           <span class="t">16 Uhr Feierabend, 28 Tage Urlaub</span>
-          <p class="d">Festanstellung, kein Remote. Team zwischen 25 und 32, Monats-Event, Workations.</p>
         </li>
       </ul>
     </div>
@@ -339,17 +326,15 @@ footer .ki{margin-left:auto;font-size:12px}
       <div class="sec-head">
         <span class="n">02</span>
         <h2>Das Team</h2>
-        <span class="sec-sub">Echte Fotos, kein Stock.</span>
       </div>
       <div class="gal">
         <figure><img src="/assets/img/team/team-04.jpg" alt="Kollege aus dem Vertrieb im Büro der ZAP Prüfstelle" width="750" height="1000" loading="lazy" /><figcaption>Unser Vertrieb, Büro Winkelhausenstraße</figcaption></figure>
         <figure><img src="/assets/img/team/team-05.jpg" alt="Kollege aus dem Vertrieb mit Headset" width="750" height="1000" loading="lazy" /><figcaption>Unser Vertrieb, Büro Winkelhausenstraße</figcaption></figure>
-        <figure><img src="/assets/img/team/tesla.jpg" alt="Tesla als Firmenwagen auf dem Parkplatz am Büro" width="787" height="1400" loading="lazy" /><figcaption>Der Firmenwagen</figcaption></figure>
-        <figure><img src="/assets/img/team/team-03.jpg" alt="Kollege der ZAP Prüfstelle" width="800" height="1000" loading="lazy" /></figure>
+        <figure><img src="/assets/img/team/tesla-front.jpg" alt="Tesla als Firmenwagen auf dem Parkplatz am Büro" width="547" height="684" loading="lazy" /><figcaption>Der Firmenwagen</figcaption></figure>
+        <figure><img src="/assets/img/team/team-03.jpg" alt="Prüftechniker der ZAP Prüfstelle" width="800" height="1000" loading="lazy" /><figcaption>Unser Prüftechniker</figcaption></figure>
         <figure><img src="/assets/img/team/arbeit-01.jpg" alt="Prüfung einer Elektroanlage" width="800" height="1000" loading="lazy" /><figcaption>Das Produkt, das du verkaufst</figcaption></figure>
         <figure><img src="/assets/img/team/arbeit-02.jpg" alt="Prüfung beim Kunden vor Ort" width="1000" height="562" loading="lazy" /><figcaption>Beim Kunden vor Ort</figcaption></figure>
       </div>
-      <p class="gal-foot"><b>+</b> <span>15 Leute · echtes Büro · Osnabrück</span></p>
     </div>
   </section>
 
@@ -359,23 +344,23 @@ footer .ki{margin-left:auto;font-size:12px}
       <div class="sec-head">
         <span class="n">03</span>
         <h2>Der Deal</h2>
-        <span class="sec-sub">Der ehrliche Teil.</span>
       </div>
       <div class="deal">
         <div>
           <h3>Du kannst erwarten</h3>
           <ul>
-            <li><div class="dt"><span class="dm">+</span>Warme Pipeline, planbar</div><p class="dd">Fertige B2B-Termine im Kalender — du clost, statt zu jagen.</p></li>
-            <li><div class="dt"><span class="dm">+</span>Wertschätzung, immer</div><p class="dd">Und ein Büro, in dem gelacht wird und die Stimmung stimmt.</p></li>
+            <li><div class="dt"><span class="dm">+</span>Stabiles Gehalt</div></li>
+            <li><div class="dt"><span class="dm">+</span>Warme Pipeline, planbar</div></li>
+            <li><div class="dt"><span class="dm">+</span>Wertschätzung, immer</div></li>
           </ul>
         </div>
         <div>
           <h3>Wir erwarten</h3>
           <ul>
-            <li><div class="dt"><span class="dm">&gt;</span>Konstant starkes Abschlussvolumen</div><p class="dd">Monat für Monat — du willst closen und Volumen machen.</p></li>
-            <li><div class="dt"><span class="dm">&gt;</span>Vollgas aus eigenem Antrieb</div><p class="dd">Wer motiviert werden muss, ist hier falsch. Keine Ausreden — nicht freitags, nicht im Sommerloch.</p></li>
-            <li><div class="dt"><span class="dm">&gt;</span>Kritik klar annehmen, ohne Drama</div><p class="dd">Wir reden direkt und erwarten emotionale Stabilität.</p></li>
-            <li><div class="dt"><span class="dm">&gt;</span>Humor</div><p class="dd">Hier wird gelacht und hopsgenommen. Wer dabei sauer wird, bleibt besser weg.</p></li>
+            <li><div class="dt"><span class="dm">&gt;</span>Konstant starkes Abschlussvolumen</div></li>
+            <li><div class="dt"><span class="dm">&gt;</span>Vollgas aus eigenem Antrieb</div></li>
+            <li><div class="dt"><span class="dm">&gt;</span>Kritik klar annehmen, ohne Drama</div></li>
+            <li><div class="dt"><span class="dm">&gt;</span>Humor</div></li>
           </ul>
         </div>
       </div>
@@ -388,7 +373,6 @@ footer .ki{margin-left:auto;font-size:12px}
       <div class="sec-head">
         <span class="n">04</span>
         <h2>Fragen</h2>
-        <span class="sec-sub">Zum Lesen antippen.</span>
       </div>
       <details>
         <summary>Muss ich kalt akquirieren?</summary>

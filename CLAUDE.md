@@ -61,7 +61,7 @@ karriere-zap/
 
 ### 3. Meta Conversions API (CAPI) — live seit 2026-06-16
 
-- Server-seitige Übertragung an Meta via Make.com Scenario **`6206652`** (khalil@-Org `7879189`, eu1). Altes Scenario `9130395` (hoebel@, eu2) wird stillgelegt.
+- Server-seitige Übertragung an Meta via Make.com-Szenario (khalil@-Org, eu1; IDs in der internen Doku). Altes Szenario (hoebel@, eu2) wird stillgelegt.
 - **Consent-only:** Die CAPI-Route (HTTP-Modul, 3. Router-Branch) feuert **nur bei `consent_marketing=true`**. Payload: `event_name=Lead`, `event_time`, `action_source=website`, `event_source_url`, `event_id` + `user_data` mit SHA256-gehashtem `em`/`ph` sowie `fbc`/`fbp`. Ohne Consent wird **kein** CAPI-Event gesendet (DSGVO — kein Marketing-Tracking ohne Einwilligung; bewusst sauberer als der frühere „Minimal-Payload"-Plan).
 - **Fehler-isoliert:** Ein HTTP-Fehler der CAPI-Route bricht die Trello-Kartenerstellung **nicht**.
 - **Pixel-Access-Token:** Events-Manager-Direktintegration, liegt in der Make-Konfiguration, **nie im Repo**.
@@ -117,7 +117,7 @@ LP-Form Submit
    ↓ POST application/x-www-form-urlencoded (oder multipart bei Lebenslauf)
 Formspree (Form-ID xqewlovo)
    ↓ Webhook
-Make.com Scenario 6206652 "Claude (Bewerber Pipeline) Integration Webhooks" (khalil@-Org, eu1)
+Make.com-Szenario „Bewerber Pipeline" (khalil@-Org, eu1; ID in der internen Doku)
    ↓ Router
    ├─ Trello-Karte (immer — mit/ohne Lebenslauf)
    └─ HTTP POST an Meta CAPI — NUR wenn consent_marketing=true
@@ -154,7 +154,7 @@ Form-spezifische Hidden-Fields (in jedem `<form>` einzeln gesetzt):
 
 **Aktuelle bekannte Anti-Pattern (offen):**
 1. Repo ist **PUBLIC** — sollte PRIVATE werden (zap-websec-Pflicht; im LP-Code stehen nur Pixel-/Formspree-IDs, die sind public by design)
-2. Make-Webhook ohne Auth — Bearer-Token-Härtung ist vorbereitet, aber **noch nicht aktiviert**. Direkteinschleusung an die Webhook-URL möglich (URL ist aber nicht öffentlich: LP → Formspree → Make)
+2. Make-Webhook-Härtung: Stand und Details nur in der internen Doku (nicht in diesem öffentlichen Repo).
 3. Es gibt keinen Datenschutz-Beauftragten-Sign-Off für den CAPI-Setup (Doku siehe Memory `capi_setup_status.md`)
 
 **PII-Handling:**
@@ -193,7 +193,7 @@ git push origin main
 | Datum | Änderung | Commit |
 |---|---|---|
 | 2026-06-18 | `closer.html` auf ZAPConsent v2 + Fix A nachgezogen (jetzt CAPI-fähig, kein Webfont); CAPI-Doku auf Live-Stand aktualisiert | (dieser PR) |
-| 2026-06-16 | Fix A: `attachToForm` setzt `event_id`/`fbc`/`fbp` + neue `trackLead()` (Browser↔CAPI-Dedup, DSGVO-Bereinigung von `event_source_url`); Pipeline auf khalil@-Org migriert (Scenario `6206652`), CAPI live + getestet (`events_received:1`) | `40a8bca` |
+| 2026-06-16 | Fix A: `attachToForm` setzt `event_id`/`fbc`/`fbp` + neue `trackLead()` (Browser↔CAPI-Dedup, DSGVO-Bereinigung von `event_source_url`); Pipeline auf khalil@-Org migriert (Scenario `‹ID intern›`), CAPI live + getestet (`events_received:1`) | `40a8bca` |
 | 2026-05-28 | Hybrid-CAPI-Vorbereitung: Cookie-Banner refactored auf ZAPConsent v2, alle 6 LPs nutzen jetzt shared component, consent_marketing Hidden-Field für Make-CAPI-Branching, Plausible auf bewerben.html + index.html + vertrieb-dunkel.html nachgezogen | `020c1ce` |
 | 2026-05-27 | Door2Door Mobile-UX-Bugs gefixt | `006cd92` |
 | 2026-05-27 | Plausible auf elektriker.html + Vertrieb-Vorerfahrung.html | `122b5a4` |
@@ -208,5 +208,5 @@ git push origin main
 - Client sendet die gewählten Buchstaben `q1/q2/q3` + `quiz_score` + `quiz_passed` (Edge-Ergebnis, relayed) ans Formular. `ZAPConsent.trackLead()` feuert nur bei `passed`.
 - **Doppelt verdrahtet** (wie Qualifiziert-Gate): n8n-IF „Consent + qualifiziert?" verlangt für Closer zusätzlich `quiz_passed==='true'` → CAPI/TikTok-Event nur bei bestanden. Elektriker/montage-LPs unberührt.
 - **Nicht bestanden ≠ verloren:** Bewerbung geht trotzdem an Formspree → Trello-Karte (Titel-Prefix `⚠️ Denk-Check X/3`, `nachricht` mit Score). Nur die Conversion feuert nicht. (GF-Entscheid 19.08.)
-- Fragen/Antworten ändern = Zeilen in `public.closer_quiz_answers` (`correct_option` A..F; aktuell q1=C q2=B q3=C q4=B) **und** die `QUIZZES`-Definition in `closer-funnel.html` anpassen — Reihenfolge der Optionen bestimmt den Buchstaben.
+- Fragen/Antworten ändern = Zeilen in `public.closer_quiz_answers` (`correct_option` A..F; aktuelle Lösungen nur in der DB) **und** die `QUIZZES`-Definition in `closer-funnel.html` anpassen — Reihenfolge der Optionen bestimmt den Buchstaben.
 - Plausible-Goals: `Closer-Funnel 7 Denkcheck` (erreicht), `Quiz Bestanden`, `Quiz Nicht bestanden`.

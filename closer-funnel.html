@@ -842,11 +842,12 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ answers: answers })
     }).then(function (r) {
-      return r.ok ? r.json() : { score: 0, total: 3, passed: false, error: true };
+      return r.ok ? r.json() : { passed: false, error: true };
     }).then(function (j) {
-      return { score: (j && j.score) || 0, total: (j && j.total) || 3, passed: !!(j && j.passed), error: !!(j && j.error) };
+      // Server meldet seit 10.10.2026 nur noch bestanden ja/nein (keine Punktzahl → Schlüssel nicht mehr erratbar)
+      return { passed: !!(j && j.passed), error: !!(j && j.error) };
     }).catch(function () {
-      return { score: 0, total: 3, passed: false, error: true };
+      return { passed: false, error: true };
     });
   }
 
@@ -896,8 +897,8 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
     validateQuiz(quizAnswers).then(function (quiz) {
       quizPassed = quiz.passed === true;
       var scoreTxt = quiz.error
-        ? ('nicht geprüft (Serverfehler) — ' + quiz.score + '/' + quiz.total)
-        : (quiz.score + '/' + quiz.total + (quizPassed ? ' — bestanden' : ' — NICHT bestanden'));
+        ? 'nicht geprüft (Serverfehler)'
+        : (quizPassed ? 'bestanden' : 'NICHT bestanden');
       document.getElementById('h-quiz_score').value = scoreTxt;
       document.getElementById('h-quiz_passed').value = quizPassed ? 'true' : 'false';
 
@@ -925,7 +926,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; colo
 
       // Trello-Titel: Creative-Tag wie gehabt; bei NICHT bestandenem Denk-Check zusaetzlich
       // klar markieren, damit Ravn den schwaecheren Bewerber sofort erkennt.
-      var titlePrefix = quizPassed ? '' : ('⚠️ Denk-Check ' + quiz.score + '/' + quiz.total + ' · ');
+      var titlePrefix = quizPassed ? '' : (quiz.error ? '⚠️ Denk-Check nicht geprüft · ' : '⚠️ Denk-Check nicht bestanden · ');
       data.set('name', titlePrefix + '💼 Closer' + (CREATIVE ? ' [' + CREATIVE + ']' : '') + ' — ' + (data.get('name') || ''));
 
       return fetch(form.action, {

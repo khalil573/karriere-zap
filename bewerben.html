@@ -18,6 +18,7 @@
 
 <!-- ZAP Consent Manager (Pflicht VOR Meta Pixel laden) -->
 <script src="/assets/zap-consent.js"></script>
+<script src="/assets/zap-cv.js"></script>
 
 <!-- Meta Pixel Code (Consent-gesteuert via ZAPConsent) -->
 <script>
@@ -222,7 +223,7 @@ ZAPConsent.trackPixelPageViewIfAllowed();
 
   <div class="card">
 
-    <form id="apply-form" action="https://formspree.io/f/xqewlovo" method="POST" enctype="multipart/form-data" novalidate>
+    <form id="apply-form" action="/api/bewerbung" method="POST" enctype="multipart/form-data" novalidate>
       <div class="error-msg" id="apply-error">Da ist was schiefgelaufen. Bitte versuch's nochmal oder schreib uns direkt an <a href="mailto:verwaltung@zap-pruefstelle.de">verwaltung@zap-pruefstelle.de</a>.</div>
 
       <div class="grid-2">
@@ -288,7 +289,7 @@ ZAPConsent.trackPixelPageViewIfAllowed();
       </div>
 
       <div class="field">
-        <label for="f-cv">Lebenslauf<span class="opt">optional · PDF, DOC, DOCX oder Foto · max. 8 MB</span></label>
+        <label for="f-cv">Lebenslauf<span class="opt">optional · PDF, DOC, DOCX oder Foto · max. 4 MB</span></label>
         <label class="file-drop" id="file-drop" for="f-cv">
           <input type="file" id="f-cv" name="lebenslauf" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*"/>
           <div class="fd-placeholder">
@@ -335,23 +336,31 @@ ZAPConsent.trackPixelPageViewIfAllowed();
   const fileSize = document.getElementById('fd-size');
   const fileRemove = document.getElementById('fd-remove');
   const fileError = document.getElementById('file-error');
-  const MAX_SIZE = 8 * 1024 * 1024;
+  // Lebenslauf geht als fertige Datei mit (ZAPCv: Fotos > 4 MB werden verkleinert,
+  // alles andere > 4 MB abgelehnt — Grenze des eigenen Eingangs /api/bewerbung).
+  let cvFertig = null;
 
   function fmtSize(b){ return b < 1024*1024 ? (b/1024).toFixed(0)+' KB' : (b/(1024*1024)).toFixed(1)+' MB'; }
 
   function handleFile(f){
     fileError.classList.remove('on');
+    cvFertig = null;
     if(!f){ fileDrop.classList.remove('has-file'); return; }
-    if(f.size > MAX_SIZE){
-      fileError.textContent = 'Datei zu groß (max. 8 MB). Bitte komprimiere sie oder sende sie per E-Mail.';
-      fileError.classList.add('on');
-      fileInput.value = '';
-      fileDrop.classList.remove('has-file');
-      return;
-    }
-    fileName.textContent = f.name;
-    fileSize.textContent = fmtSize(f.size);
-    fileDrop.classList.add('has-file');
+    submit.disabled = true; // bis das Foto fertig verkleinert ist, sonst ginge es ohne Lebenslauf raus
+    ZAPCv.passend(f).then(g => {
+      submit.disabled = false;
+      if(!g){
+        fileError.textContent = 'Datei zu groß (max. 4 MB). Bitte komprimiere sie – oder sende ohne Lebenslauf, wir fragen im Telefonat danach.';
+        fileError.classList.add('on');
+        fileInput.value = '';
+        fileDrop.classList.remove('has-file');
+        return;
+      }
+      cvFertig = g;
+      fileName.textContent = g.name;
+      fileSize.textContent = fmtSize(g.size);
+      fileDrop.classList.add('has-file');
+    });
   }
 
   fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
@@ -375,9 +384,12 @@ ZAPConsent.trackPixelPageViewIfAllowed();
     submit.disabled = true;
     submit.innerHTML = 'Wird gesendet…';
     try {
+      const data = new FormData(form);
+      data.delete('lebenslauf');
+      if (cvFertig) data.append('lebenslauf', cvFertig, cvFertig.name);
       const res = await fetch(form.action, {
         method: 'POST',
-        body: new FormData(form),
+        body: data,
         headers: { 'Accept': 'application/json' }
       });
       if (res.ok) {

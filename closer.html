@@ -930,7 +930,7 @@ ZAPConsent.trackPixelPageViewIfAllowed();
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // ── Bewerbungsformular → Formspree (gleiche Pipeline wie alle ZAP-LPs) ──
-  var FORMSPREE_ENDPOINT = "https://formspree.io/f/xqewlovo";
+  var BEWERBUNG_ENDPOINT = "/api/bewerbung";
   var form = document.getElementById("bewerbung-form");
   var doneEl = document.getElementById("form-done");
   var errEl = document.getElementById("form-error");
@@ -973,7 +973,7 @@ ZAPConsent.trackPixelPageViewIfAllowed();
       submitBtn.disabled = true;
       submitBtn.textContent = "Sende ...";
 
-      fetch(FORMSPREE_ENDPOINT, {
+      fetch(BEWERBUNG_ENDPOINT, {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" }

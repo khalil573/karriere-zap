@@ -531,7 +531,9 @@ ZAPConsent.trackPixelPageViewIfAllowed();
     <h2>Jetzt <span>bewerben</span></h2>
     <p class="form-sub">Kein Lebenslauf nötig. Rückmeldung garantiert innerhalb von 48 Stunden.</p>
 
-    <form id="bewerbungsform" action="https://formspree.io/f/xqewlovo" method="POST">
+    <form id="bewerbungsform" action="/api/bewerbung" method="POST">
+      <!-- Honeypot (seit Formspree-Ablösung 29.10.2026 prüft /api/bewerbung ihn serverseitig) -->
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0" />
       <div class="form-row">
         <div class="form-group">
           <label for="vorname">Vorname</label>

@@ -11,7 +11,7 @@ Statische Landingpages für das **Recruiting der ZAP Prüfstelle GmbH** (Osnabr�
 ## Stack
 
 - **Vanilla HTML/CSS/JS** — kein Build-Tool, kein Framework
-- **Netlify** — Auto-Deploy on push to `main`
+- **Netlify** — Auto-Deploy on push to `main`; Functions in `netlify/functions/` (v2/ESM, Helfer in `netlify/shared/`)
 - **GitHub**: `khalil573/karriere-zap` ⚠️ aktuell PUBLIC, sollte PRIVATE werden ([zap-websec](../../../.claude/skills/anthropic-skills/zap-websec/) Pflicht)
 - **Hosting**: Netlify-Account von ZAP, Site `shiny-rugelach-f7445da.netlify.app` mit Custom-Domain `karriere.zap-pruefstelle.de`
 
@@ -61,10 +61,10 @@ karriere-zap/
 
 ### 3. Meta Conversions API (CAPI) — live seit 2026-06-16
 
-- Server-seitige Übertragung an Meta via Make.com Scenario **`6206652`** (khalil@-Org `7879189`, eu1). Altes Scenario `9130395` (hoebel@, eu2) wird stillgelegt.
+- Server-seitige Übertragung an Meta über n8n `FxzN9PrjPTBKizYu` (Knoten „FB CAPI Lead“, seit 07/2026; das frühere Make-Scenario ist abgelöst).
 - **Consent-only:** Die CAPI-Route (HTTP-Modul, 3. Router-Branch) feuert **nur bei `consent_marketing=true`**. Payload: `event_name=Lead`, `event_time`, `action_source=website`, `event_source_url`, `event_id` + `user_data` mit SHA256-gehashtem `em`/`ph` sowie `fbc`/`fbp`. Ohne Consent wird **kein** CAPI-Event gesendet (DSGVO — kein Marketing-Tracking ohne Einwilligung; bewusst sauberer als der frühere „Minimal-Payload"-Plan).
 - **Fehler-isoliert:** Ein HTTP-Fehler der CAPI-Route bricht die Trello-Kartenerstellung **nicht**.
-- **Pixel-Access-Token:** Events-Manager-Direktintegration, liegt in der Make-Konfiguration, **nie im Repo**.
+- **Pixel-Access-Token:** liegt als n8n-Credential „FB-CAPI“, **nie im Repo**.
 - **Deduplizierung:** `attachToForm()` erzeugt pro Submit eine `event_id`; `trackLead()` gibt **dieselbe** id an den Browser-Pixel → Meta dedupliziert Browser- + CAPI-Lead zu **einem** Event.
 
 ## ZAPConsent v2 (Shared Cookie-Consent-Manager)
@@ -110,33 +110,64 @@ karriere-zap/
 - Ablehnen-Button mit `id="cookie-decline"`
 - Buttons sollten optisch **gleich prominent** sein (DSGVO: gleich groß, nur Akzent-Farbe unterscheidet)
 
-## Bewerbungs-Pipeline (Formspree → Make → Trello + CAPI)
+## Bewerbungs-Pipeline (eigener Eingang → n8n → Trello + CAPI) — seit 29.10.2026
+
+Formspree (`xqewlovo`) ist abgelöst: das Konto nahm keine Einsendungen mehr an. Alle Formulare
+schicken per `fetch` (FormData, `Accept: application/json`) an **`/api/bewerbung`** auf derselben Domain.
 
 ```
-LP-Form Submit
-   ↓ POST application/x-www-form-urlencoded (oder multipart bei Lebenslauf)
-Formspree (Form-ID xqewlovo)
-   ↓ Webhook
-Make.com Scenario 6206652 "Claude (Bewerber Pipeline) Integration Webhooks" (khalil@-Org, eu1)
-   ↓ Router
-   ├─ Trello-Karte (immer — mit/ohne Lebenslauf)
-   └─ HTTP POST an Meta CAPI — NUR wenn consent_marketing=true
-      (em/ph gehasht + fbc/fbp/event_id/event_source_url; ohne Consent → kein CAPI)
+LP-Form Submit → POST /api/bewerbung (Netlify Function v2, netlify/functions/bewerbung.mjs)
+   ├─ prüft: Methode, Env (fail-closed 500), Origin-Allowlist (403), Drossel 8 / 10 Min je IP (429),
+   │         Honeypot _gotcha (→ 200 ohne Weitergabe), Kontakt Pflicht (telefon|Telefon|email, sonst 400),
+   │         Feldnamen ^[A-Za-z0-9_]{1,40}$, ≤ 80 Felder, Werte ≤ 5.000 Zeichen (gekürzt + Hinweis)
+   ├─ Lebenslauf (Feld `lebenslauf`): ≤ 4 MB, Typ per Dateisignatur (PDF/DOC/DOCX/JPG/PNG).
+   │         Passt er nicht, geht die Bewerbung TROTZDEM durch — Hinweis landet in `nachricht`.
+   └─ JSON {version:1, id, submission:{…alle Felder…}, cv?:{dateiname,typ,groesse,base64}, eingang}
+        → n8n „Bewerber Pipeline“ FxzN9PrjPTBKizYu, Header X-ZAP-Karriere-Key
+        → n8n antwortet erst NACH dem Karriere-Guard (Respond to Webhook) → Trello-Karte (CV als Datei),
+          Eingangsbestätigung (ZS6IX7skfBCpec6l), Meta-CAPI/TikTok nur bei Consent + qualifiziert
+n8n-Fehler/Timeout (4,5 s) → Blobs-Store `bewerbungen-warteschlange` (Bewerber sieht trotzdem Erfolg)
+   → bewerbung-nachsenden.mjs (Scheduled, alle 10 Min, 3 zufällige Einträge je Lauf, löscht erst nach Erfolg)
+Messpunkt: GET /api/bewerbung-status → {"wartend":0,"aelteste_min":null} = Normalzustand (nur Zahlen)
 ```
+
+- **`submission` hat absichtlich dieselbe Form wie früher der Formspree-Webhook** (`body.submission.*`) —
+  die Trello-/CAPI-/Gate-Knoten in n8n blieben dadurch unverändert. Neue Felder einer LP kommen ohne
+  Änderung durch (keine feste Feldliste).
+- **Env-Vars (Netlify-UI, als Secret, Scope Functions, Production + Deploy Previews):**
+  `BEWERBER_WEBHOOK_URL` (n8n-Webhook, Pfad = Geheimnis) · `BEWERBER_WEBHOOK_KEY` (Header-Schlüssel;
+  n8n kennt nur seinen SHA-256 im „Karriere-Guard“). Werte NIE ins Repo/Doku (Netlify-Secrets-Scan bricht
+  sonst den Build). Env-Änderung wirkt erst ab dem nächsten Deploy. Schlüssel rotieren = neuen Wert in
+  Netlify + neuen Hash im Guard, dann Redeploy.
+- **Browser-Seite:** `assets/zap-cv.js` (`ZAPCv.passend`) verkleinert Fotos > 4 MB per Canvas zu JPEG und
+  wandelt HEIC/WebP immer um; eingebunden in `bewerben.html`, `elektriker.html`, `elektriker-b.html`.
+  Absenden ist gesperrt, solange die Umwandlung läuft.
+- **Ohne JavaScript** (Accept ohne JSON) liefert der Eingang eine kleine Danke-Seite statt JSON.
+- **Ausgeliefert wird nur `dist/`** (`netlify.toml`): der Build `node netlify/veroeffentlichen.mjs` kopiert
+  alles Öffentliche dorthin (Ausschlussliste: `netlify/`, `test/`, `node_modules/`, `package*.json`,
+  `netlify.toml`, `CLAUDE.md`, Punkt-Dateien). Neue LPs/Ordner im Root kommen automatisch mit; neue
+  NICHT-öffentliche Dateien gehören in die Ausschlussliste. Grund: Netlify liefert Dateien ohne Rücksicht
+  auf Groß-/Kleinschreibung aus, Redirect-Sperren greifen nur exakt (`/Package.json` kam durch).
+- **Tests:** `npm test` (node:test, `@netlify/blobs` per Loader-Hook gemockt, fetch abgefangen).
+  Beweist NICHT die Blobs-Konsistenz am Edge und das 6-MB-Request-Limit von Netlify — beides nur live.
+- **Hängt die Warteschlange** (`wartend > 0` länger als 30 Min): n8n-Executions von FxzN9PrjPTBKizYu
+  ansehen — Guard-Fehler „Schlüssel fehlt/falsch“ = Netlify-Env und Guard-Hash passen nicht zusammen
+  (Redeploy vergessen?); 5xx/Timeout = n8n down oder Ausführungslimit. Einträge werden automatisch
+  nachgesendet, sobald n8n wieder antwortet.
 
 **Wichtige Hidden-Fields die jedes Form mitsendet** (automatisch von `ZAPConsent.attachToForm()`):
 
 | Feld | Wert | Verwendung |
 |---|---|---|
-| `consent_marketing` | "true" / "false" | Make-Filter: CAPI feuert nur bei "true" |
+| `consent_marketing` | "true" / "false" | n8n-Weiche: CAPI/TikTok feuern nur bei "true" (+ qualifiziert) |
 | `event_source_url` | URL (ohne Consent click-id-bereinigt) | CAPI `event_source_url` |
-| `event_id` | UUID pro Submit | Dedup Browser-Pixel ↔ CAPI |
+| `event_id` | UUID pro Submit | Dedup Browser-Pixel ↔ CAPI; zugleich `id` des Pakets |
 | `fbc` / `fbp` | Meta Klick-/Browser-ID (nur mit Consent) | CAPI Match-Quality |
 
 Form-spezifische Hidden-Fields (in jedem `<form>` einzeln gesetzt):
 - `_subject` — Trello-Karten-Titel-Prefix
 - `_quelle` — LP-Identifier
-- `_gotcha` (Honeypot)
+- `_gotcha` (Honeypot — auf ALLEN Formularen, seit 29.10. auch elektriker/D2D/vertrieb-dunkel)
 
 ## Brand-Tokens
 
@@ -154,7 +185,7 @@ Form-spezifische Hidden-Fields (in jedem `<form>` einzeln gesetzt):
 
 **Aktuelle bekannte Anti-Pattern (offen):**
 1. Repo ist **PUBLIC** — sollte PRIVATE werden (zap-websec-Pflicht; im LP-Code stehen nur Pixel-/Formspree-IDs, die sind public by design)
-2. Make-Webhook ohne Auth — Bearer-Token-Härtung ist vorbereitet, aber **noch nicht aktiviert**. Direkteinschleusung an die Webhook-URL möglich (URL ist aber nicht öffentlich: LP → Formspree → Make)
+2. ~~Webhook ohne Auth~~ — seit 29.10.2026 erledigt: geheimer Pfad + Header-Schlüssel (SHA-256-Vergleich im n8n-„Karriere-Guard“, fail-closed). Der Webhook-Pfad stand am 29.10. im Sitzungsprotokoll; Schutz trägt jetzt der Schlüssel.
 3. Es gibt keinen Datenschutz-Beauftragten-Sign-Off für den CAPI-Setup (Doku siehe Memory `capi_setup_status.md`)
 
 **PII-Handling:**
@@ -163,8 +194,8 @@ Form-spezifische Hidden-Fields (in jedem `<form>` einzeln gesetzt):
 - Niemals PII in Logs, niemals an externe APIs ohne AVV
 
 **Sensible Konfiguration (Werte NICHT hier, nur Verweis):**
-- Pixel-Access-Token → Make.com Connection (verschlüsselt)
-- Formspree Personal API Key → Formspree-Dashboard (nicht im Repo)
+- Pixel-Access-Token → n8n-Credential „FB-CAPI“
+- `BEWERBER_WEBHOOK_URL` / `BEWERBER_WEBHOOK_KEY` → Netlify-Env (Secret)
 - Plausible API Key → Plausible-Dashboard (nicht im Repo)
 
 ## Deployment
@@ -192,6 +223,7 @@ git push origin main
 
 | Datum | Änderung | Commit |
 |---|---|---|
+| 2026-10-29 | Formspree abgelöst: eigener Eingang `/api/bewerbung` (Netlify Functions + Blobs-Warteschlange), n8n-Karriere-Guard mit Header-Schlüssel, Lebenslauf als Datei in Trello, `zap-cv.js`, Honeypot auf allen Formularen | (dieser PR) |
 | 2026-06-18 | `closer.html` auf ZAPConsent v2 + Fix A nachgezogen (jetzt CAPI-fähig, kein Webfont); CAPI-Doku auf Live-Stand aktualisiert | (dieser PR) |
 | 2026-06-16 | Fix A: `attachToForm` setzt `event_id`/`fbc`/`fbp` + neue `trackLead()` (Browser↔CAPI-Dedup, DSGVO-Bereinigung von `event_source_url`); Pipeline auf khalil@-Org migriert (Scenario `6206652`), CAPI live + getestet (`events_received:1`) | `40a8bca` |
 | 2026-05-28 | Hybrid-CAPI-Vorbereitung: Cookie-Banner refactored auf ZAPConsent v2, alle 6 LPs nutzen jetzt shared component, consent_marketing Hidden-Field für Make-CAPI-Branching, Plausible auf bewerben.html + index.html + vertrieb-dunkel.html nachgezogen | `020c1ce` |
@@ -207,6 +239,6 @@ git push origin main
 - Validator = Edge Function **`closer-quiz-check`** (`verify_jwt=false`, CORS-Allowlist = Prod-Domain + Deploy-Previews). Gibt nur `{score,total,passed}` zurück — nie welche Frage richtig war.
 - Client sendet die gewählten Buchstaben `q1/q2/q3` + `quiz_score` + `quiz_passed` (Edge-Ergebnis, relayed) ans Formular. `ZAPConsent.trackLead()` feuert nur bei `passed`.
 - **Doppelt verdrahtet** (wie Qualifiziert-Gate): n8n-IF „Consent + qualifiziert?" verlangt für Closer zusätzlich `quiz_passed==='true'` → CAPI/TikTok-Event nur bei bestanden. Elektriker/montage-LPs unberührt.
-- **Nicht bestanden ≠ verloren:** Bewerbung geht trotzdem an Formspree → Trello-Karte (Titel-Prefix `⚠️ Denk-Check X/3`, `nachricht` mit Score). Nur die Conversion feuert nicht. (GF-Entscheid 19.08.)
+- **Nicht bestanden ≠ verloren:** Bewerbung geht trotzdem an `/api/bewerbung` → Trello-Karte (Titel-Prefix `⚠️ Denk-Check X/3`, `nachricht` mit Score). Nur die Conversion feuert nicht. (GF-Entscheid 19.08.)
 - Fragen/Antworten ändern = Zeilen in `public.closer_quiz_answers` (`correct_option` A..F; aktuell q1=C q2=B q3=C q4=B) **und** die `QUIZZES`-Definition in `closer-funnel.html` anpassen — Reihenfolge der Optionen bestimmt den Buchstaben.
 - Plausible-Goals: `Closer-Funnel 7 Denkcheck` (erreicht), `Quiz Bestanden`, `Quiz Nicht bestanden`.

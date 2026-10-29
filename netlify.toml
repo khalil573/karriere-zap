@@ -1,0 +1,16 @@
+# Seit 29.10.2026: eigener Bewerbungs-Eingang (Formspree-Ersatz) als Netlify Functions.
+# Ausgeliefert wird NUR dist/ — der Build kopiert alles Öffentliche dorthin
+# (netlify/veroeffentlichen.mjs, Ausschlussliste). Repo-Interna (CLAUDE.md, package.json,
+# netlify/, test/, node_modules/, Punkt-Dateien) sind so in keiner Schreibweise erreichbar.
+
+[build]
+  command = "node netlify/veroeffentlichen.mjs"
+  publish = "dist"
+
+[build.environment]
+  # 22 (>= 22.12) ist Pflicht seit @netlify/blobs 11 (bedingte Writes der Drossel).
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

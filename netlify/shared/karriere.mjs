@@ -27,9 +27,16 @@ export function allowedOrigins() {
   return [...new Set(list.filter(Boolean).map(normalizeOrigin))];
 }
 
-export function originAllowed(origin) {
+// Die Formulare posten immer an dieselbe Domain → gleiche Herkunft wie die Request-URL reicht.
+// (Live gemessen 29.10.2026: im Deploy-Preview kam 403 — DEPLOY_PRIME_URL & Co. stehen in
+// v2-Functions zur Laufzeit nicht zuverlässig bereit. Die Env-Liste bleibt als Zusatz.)
+export function originAllowed(origin, req) {
   const norm = normalizeOrigin(origin);
-  return norm !== '' && allowedOrigins().includes(norm);
+  if (norm === '') return false;
+  if (req) {
+    try { if (norm === normalizeOrigin(new URL(req.url).origin)) return true; } catch { /* ungültige URL */ }
+  }
+  return allowedOrigins().includes(norm);
 }
 
 export function json(status, payload, extra = {}) {

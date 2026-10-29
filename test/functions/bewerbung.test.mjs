@@ -68,6 +68,17 @@ test('Env fail-closed: ohne Webhook-Env 500, nichts gesendet', async () => {
   Object.assign(process.env, ENV);
 });
 
+test('gleiche Herkunft wie die Request-URL reicht (ohne Env-Liste, wie im Deploy-Preview)', async () => {
+  delete process.env.APP_ORIGIN;
+  try {
+    const h = new Headers({ origin: 'https://deploy-preview-1--site.netlify.app', accept: 'application/json' });
+    const r = await call(bewerbung, new Request('https://deploy-preview-1--site.netlify.app/api/bewerbung', { method: 'POST', headers: h, body: formular() }));
+    assert.equal(r.status, 200);
+    const fremd = new Headers({ origin: 'https://evil.example' });
+    assert.equal((await call(bewerbung, new Request('https://deploy-preview-1--site.netlify.app/api/bewerbung', { method: 'POST', headers: fremd, body: formular() }))).status, 403);
+  } finally { process.env.APP_ORIGIN = ORIGIN; }
+});
+
 test('GET 405, fremder/fehlender Origin 403', async () => {
   assert.equal((await call(bewerbung, req(null, { method: 'GET' }))).status, 405);
   assert.equal((await call(bewerbung, req(formular(), { origin: 'https://evil.example' }))).status, 403);

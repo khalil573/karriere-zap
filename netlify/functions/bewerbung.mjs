@@ -67,7 +67,7 @@ export default async (req, context) => {
     console.error('Missing required env vars');
     return json(500, { ok: false });
   }
-  if (!originAllowed(req.headers.get('origin'))) return json(403, { ok: false });
+  if (!originAllowed(req.headers.get('origin'), req)) return json(403, { ok: false });
   if (await isRateLimited(rateLimitKey(req, context, 'bewerbung'), 8, 600)) {
     return json(429, { ok: false }, { 'Retry-After': '600' });
   }

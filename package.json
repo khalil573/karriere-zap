@@ -1,0 +1,12 @@
+{
+  "name": "karriere-zap",
+  "private": true,
+  "version": "1.0.0",
+  "description": "ZAP Prüfstelle — Recruiting-Landingpages (statisch) + eigener Bewerbungs-Eingang (Netlify Functions)",
+  "dependencies": {
+    "@netlify/blobs": "^11.0.3"
+  },
+  "scripts": {
+    "test": "node --import ./test/functions/register.mjs --test test/functions/bewerbung.test.mjs"
+  }
+}

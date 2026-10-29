@@ -20,6 +20,7 @@
 
 <!-- ZAP Consent Manager (Pflicht VOR Meta Pixel laden) -->
 <script src="/assets/zap-consent.js"></script>
+<script src="/assets/zap-cv.js"></script>
 
 <!-- Meta Pixel (Consent-gesteuert via ZAPConsent) -->
 <script>
@@ -1493,7 +1494,7 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
 
       <!-- Rechte Spalte: Formular (steht auf Mobil direkt unter dem Hook) -->
       <div class="hero-b-right" id="apply">
-        <form id="apply-form" class="hero-form form-card" action="https://formspree.io/f/xqewlovo" method="POST">
+        <form id="apply-form" class="hero-form form-card" action="/api/bewerbung" method="POST">
           <div class="form-head">
             <div class="form-title">In 60 Sekunden bewerben</div>
             <div class="stepdots"><span class="stepdot on" id="dot1"></span><span class="stepdot" id="dot2"></span></div>
@@ -1575,7 +1576,7 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
                 </span>
                 <span class="file-text" id="cv-text">
                   <b>Datei wählen</b>
-                  <small>PDF, DOC, DOCX, JPG, PNG · max 8 MB</small>
+                  <small>PDF, DOC, DOCX, JPG, PNG · max 4 MB</small>
                 </span>
                 <input id="f-cv" type="file" name="lebenslauf" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png" />
               </label>
@@ -1974,21 +1975,30 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
   var cvInput = document.getElementById('f-cv');
   var cvWrap = document.getElementById('cv-wrap');
   var cvText = document.getElementById('cv-text');
-  var MAX_CV_SIZE = 8 * 1024 * 1024;
+  // Lebenslauf geht als fertige Datei mit (ZAPCv: Fotos > 4 MB werden verkleinert,
+  // alles andere > 4 MB abgelehnt — Grenze des eigenen Eingangs /api/bewerbung).
+  var cvFertig = null;
+  function escHtml(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function resetCv() {
+    cvFertig = null;
     cvInput.value = '';
     cvWrap.classList.remove('has-file');
-    cvText.innerHTML = '<b>Datei wählen</b><small>PDF, DOC, DOCX, JPG, PNG · max 8 MB</small>';
+    cvText.innerHTML = '<b>Datei wählen</b><small>PDF, DOC, DOCX, JPG, PNG · max 4 MB</small>';
   }
   cvInput.addEventListener('change', function() {
     if (!cvInput.files.length) return resetCv();
     var f = cvInput.files[0];
-    if (f.size > MAX_CV_SIZE) {
-      alert('Datei ist zu groß (' + (f.size / 1024 / 1024).toFixed(1) + ' MB). Maximum 8 MB.');
-      return resetCv();
-    }
-    cvWrap.classList.add('has-file');
-    cvText.innerHTML = '<b>' + f.name + '</b><small>' + (f.size / 1024).toFixed(0) + ' KB · klicken zum Ändern</small>';
+    submitBtn.disabled = true; // bis das Foto fertig verkleinert ist, sonst ginge es ohne Lebenslauf raus
+    ZAPCv.passend(f).then(function(g) {
+      submitBtn.disabled = false;
+      if (!g) {
+        alert('Datei ist zu groß (' + (f.size / 1024 / 1024).toFixed(1) + ' MB). Maximum 4 MB — oder ohne Lebenslauf absenden, wir fragen im Telefonat danach.');
+        return resetCv();
+      }
+      cvFertig = g;
+      cvWrap.classList.add('has-file');
+      cvText.innerHTML = '<b>' + escHtml(g.name) + '</b><small>' + (g.size / 1024).toFixed(0) + ' KB · klicken zum Ändern</small>';
+    });
   });
 
   // ---------- Apply form submit ----------
@@ -2033,9 +2043,8 @@ footer .legal { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(-
     if (!montage) {
       return showError('Bitte beantworte die Montage-Frage.');
     }
-    if (cvInput.files.length && cvInput.files[0].size > MAX_CV_SIZE) {
-      return showError('Lebenslauf ist größer als 8 MB. Bitte kleinere Datei wählen oder Feld leer lassen.');
-    }
+    data.delete('lebenslauf');
+    if (cvFertig && cvInput.files.length) data.append('lebenslauf', cvFertig, cvFertig.name);
 
     var nachricht = [
       '🔌 BEWERBUNG ELEKTRIKER (m/w/d) — Tesla / 4-Tage-Woche',

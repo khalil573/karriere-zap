@@ -1194,6 +1194,8 @@ ZAPConsent.trackPixelPageViewIfAllowed();
               Danke. Ravn meldet sich innerhalb 24 h.
             </div>
             <form id="bewerbung-form" novalidate>
+      <!-- Honeypot (seit Formspree-Ablösung 29.10.2026 prüft /api/bewerbung ihn serverseitig) -->
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0" />
               <div class="form-error" id="form-error" style="display:none"></div>
               <div class="row-2">
                 <div class="field">
@@ -1357,7 +1359,7 @@ ZAPConsent.trackPixelPageViewIfAllowed();
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // ── Bewerbungsformular → Formspree ────────────────────────────────
-  var FORMSPREE_ENDPOINT = "https://formspree.io/f/xqewlovo";
+  var BEWERBUNG_ENDPOINT = "/api/bewerbung";
   var form = document.getElementById("bewerbung-form");
   var doneEl = document.getElementById("form-done");
   var errEl = document.getElementById("form-error");
@@ -1400,7 +1402,7 @@ ZAPConsent.trackPixelPageViewIfAllowed();
       submitBtn.disabled = true;
       submitBtn.textContent = "Sende ...";
 
-      fetch(FORMSPREE_ENDPOINT, {
+      fetch(BEWERBUNG_ENDPOINT, {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" }

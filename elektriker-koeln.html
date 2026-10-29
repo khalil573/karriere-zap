@@ -317,6 +317,45 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
   border: 1.5px solid rgba(14,14,14,0.4);
 }
 .cookie-btn-decline:hover { background: rgba(14,14,14,0.05); }
+
+/* dichte Schritte (Denk-Check): scrollbar, Inhalt vertikal zentriert via margin:auto-Wrapper */
+.step.scrollable { justify-content: flex-start; overflow-y: auto; }
+.step.scrollable .step-inner { margin: auto 0; }
+
+/* Denk-Check (Muster-Matrix, 1:1 aus closer-funnel.html) — flach, Hairline, keine Glow/Emoji */
+.quiz-lead { font-size: 15px; color: var(--mute); margin: 0 auto 16px; max-width: 340px; line-height: 1.5; }
+.matrix {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+  width: 100%; max-width: 264px; margin: 0 auto 18px;
+}
+.matrix .cell {
+  aspect-ratio: 1 / 1; border: 1px solid rgba(14,14,14,0.14); border-radius: 10px;
+  background: #fff; display: flex; align-items: center; justify-content: center;
+}
+.matrix .cell.q { border-style: dashed; border-color: rgba(226,78,31,0.55); }
+.quiz-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  width: 100%; max-width: 300px; margin: 0 auto;
+}
+.quiz-opt {
+  aspect-ratio: 1 / 1; border: 1px solid rgba(14,14,14,0.16); border-radius: 10px;
+  background: #fff; padding: 7px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; transition: border-color .12s ease, background .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.quiz-opt:hover, .quiz-opt:focus-visible { border-color: #141414; background: #FAF7F1; outline: none; }
+.quiz-opt:active { background: #F1ECE3; }
+.matrix .cell svg, .quiz-opt svg { width: 100%; height: 100%; display: block; }
+.qshape { fill: none; stroke: #141414; stroke-width: 5; stroke-linejoin: round; }
+.qdot-fill { fill: #E24E1F; }
+.qdot-ring { fill: none; stroke: #E24E1F; stroke-width: 5; }
+/* 4-Minuten-Timer oben */
+.timer-slot { min-width: 38px; display: flex; justify-content: flex-end; }
+.quiz-timer[hidden] { display: none; }
+.quiz-timer { display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; color: #141414; background: #F1ECE3; border: 1px solid rgba(14,14,14,0.14); border-radius: 8px; padding: 4px 9px; line-height: 1; }
+.quiz-timer .tclock { font-size: 13px; }
+.quiz-timer.low { color: #C23E10; border-color: rgba(194,62,16,0.5); background: #FBEAE2; }
+.qmark { fill: rgba(226,78,31,0.85); font: 700 46px 'Bricolage Grotesque', system-ui, sans-serif; }
 </style>
 </head>
 <body>
@@ -328,7 +367,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     </button>
     <div class="logo"><span class="mark">ZAP</span><span class="dot">.</span><span class="sub">Karriere</span></div>
-    <div style="width:38px"></div>
+    <div class="timer-slot"><div class="quiz-timer" id="quiz-timer" hidden aria-live="polite"><span class="tclock" aria-hidden="true">⏱</span><span id="quiz-timer-val">4:00</span></div></div>
   </div>
 
   <!-- STEP 1: HERO -->
@@ -416,10 +455,51 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     <div class="q-hint">Frage 6 von 6</div>
     <h2 class="display">Wann sollen wir dich am besten anrufen?</h2>
     <div class="cta-stack">
-      <button class="btn btn-option" data-field="callwhen" data-value="Vormittags (08–12 Uhr)" data-goto="contact">Vormittags <span class="arrow">→</span></button>
-      <button class="btn btn-option" data-field="callwhen" data-value="Nachmittags (14–17 Uhr)" data-goto="contact">Nachmittags <span class="arrow">→</span></button>
-      <button class="btn btn-option" data-field="callwhen" data-value="Abends (nach 17 Uhr)" data-goto="contact">Abends <span class="arrow">→</span></button>
-      <button class="btn btn-option" data-field="callwhen" data-value="Egal, ruft einfach an" data-goto="contact">Egal, ruft einfach an <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="callwhen" data-value="Vormittags (08–12 Uhr)" data-goto="quiz1">Vormittags <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="callwhen" data-value="Nachmittags (14–17 Uhr)" data-goto="quiz1">Nachmittags <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="callwhen" data-value="Abends (nach 17 Uhr)" data-goto="quiz1">Abends <span class="arrow">→</span></button>
+      <button class="btn btn-option" data-field="callwhen" data-value="Egal, ruft einfach an" data-goto="quiz1">Egal, ruft einfach an <span class="arrow">→</span></button>
+    </div>
+  </section>
+
+  <!-- DENK-CHECK (GF 29.10.2026, wie closer-funnel.html): 4 Muster-Matrizen, sprach-/kulturneutral,
+       Nr. 4 schwer. Optionen per JS gerendert (buildQuiz). Bewertet wird NUR serverseitig
+       (Edge Function closer-quiz-check). 4-Minuten-Timer #quiz-timer laeuft ueber alle 4 Schritte. -->
+  <section class="step center scrollable" data-step="quiz1">
+    <div class="step-inner">
+      <div class="q-hint">Denk-Check · 1 von 4</div>
+      <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
+      <p class="quiz-lead">Kein Fachwissen nötig — reine Logik, gegen die Uhr. Tippe die passende Kachel an.</p>
+      <div class="matrix" data-quiz="1"></div>
+      <div class="quiz-grid" data-quiz-opts="1"></div>
+    </div>
+  </section>
+
+  <section class="step center scrollable" data-step="quiz2">
+    <div class="step-inner">
+      <div class="q-hint">Denk-Check · 2 von 4</div>
+      <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
+      <div class="matrix" data-quiz="2"></div>
+      <div class="quiz-grid" data-quiz-opts="2"></div>
+    </div>
+  </section>
+
+  <section class="step center scrollable" data-step="quiz3">
+    <div class="step-inner">
+      <div class="q-hint">Denk-Check · 3 von 4</div>
+      <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
+      <div class="matrix" data-quiz="3"></div>
+      <div class="quiz-grid" data-quiz-opts="3"></div>
+    </div>
+  </section>
+
+  <section class="step center scrollable" data-step="quiz4">
+    <div class="step-inner">
+      <div class="q-hint">Denk-Check · 4 von 4 · knifflig</div>
+      <h2 class="display">Welche Kachel vervollständigt das Muster?</h2>
+      <p class="quiz-lead">Drei Regeln gleichzeitig — Form, Füllung und Position.</p>
+      <div class="matrix" data-quiz="4"></div>
+      <div class="quiz-grid" data-quiz-opts="4"></div>
     </div>
   </section>
 
@@ -448,6 +528,13 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
       <input type="hidden" name="auto" id="h-auto" />
       <input type="hidden" name="arbeitsverhaeltnis" id="h-arbeitsverhaeltnis" />
       <input type="hidden" name="callwhen" id="h-callwhen" />
+      <!-- Denk-Check: gewählte Options-Buchstaben. Ob sie stimmen, weiß nur die DB. -->
+      <input type="hidden" name="q1" id="h-q1" />
+      <input type="hidden" name="q2" id="h-q2" />
+      <input type="hidden" name="q3" id="h-q3" />
+      <input type="hidden" name="q4" id="h-q4" />
+      <input type="hidden" name="quiz_score" id="h-quiz_score" />
+      <input type="hidden" name="quiz_passed" id="h-quiz_passed" />
       <input type="hidden" name="_subject" value="Neue Bewerbung Elektriker (m/w/d) — Köln (Funnel) · Tesla / 4-Tage-Woche" />
       <input type="hidden" name="_quelle" value="elektriker-koeln.html" />
       <input type="hidden" name="aktueller_beruf" value="Elektriker-Bewerbung Köln via karriere.zap-pruefstelle.de/elektriker-koeln.html" />
@@ -490,7 +577,9 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
   var backBtn = document.getElementById('back-btn');
 
   // Reihenfolge der Haupt-Schritte (für Fortschrittsbalken)
-  var order = ['intro', 'value', 'gesellenbrief', 'fuehrerschein', 'auto', 'montage', 'arbeitsverhaeltnis', 'callwhen', 'contact'];
+  var order = ['intro', 'value', 'gesellenbrief', 'fuehrerschein', 'auto', 'montage', 'arbeitsverhaeltnis', 'callwhen', 'quiz1', 'quiz2', 'quiz3', 'quiz4', 'contact'];
+  var QUIZ_STEPS = ['quiz1', 'quiz2', 'quiz3', 'quiz4'];
+  var QUIZ_CHECK_URL = 'https://uzxdctlbccchmlckweso.supabase.co/functions/v1/closer-quiz-check';
   var history = ['intro'];
 
   function currentStep() { return history[history.length - 1]; }
@@ -506,6 +595,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     montage: 'KOE-Funnel 5 Montage',
     arbeitsverhaeltnis: 'KOE-Funnel 6 Arbeitsverhaeltnis',
     callwhen: 'KOE-Funnel 7 Erreichbarkeit',
+    quiz1: 'KOE-Funnel 7b Denkcheck',
     contact: 'KOE-Funnel 8 Kontakt'
   };
   var trackedSteps = {};
@@ -516,6 +606,35 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     if (typeof window.plausible === 'function') { window.plausible(ev); }
   }
 
+  // --- 4-Minuten-Timer fuer den Denk-Check (laeuft ueber alle 4 Aufgaben) ---
+  var timerEl = document.getElementById('quiz-timer');
+  var timerValEl = document.getElementById('quiz-timer-val');
+  var QUIZ_SECONDS = 240;
+  var quizTimer = { id: null, remaining: QUIZ_SECONDS, started: false };
+  function fmtTime(s) { s = Math.max(0, s); return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+  function paintTimer() {
+    if (timerValEl) timerValEl.textContent = fmtTime(quizTimer.remaining);
+    if (timerEl) { if (quizTimer.remaining <= 30) timerEl.classList.add('low'); else timerEl.classList.remove('low'); }
+  }
+  function startQuizTimer() {
+    if (quizTimer.started) return;
+    quizTimer.started = true;
+    quizTimer.remaining = QUIZ_SECONDS;
+    paintTimer();
+    quizTimer.id = setInterval(function () {
+      quizTimer.remaining -= 1;
+      paintTimer();
+      if (quizTimer.remaining <= 0) {
+        stopQuizTimer();
+        // Zeit abgelaufen: unbeantwortete Fragen zaehlen als falsch -> weiter zum Kontakt.
+        if (QUIZ_STEPS.indexOf(currentStep()) !== -1) { goTo('contact'); }
+      }
+    }, 1000);
+  }
+  function stopQuizTimer() {
+    if (quizTimer.id) { clearInterval(quizTimer.id); quizTimer.id = null; }
+  }
+
   function render() {
     var id = currentStep();
     steps.forEach(function (s) { s.classList.toggle('active', s.dataset.step === id); });
@@ -524,8 +643,15 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     progressFill.style.width = pct + '%';
     var hideBack = (id === 'intro' || id === 'success');
     backBtn.style.display = hideBack ? 'none' : 'flex';
+    // Timer nur waehrend der 4 Denk-Check-Schritte zeigen; beim ersten Erreichen starten.
+    var inQuiz = QUIZ_STEPS.indexOf(id) !== -1;
+    if (timerEl) timerEl.hidden = !inQuiz;
+    if (inQuiz) startQuizTimer();
+    if (id === 'contact' || id === 'success') stopQuizTimer();
     var container = document.getElementById('funnel');
     if (container) container.scrollTop = 0;
+    var activeEl = document.querySelector('.step.active');
+    if (activeEl) activeEl.scrollTop = 0;
   }
 
   function goTo(id) {
@@ -561,6 +687,23 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 
   function showError(msg) { errorEl.textContent = msg; errorEl.hidden = false; }
   function clearError() { errorEl.hidden = true; errorEl.textContent = ''; }
+
+  // Denk-Check serverseitig pruefen (Loesung liegt NUR in der DB). Gibt immer ein
+  // Ergebnis zurueck — NIE reject: bei Netz-/Serverfehler fail-closed (passed=false),
+  // die Bewerbung wird trotzdem gesendet (landet markiert in Trello), nur ohne Conversion.
+  function validateQuiz(answers) {
+    return fetch(QUIZ_CHECK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers: answers })
+    }).then(function (r) {
+      return r.ok ? r.json() : { passed: false, error: true };
+    }).then(function (j) {
+      return { passed: !!(j && j.passed), error: !!(j && j.error) };
+    }).catch(function () {
+      return { passed: false, error: true };
+    });
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -615,42 +758,66 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
       return;
     }
 
-    // QUALIFIZIERT -> echte Bewerbung + Conversion-Tracking
-    ZAPConsent.attachToForm(form);
-    var data = new FormData(form);
-    // Anzeigen-Kennung (utm_content, keine PII) in Titel + Notiz -> Creative je Bewerber zuordenbar
-    var creative = (new URLSearchParams(window.location.search).get('utm_content') || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 20);
-    var nachricht = [
-      '🔌 BEWERBUNG ELEKTRIKER (m/w/d) — KÖLN · Funnel (Klon LP-C) / Tesla / 4-Tage-Woche',
-      '',
-      'Region: Köln',
-      'Gesellenbrief: ' + gesellenbrief,
-      'Führerschein Klasse B: ' + fuehrerschein,
-      'Eigenes Auto: ' + (data.get('auto') || '–'),
-      'Montage Mo–Do bereit: ' + montage,
-      'Aktuelles Arbeitsverhältnis: ' + (data.get('arbeitsverhaeltnis') || '–')
-    ];
-    var callwhen = data.get('callwhen');
-    if (callwhen) nachricht.push('Erreichbarkeit: ' + callwhen);
-    if (creative) nachricht.push('Anzeige: ' + creative);
-    data.set('nachricht', nachricht.join('\n'));
-
-    // Prefix für Trello-Titel: Region Köln (+ Creative-Kennung)
-    data.set('name', '🔌 Elektriker-KOE' + (creative ? ' [' + creative + ']' : '') + ' — ' + (data.get('name') || ''));
-
+    // QUALIFIZIERT -> Denk-Check serverseitig pruefen (Loesung liegt NUR in der DB),
+    // DANN Bewerbung senden. Nicht bestanden = Karte kommt trotzdem (markiert), aber die
+    // Conversion (Pixel + CAPI) feuert nur bei bestanden — wie closer-funnel.html.
+    // GF 29.10.2026: zu viele unqualifizierte Bewerbungen → Denk-Check auch fuer Elektriker.
     submitBtn.disabled = true;
     btnLabel.textContent = 'Wird gesendet …';
 
-    fetch(form.action, {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: data
+    var quizPassed = false;
+    validateQuiz({
+      q1: String(probe.get('q1') || ''),
+      q2: String(probe.get('q2') || ''),
+      q3: String(probe.get('q3') || ''),
+      q4: String(probe.get('q4') || '')
+    }).then(function (quiz) {
+      quizPassed = quiz.passed === true;
+      var quizTxt = quiz.error ? 'nicht geprüft (Serverfehler)' : (quizPassed ? 'bestanden' : 'NICHT bestanden');
+      document.getElementById('h-quiz_score').value = quizTxt;
+      document.getElementById('h-quiz_passed').value = quizPassed ? 'true' : 'false';
+
+      ZAPConsent.attachToForm(form);
+      var data = new FormData(form);
+      // Anzeigen-Kennung (utm_content, keine PII) in Titel + Notiz -> Creative je Bewerber zuordenbar
+      var creative = (new URLSearchParams(window.location.search).get('utm_content') || '').replace(/[^a-z0-9_-]/gi, '').slice(0, 20);
+      var nachricht = [
+        '🔌 BEWERBUNG ELEKTRIKER (m/w/d) — KÖLN · Funnel (Klon LP-C) / Tesla / 4-Tage-Woche',
+        '',
+        'Region: Köln',
+        '🧠 Denk-Check: ' + quizTxt,
+        'Gesellenbrief: ' + gesellenbrief,
+        'Führerschein Klasse B: ' + fuehrerschein,
+        'Eigenes Auto: ' + (data.get('auto') || '–'),
+        'Montage Mo–Do bereit: ' + montage,
+        'Aktuelles Arbeitsverhältnis: ' + (data.get('arbeitsverhaeltnis') || '–')
+      ];
+      var callwhen = data.get('callwhen');
+      if (callwhen) nachricht.push('Erreichbarkeit: ' + callwhen);
+      if (creative) nachricht.push('Anzeige: ' + creative);
+      data.set('nachricht', nachricht.join('\n'));
+
+      // Prefix für Trello-Titel: Region Köln (+ Creative-Kennung)
+      // Bei NICHT bestandenem Denk-Check vorn markieren. Das „—“ vor dem Namen bleibt der
+      // Trenner, an dem die Eingangsbestaetigung (n8n ZS6IX7skfBCpec6l) den Namen abschneidet.
+      var warn = quizPassed ? '' : (quiz.error ? '⚠️ Denk-Check nicht geprüft · ' : '⚠️ Denk-Check nicht bestanden · ');
+      data.set('name', warn + '🔌 Elektriker-KOE' + (creative ? ' [' + creative + ']' : '') + ' — ' + (data.get('name') || ''));
+
+      return fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data
+      });
     }).then(function (res) {
       if (!res.ok) throw new Error('Senden fehlgeschlagen (' + res.status + ').');
       return res.json();
     }).then(function () {
-      ZAPConsent.trackLead(form);
-      if (typeof window.plausible === 'function') { window.plausible('Bewerbung Submit'); }
+      // Conversion (Meta Pixel + CAPI, TikTok) NUR bei bestandenem Denk-Check.
+      if (quizPassed) { ZAPConsent.trackLead(form); }
+      if (typeof window.plausible === 'function') {
+        window.plausible('Bewerbung Submit');
+        window.plausible(quizPassed ? 'Quiz Bestanden' : 'Quiz Nicht bestanden');
+      }
       goTo('success');
     }).catch(function (err) {
       submitBtn.disabled = false;
@@ -658,6 +825,144 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
       showError(err.message || 'Etwas ist schiefgelaufen. Bitte ruf uns direkt an: 0541 9321 3072.');
     });
   });
+
+  // ---------- Denk-Check (Muster-Matrizen, identisch zu closer-funnel.html) ----------
+  // Sprach-/kulturneutrale Logik-Aufgaben. Hier steht bewusst KEINE Loesung — welche
+  // Option richtig ist, weiss ausschliesslich die DB (Edge Function closer-quiz-check).
+  // Der Client sendet nur den gewaehlten Buchstaben. Reihenfolge der Optionen = Buchstabe:
+  // nicht umsortieren, ohne den Schluessel in der DB mitzuziehen (gilt fuer ALLE Denk-Check-LPs).
+  var LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
+  // --- SVG-Primitive (viewBox 120x120) ---
+  function svg(inner) {
+    return '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' + inner + '</svg>';
+  }
+  function shapeEl(kind, r) {
+    var cx = 60, cy = 60;
+    if (kind === 'circle') return '<circle class="qshape" cx="60" cy="60" r="' + r + '"/>';
+    if (kind === 'square') return '<rect class="qshape" x="' + (cx - r) + '" y="' + (cy - r) + '" width="' + (2 * r) + '" height="' + (2 * r) + '" rx="4"/>';
+    if (kind === 'triangle') {
+      var p = [cx + ',' + (cy - r * 1.15), (cx + r) + ',' + (cy + r * 0.7), (cx - r) + ',' + (cy + r * 0.7)];
+      return '<polygon class="qshape" points="' + p.join(' ') + '"/>';
+    }
+    if (kind === 'diamond') {
+      var p2 = [cx + ',' + (cy - r), (cx + r) + ',' + cy, cx + ',' + (cy + r), (cx - r) + ',' + cy];
+      return '<polygon class="qshape" points="' + p2.join(' ') + '"/>';
+    }
+    return '';
+  }
+  // Punkt an Position (gefuellt = Scheibe, hohl = Ring) — fuer die schwere Aufgabe
+  var POS = { top: [60, 24], bottom: [60, 96], left: [24, 60], right: [96, 60], center: [60, 60] };
+  function dot(x, y, fill) {
+    return fill
+      ? '<circle class="qdot-fill" cx="' + x + '" cy="' + y + '" r="10"/>'
+      : '<circle class="qdot-ring" cx="' + x + '" cy="' + y + '" r="9"/>';
+  }
+  // N gefuellte Punkte, zeilenweise (max 3 je Reihe), zentriert — Zahlenmatrix
+  function dotsEl(n) {
+    var out = '', xs = [42, 60, 78], perRow = 3;
+    var rows = Math.ceil(n / perRow);
+    var yStart = 60 - (rows - 1) * 11;
+    for (var i = 0; i < n; i++) {
+      var row = Math.floor(i / perRow), col = i % perRow;
+      var inRow = Math.min(perRow, n - row * perRow);
+      var xOff = (perRow - inRow) * 9;
+      out += '<circle class="qdot-fill" cx="' + (xs[col] + xOff) + '" cy="' + (yStart + row * 22) + '" r="8"/>';
+    }
+    return out;
+  }
+  // Pfeil aus der Mitte; angle 0 = oben, im Uhrzeigersinn
+  function arrowEl(angle) {
+    var a = angle * Math.PI / 180, L = 34;
+    var dx = Math.sin(a), dy = -Math.cos(a);
+    var tx = 60 + dx * L, ty = 60 + dy * L, bx = 60 - dx * L, by = 60 - dy * L;
+    var a1 = (angle - 150) * Math.PI / 180, a2 = (angle + 150) * Math.PI / 180;
+    var h1x = tx + Math.sin(a1) * 16, h1y = ty - Math.cos(a1) * 16;
+    var h2x = tx + Math.sin(a2) * 16, h2y = ty - Math.cos(a2) * 16;
+    return '<line class="qshape" x1="' + bx.toFixed(1) + '" y1="' + by.toFixed(1) + '" x2="' + tx.toFixed(1) + '" y2="' + ty.toFixed(1) + '" stroke-linecap="round"/>' +
+      '<polyline class="qshape" fill="none" points="' + h1x.toFixed(1) + ',' + h1y.toFixed(1) + ' ' + tx.toFixed(1) + ',' + ty.toFixed(1) + ' ' + h2x.toFixed(1) + ',' + h2y.toFixed(1) + '" stroke-linecap="round"/>';
+  }
+  function qMark() { return '<text class="qmark" x="60" y="76" text-anchor="middle">?</text>'; }
+
+  // Zellen-Renderer je Aufgabentyp
+  function renderCell(type, v) {
+    if (v === '?') return svg(qMark());
+    if (type === 'count') return svg(dotsEl(v));
+    if (type === 'arrow') return svg(arrowEl(v));
+    if (type === 'shape') return svg(shapeEl(v.k, v.r));
+    if (type === 'shapedot') { var p = POS[v.pos]; return svg(shapeEl(v.shape, 38) + dot(p[0], p[1], v.fill)); }
+    return svg('');
+  }
+
+  // --- Aufgaben (3 einfache + 1 schwere) ---
+  var SZ = { s: 22, m: 33, l: 46 };
+  var QUIZZES = [
+    { // Q1 — Zahlenmatrix (jede Reihe/Spalte 1, 2, 3 Punkte)
+      type: 'count',
+      matrix: [1, 2, 3, 2, 3, 1, 3, 1, '?'],
+      options: [1, 3, 2, 4, 6, 5]
+    },
+    { // Q2 — Pfeil dreht je Kachel 45 Grad im Uhrzeigersinn
+      type: 'arrow',
+      matrix: [0, 45, 90, 135, 180, 225, 270, 315, '?'],
+      options: [180, 0, 270, 90, 45, 225]
+    },
+    { // Q3 — Spalte = Form, Zeile = Groesse
+      type: 'shape',
+      matrix: [
+        { k: 'circle', r: SZ.s }, { k: 'triangle', r: SZ.s }, { k: 'square', r: SZ.s },
+        { k: 'circle', r: SZ.m }, { k: 'triangle', r: SZ.m }, { k: 'square', r: SZ.m },
+        { k: 'circle', r: SZ.l }, { k: 'triangle', r: SZ.l }, '?'
+      ],
+      options: [
+        { k: 'circle', r: SZ.l }, { k: 'triangle', r: SZ.l }, { k: 'square', r: SZ.l },
+        { k: 'square', r: SZ.m }, { k: 'diamond', r: SZ.l }, { k: 'square', r: SZ.s }
+      ]
+    },
+    { // Q4 (schwer, Raven-Matrix): Form, Fuellung und Position folgen je einer eigenen Regel
+      type: 'shapedot',
+      matrix: [
+        { shape: 'circle', fill: true, pos: 'top' }, { shape: 'triangle', fill: false, pos: 'center' }, { shape: 'square', fill: false, pos: 'bottom' },
+        { shape: 'triangle', fill: false, pos: 'top' }, { shape: 'square', fill: true, pos: 'center' }, { shape: 'circle', fill: false, pos: 'bottom' },
+        { shape: 'square', fill: false, pos: 'top' }, { shape: 'circle', fill: false, pos: 'center' }, '?'
+      ],
+      options: [
+        { shape: 'triangle', fill: true, pos: 'center' },
+        { shape: 'triangle', fill: true, pos: 'bottom' },
+        { shape: 'square', fill: true, pos: 'bottom' },
+        { shape: 'triangle', fill: false, pos: 'bottom' },
+        { shape: 'circle', fill: true, pos: 'bottom' },
+        { shape: 'triangle', fill: true, pos: 'top' },
+        { shape: 'triangle', fill: false, pos: 'center' },
+        { shape: 'square', fill: true, pos: 'center' }
+      ]
+    }
+  ];
+
+  function buildQuiz() {
+    QUIZZES.forEach(function (quiz, qi) {
+      var n = qi + 1;
+      var matrixEl = document.querySelector('[data-quiz="' + n + '"]');
+      var optsEl = document.querySelector('[data-quiz-opts="' + n + '"]');
+      if (!matrixEl || !optsEl) return;
+      matrixEl.innerHTML = quiz.matrix.map(function (c) {
+        return '<div class="cell' + (c === '?' ? ' q' : '') + '">' + renderCell(quiz.type, c) + '</div>';
+      }).join('');
+      var nextStep = (n < QUIZZES.length) ? ('quiz' + (n + 1)) : 'contact';
+      optsEl.innerHTML = quiz.options.map(function (c, i) {
+        return '<button type="button" class="quiz-opt" data-q="q' + n + '" data-letter="' + LETTERS[i] + '" aria-label="Option ' + LETTERS[i] + '">' + renderCell(quiz.type, c) + '</button>';
+      }).join('');
+      Array.prototype.forEach.call(optsEl.querySelectorAll('.quiz-opt'), function (btn) {
+        btn.addEventListener('click', function () {
+          var field = btn.getAttribute('data-q');
+          var input = document.getElementById('h-' + field);
+          if (input) input.value = btn.getAttribute('data-letter');
+          goTo(nextStep);
+        });
+      });
+    });
+  }
+  buildQuiz();
 
   // ---------- Cookie Banner ----------
   ZAPConsent.bannerInit({

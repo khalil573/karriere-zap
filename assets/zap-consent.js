@@ -399,6 +399,12 @@
       if (closing !== 'ja') return false;
       if (office !== 'ja') return false;
     }
+    // Denk-Check (closer-funnel + Elektriker FFM/KOE seit 29.10.2026): Sobald das
+    // Feld im Formular existiert, zaehlt nur ein bestandener Check als Conversion —
+    // identisch zur n8n-Weiche "Consent + qualifiziert?". LPs ohne Denk-Check:
+    // Feld fehlt → Block wird uebersprungen.
+    var quizPassed = fieldValue('quiz_passed');
+    if (quizPassed !== null && quizPassed !== 'true') return false;
     return true;
   }
 

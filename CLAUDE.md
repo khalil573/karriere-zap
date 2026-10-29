@@ -143,9 +143,11 @@ Messpunkt: GET /api/bewerbung-status → {"wartend":0,"aelteste_min":null} = Nor
   wandelt HEIC/WebP immer um; eingebunden in `bewerben.html`, `elektriker.html`, `elektriker-b.html`.
   Absenden ist gesperrt, solange die Umwandlung läuft.
 - **Ohne JavaScript** (Accept ohne JSON) liefert der Eingang eine kleine Danke-Seite statt JSON.
-- **Repo-Root wird veröffentlicht** (`netlify.toml` `publish = "."`): `/netlify/*`, `/test/*`,
-  `/node_modules/*`, `/package*.json`, `/netlify.toml`, `/CLAUDE.md`, `/.claude/*` sind per Redirect auf 404
-  gesperrt. Nach Deploys mit neuen Nicht-LP-Dateien die Sperre per curl prüfen (auch Großschreibung).
+- **Ausgeliefert wird nur `dist/`** (`netlify.toml`): der Build `node netlify/veroeffentlichen.mjs` kopiert
+  alles Öffentliche dorthin (Ausschlussliste: `netlify/`, `test/`, `node_modules/`, `package*.json`,
+  `netlify.toml`, `CLAUDE.md`, Punkt-Dateien). Neue LPs/Ordner im Root kommen automatisch mit; neue
+  NICHT-öffentliche Dateien gehören in die Ausschlussliste. Grund: Netlify liefert Dateien ohne Rücksicht
+  auf Groß-/Kleinschreibung aus, Redirect-Sperren greifen nur exakt (`/Package.json` kam durch).
 - **Tests:** `npm test` (node:test, `@netlify/blobs` per Loader-Hook gemockt, fetch abgefangen).
   Beweist NICHT die Blobs-Konsistenz am Edge und das 6-MB-Request-Limit von Netlify — beides nur live.
 - **Hängt die Warteschlange** (`wartend > 0` länger als 30 Min): n8n-Executions von FxzN9PrjPTBKizYu
